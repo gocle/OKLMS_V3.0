@@ -1,0 +1,180 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="org.apache.commons.lang3.time.DateUtils" %>
+<%@ page import="org.apache.commons.lang.time.DateFormatUtils" %>
+<%@ page import="kr.co.gocle.oklms.commbiz.util.BizUtil" %>
+<%@ page import="kr.co.gocle.oklms.comm.vo.LoginInfo" %>
+<%@ page import="egovframework.com.cmm.service.Globals" %>
+<%@ page import="egovframework.com.cmm.LoginVO" %>
+<%-- <%@ page import="kr.co.gocle.oklms.sys.menu.vo.MenuMngmVO" %> --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!-- oklms Header -->
+<%
+LoginInfo loginInfo = new LoginInfo(); 
+%>
+<!-- ############### LU Header ############### -->
+<ul id="header">
+	<li class="logo-area"><h1><a href="/lu/main/lmsUserMainPage.do">한국기술교육대학교</a></h1></li>
+	<li class="gnb-area">
+<%
+if("STD".equals(loginInfo.getMemType())){
+	// 학습근로자
+%>
+		<a href="/lu/today/lmsUserTodayPage.do#f_1" class="type-1<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1 == 0}">-on</c:if>">학습활동서<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_2" class="type-3<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2 == 0}">-on</c:if>">Q&A<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_3" class="type-7<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3 == 0}">-on</c:if>">과제<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_4" class="type-6<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4 == 0}">-on</c:if>">팀프로젝트<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_5" class="type-5<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt5 == 0}">-on</c:if>">토론<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt5}</span>건</a>
+<%   
+}else if("CDP".equals(loginInfo.getMemType())){
+	// 학과전담자
+%>
+	<a href="/lu/today/lmsUserTodayPage.do#f_1" class="type-3<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1 == 0}">-on</c:if>">Q&A<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1}</span>건</a>
+	<a href="/lu/today/lmsUserTodayPage.do#f_2" class="type-7<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2 == 0}">-on</c:if>">과제<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2}</span>건</a>
+	<a href="/lu/today/lmsUserTodayPage.do#f_3" class="type-6<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3 == 0}">-on</c:if>">팀프로젝트<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3}</span>건</a>
+	<a href="/lu/today/lmsUserTodayPage.do#f_4" class="type-5<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4 == 0}">-on</c:if>">토론<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4}</span>건</a>
+	<a href="/lu/today/lmsUserTodayPage.do#f_5" class="type-1<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt6 == 0}">-on</c:if>">제직증빙서류<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt6}</span>건</a>
+<%   
+}else if("CCN".equals(loginInfo.getMemType())){
+	// 조회시간 문제로 예외처리 센터담당자
+%>
+		<a href="/lu/today/lmsUserTodayPage.do#f_1" class="type-1<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1 == 0}">-on</c:if>">주간훈련일지<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_2" class="type-3<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2 == 0}">-on</c:if>">학습활동서<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_3" class="type-7<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3 == 0}">-on</c:if>">면담일지<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_4" class="type-6<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4 == 0}">-on</c:if>">훈련시간표<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt4}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_5" class="type-5<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt5 == 0}">-on</c:if>">담당자변경<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt5}</span>건</a>
+
+<%   
+}else if("COT".equals(loginInfo.getMemType())){
+	// 기업현장교사
+%><%   
+}else if("PRT".equals(loginInfo.getMemType())){
+	// 교수
+%><%   
+}else if("CCM".equals(loginInfo.getMemType())){
+	// HRD담당자	
+%>
+		<a href="/lu/today/lmsUserTodayPage.do#f_1" class="type-1<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1 == 0}">-on</c:if>">활동내역서<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt1}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_2" class="type-3<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2 == 0}">-on</c:if>">주간훈련일지<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt2}</span>건</a>
+		<a href="/lu/today/lmsUserTodayPage.do#f_3" class="type-7<c:if test="${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3 == 0}">-on</c:if>">학습활동서<span>${listLmsUserMainPageTodayCnt[0].myPageTodayCnt3}</span>건</a>
+<%   
+}else{
+%>
+
+<%		
+}
+%>
+	</li>
+</ul><!-- E : header : 상단 헤더 영역-->
+<!-- ############### // LU Header ############### -->
+ 	<form id="frmMail" name="frmMail" method="post">
+	<input type="hidden" name="weekCnt" id="mailWeekCnt" />
+	<input type="hidden" name="memId" id="mailMemId" />
+	<input type="hidden" name="lastDate" id="mailLastDate" />
+	<input type="hidden" name="mailTempType" id="mailTempType" />
+	<input type="hidden" name="subjectCode" id="mailSubjectCode" />
+	
+	<input type="hidden" name="companyId" id="mailCompanyId" />
+	<input type="hidden" name="traningProcessId" id="mailTraningProcessId" />
+	<input type="hidden" name="cotMemIds" id="cotMemIds"/>
+	<input type="hidden" name="ccmMemIds" id="ccmMemIds"/>
+	</form>
+	
+	<form id="frmAgree" name="frmAgree" method="post">
+ 	</form>
+	
+<script type="text/javascript">
+<!--
+
+
+function fn_send_mail(weekCnt,memId,lastDate,mailTempType,subjectCode){
+	
+	$("#mailWeekCnt").val(weekCnt);
+	$("#mailMemId").val(memId);
+	$("#mailLastDate").val(lastDate);
+	$("#mailTempType").val(mailTempType);
+	$("#mailSubjectCode").val(subjectCode);
+
+	window.open("", "mailPopup", "width=920, height=580, left=100, top=50"); 
+	
+	$("#frmMail").attr("action","/lu/mail/mailSendPopup.do"); 
+	$("#frmMail").attr("method", "post" );
+	$("#frmMail").attr("target","mailPopup"); 
+	$("#frmMail").submit();	
+
+}
+function fn_send_sms(weekCnt,memId,lastDate,mailTempType,subjectCode){
+	
+	$("#mailWeekCnt").val(weekCnt);
+	$("#mailMemId").val(memId);
+	$("#mailLastDate").val(lastDate);
+	$("#mailTempType").val(mailTempType);
+	$("#mailSubjectCode").val(subjectCode);
+
+	window.open("", "smsPopup", "width=620, height=550, left=100, top=50"); 
+	
+	$("#frmMail").attr("action","/lu/sms/smsSendPopup.do"); 
+	$("#frmMail").attr("method", "post" );
+	$("#frmMail").attr("target","smsPopup"); 
+	$("#frmMail").submit();	
+
+}
+function fn_send_sms_cot(weekCnt,memId,lastDate,mailTempType,subjectCode){
+	
+	$("#mailWeekCnt").val(weekCnt);
+	$("#mailMemId").val(memId);
+	$("#mailLastDate").val(lastDate);
+	$("#mailTempType").val(mailTempType);
+	$("#mailSubjectCode").val(subjectCode);
+
+	window.open("", "smsPopupCot", "width=620, height=550, left=100, top=50"); 
+	
+	$("#frmMail").attr("action","/lu/sms/smsSendPopupCot.do"); 
+	$("#frmMail").attr("method", "post" );
+	$("#frmMail").attr("target","smsPopupCot"); 
+	$("#frmMail").submit();	
+
+}
+function fn_sms_cot_company(){
+ 
+	window.open("", "smsPopupCot", "width=620, height=550, left=100, top=50"); 
+	
+	$("#frmMail").attr("action","/lu/sms/smsSendPopupCompany.do"); 
+	$("#frmMail").attr("method", "post" );
+	$("#frmMail").attr("target","smsPopupCot"); 
+	$("#frmMail").submit();	
+
+}
+function fn_set_sms(memId){
+	 
+	$("#mailMemId").val(memId);
+	window.open("", "smsPopup", "width=620, height=550, left=100, top=50"); 
+	
+	$("#frmMail").attr("action","/lu/sms/smsSendPopup.do"); 
+	$("#frmMail").attr("method", "post" );
+	$("#frmMail").attr("target","smsPopup"); 
+	$("#frmMail").submit();	
+
+}
+
+var agreeCnt = "${agreeCnt}";
+
+if(agreeCnt == "0"){
+	fn_pop_agree();
+}
+
+function fn_pop_agree(){
+	
+	popOpenWindow("", "popAgree", 850, 750);
+	var reqUrl = "/lu/main/lmsUserMainPagePopupAgree.do";
+	//$("#rowId").val(rowId);
+	$("#frmAgree").attr("action", reqUrl);
+	$("#frmAgree").attr("target", "popAgree");
+	$("#frmAgree").submit();
+	
+}
+
+
+//-->
+</script>

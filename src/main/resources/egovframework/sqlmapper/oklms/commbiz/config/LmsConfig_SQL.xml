@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper">
+
+ 	
+ 	<select id="listConfig" parameterType="String" resultType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO">
+		/* ====== kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper.listConfig ====== */ 
+		SELECT CONF_ID,
+			       OPT_KEY,
+			       OPT_VALUE,
+			       OPT_NAME,
+			       OPT_TYPE,
+			       OPT_HIDDEN,
+			       OPT_UNIT_TEXT,
+			       OPT_HELP,
+			       SITE_PREFIX 
+			  FROM LMS_CONFIG_OPTION
+			  WHERE SITE_PREFIX = #{sitePrefix}
+	</select>
+ 	
+
+ 	<update id="updateConfig"  parameterType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO"  >
+	/* ====== kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper.updateConfig ========= */
+		<!-- UPDATE LMS_CONFIG_OPTION 
+			       SET OPT_VALUE = #{optValue},
+			       OPT_HIDDEN = #{optHidden} 
+			 WHERE CONF_ID = #{confId} 
+			       AND OPT_KEY = #{optKey} 
+			       AND SITE_PREFIX = #{sitePrefix} -->
+		UPDATE LMS_CONFIG_OPTION 
+			       SET OPT_VALUE = #{optValue},
+			       OPT_HIDDEN = #{optHidden} ,
+			       UPDATE_USER = #{sessionMemSeq},
+			       UPDATE_DATE = SYSDATE
+			 WHERE CONF_ID = #{confId} 
+			       AND OPT_KEY = #{optKey} 
+			       AND SITE_PREFIX = #{sitePrefix}
+ 	</update>
+ 	
+ 	<select id="getConfig" parameterType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO" resultType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO">
+		/* ====== kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper.getConfig ====== */ 
+		SELECT CONF_ID,
+			       OPT_KEY,
+			       OPT_VALUE,
+			       OPT_NAME,
+			       OPT_TYPE,
+			       OPT_HIDDEN,
+			       OPT_UNIT_TEXT,
+			       OPT_HELP,
+			       SITE_PREFIX 
+			  FROM LMS_CONFIG_OPTION
+			  WHERE CONF_ID = #{confId} 
+			      AND OPT_KEY = #{optKey} 
+			      AND SITE_PREFIX = #{sitePrefix}
+	</select>
+	
+	<select id="getUseConfig" parameterType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO" resultType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO">
+		/* ====== kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper.getUseConfig ====== */ 
+		SELECT CONF_ID,
+			       OPT_KEY,
+			       OPT_VALUE,
+			       OPT_NAME,
+			       OPT_TYPE,
+			       OPT_HIDDEN,
+			       OPT_UNIT_TEXT,
+			       OPT_HELP,
+			       SITE_PREFIX 
+			  FROM LMS_CONFIG_OPTION
+			  WHERE CONF_ID = #{confId} 
+			      AND OPT_KEY = #{optKey} 
+			      AND SITE_PREFIX = #{sitePrefix}
+			      AND OPT_HIDDEN = 0
+	</select>
+	
+	<insert id="insertConfigHist"  parameterType="kr.co.gocle.oklms.commbiz.config.vo.LmsConfigVO"  >
+	/* ====== kr.co.gocle.oklms.commbiz.config.service.impl.LmsConfigMapper.insertConfigHist ========= */
+		INSERT INTO LMS_CONFIG_OPTION_HIST(
+			CONF_ID
+			, OPT_KEY
+			, SITE_PREFIX
+			, UPDATE_USER
+			, UPDATE_DATE
+			, LOGIN_IP
+		)
+		VALUES (
+			#{confId}
+			, #{optKey}
+			, #{sitePrefix}
+			, #{sessionMemSeq}
+			, SYSDATE
+			, #{sessionIp}
+		)
+ 	</insert>
+</mapper>

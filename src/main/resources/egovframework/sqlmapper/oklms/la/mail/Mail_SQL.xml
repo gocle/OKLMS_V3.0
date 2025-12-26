@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper">
+
+		
+	<resultMap id="mail-result" type="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+	</resultMap>
+
+	<select id="listMailHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listMailHistory	*/
+		<include refid="kr.co.gocle.include.paging-start"/>
+			SELECT A.HISTORY_ID, 
+	              A.SENDER_MEM_SEQ, 
+	              A.SENDER_EMAIL, 
+	              A.RECEIVER_MEM_SEQ, 
+	              A.RECEIVER_EMAIL, 
+	              A.DELETE_YN, 
+	              A.SEND_SUCCESS_YN, 
+	              A.MAIL_CLASS,
+	              A.MAIL_CLASS_NAME, 
+	              A.MAIL_TITLE, 
+	              A.INSERT_DATE,
+	              A.UPDATE_DATE, 
+	              A.SENDER_MEM_NAME, 
+	              A.RECEIVER_MEM_NAME, 
+	              A.RECEIVER_MEM_ID, 
+	              A.RECEIVER_LESSON_ID 
+	        FROM(      
+			SELECT HIS.HISTORY_ID, 
+	              HIS.SENDER_MEM_SEQ, 
+	              HIS.SENDER_EMAIL, 
+	              HIS.RECEIVER_MEM_SEQ, 
+	              HIS.RECEIVER_EMAIL, 
+	              HIS.DELETE_YN, 
+	              HIS.SEND_SUCCESS_YN, 
+	              HIS.MAIL_CLASS, 
+	              (SELECT CODE_NAME 
+	                FROM COM_COMCODE 
+	               WHERE CODE_CODE = HIS.MAIL_CLASS
+	              ) MAIL_CLASS_NAME, 
+	              HIS.MAIL_TITLE, 
+	              TO_CHAR (HIS.INSERT_DATE, 'YYYY.MM.DD HH24:MI:SS') INSERT_DATE,
+	              TO_CHAR (HIS.UPDATE_DATE, 'YYYY.MM.DD HH24:MI:SS') UPDATE_DATE, 
+	              (SELECT MEM_NAME 
+	                FROM COM_MEMBER MEM1 
+	               WHERE MEM1.MEM_ID = HIS.SENDER_MEM_SEQ 
+	              ) SENDER_MEM_NAME, 
+	              (SELECT MEM_NAME 
+	                FROM COM_MEMBER MEM2 
+	               WHERE MEM2.MEM_ID = HIS.RECEIVER_MEM_SEQ 
+	              ) RECEIVER_MEM_NAME, 
+	              (SELECT MEM_ID 
+	                FROM COM_MEMBER MEM3 
+	               WHERE MEM3.MEM_ID = HIS.RECEIVER_MEM_SEQ 
+	              ) RECEIVER_MEM_ID, 
+	              RECEIVER_LESSON_ID 
+	         FROM COM_MAIL_HISTORY HIS
+            )A
+            WHERE A.DELETE_YN = 'N'
+			
+			<if test="searchMailClass != null and searchMailClass != ''"> AND A.MAIL_CLASS =  #{searchMailClass} </if>
+			<if test="searchMailTitle != null and searchMailTitle != ''"> AND A.MAIL_TITLE LIKE '%' || #{searchMailTitle  } || '%'  </if>
+			<if test="searchSenderMemName != null and searchSenderMemName != ''"> AND A.SENDER_MEM_NAME LIKE '%' || #{searchSenderMemName  } || '%'   </if>
+			<if test="searchReceiverMemName != null and searchReceiverMemName != ''"> AND A.RECEIVER_MEM_NAME LIKE '%' || #{searchReceiverMemName  } || '%' </if>
+			
+			ORDER BY INSERT_DATE DESC 
+
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+	
+	<select id="listMemberMail" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listMemberMail	*/
+			SELECT MEM_SEQ, 
+			          MEM_ID, 
+			          MEM_NAME, 
+			          EMAIL,
+			          HP_NO
+				  FROM COM_MEMBER
+				 WHERE DELETE_YN='N' 
+				 AND RECEIVE_MAIL_YN = 'Y'
+				 AND SCSN_YN = 'N'
+				 AND EMAIL IS NOT NULL
+			<if test="authGroupId != null and authGroupId != ''"> AND AUTH_GROUP_ID =  #{authGroupId} </if>
+			
+			<if test="memIds != null and memIds != ''">
+			 AND MEM_ID IN
+		    <foreach item="item" collection="memIds" index="index" open="(" separator="," close=")">
+   				#{item}
+			</foreach> 
+			</if>
+			ORDER BY MEM_ID
+	</select>
+ 
+	<select id="getMailHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getMailHistory	*/
+			SELECT HISTORY_ID, 
+				       (SELECT MEM_NAME 
+				         FROM COM_MEMBER 
+				        WHERE MEM_ID = SENDER_MEM_SEQ 
+				       ) SENDER_MEM_NAME, 
+				       SENDER_EMAIL, 
+				       (SELECT MEM_NAME 
+				         FROM COM_MEMBER 
+				        WHERE MEM_ID = RECEIVER_MEM_SEQ 
+				       ) RECEIVER_MEM_NAME, 
+				       RECEIVER_EMAIL, 
+				       DELETE_YN, 
+				       TO_CHAR (INSERT_DATE, 'YYYY.MM.DD') INSERT_DATE, 
+				       (SELECT MEM_NAME 
+				         FROM COM_MEMBER 
+				        WHERE MEM_SEQ = INSERT_USER 
+				       ) INSERT_NAME, 
+				       TO_CHAR (UPDATE_DATE, 'YYYY.MM.DD') UPDATE_DATE, 
+				       SEND_SUCCESS_YN, 
+				       MAIL_CLASS, 
+				       MAIL_TITLE, 
+				       (SELECT CODE_NAME 
+				         FROM COM_COMCODE 
+				        WHERE CODE_CODE = MAIL_CLASS 
+				              AND DELETE_YN = 'N'
+				       ) MAIL_CLASS_NAME,  
+				       MAIL_CONTENT 
+				  FROM COM_MAIL_HISTORY 
+				 WHERE DELETE_YN = 'N' 
+				       AND HISTORY_ID = #{historyId} 
+	</select>
+	
+	<insert id="insertMailHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		<![CDATA[
+			/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertMailHistory	*/
+			INSERT INTO COM_MAIL_HISTORY ( 
+				      HISTORY_ID, 
+				      SENDER_MEM_SEQ, 
+		              SENDER_EMAIL, 
+		              RECEIVER_MEM_SEQ,
+		              RECEIVER_EMAIL, 
+		              DELETE_YN, 
+		              SEND_SUCCESS_YN, 
+		              MAIL_CLASS,
+		              MAIL_TITLE,
+		              RECEIVER_LESSON_ID, 
+		              MAIL_CONTENT,
+		              INSERT_USER, 
+		              INSERT_DATE
+					) 
+					VALUES 
+					( #{historyId}
+					, 	#{sessionMemId}
+					, 	#{senderEmail }
+					, 	#{receiverMemSeq }
+					, 	#{receiverEmail }
+					, 	'N'
+					, 	#{sendSuccessYn }
+					,   #{mailClass}
+					,   #{mailTitle}
+					, 	#{receiverLessonId}
+					, 	#{mailContent}
+					, 	#{sessionMemSeq}
+					, 	SYSDATE
+				)
+		]]>
+	</insert> 
+	
+	<update id="updateMailHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.updateMailHistory	*/
+			UPDATE COM_MAIL_HISTORY 		
+				  SET DELETE_YN = 'Y',		
+		   			UPDATE_USER = NVL(#{sessionMemSeq} , '2009USER0000001'),	
+		    		UPDATE_DATE = SYSDATE	
+				WHERE HISTORY_ID = #{historyId}			
+	</update>
+	
+	<select id="listSmsHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listSmsHistory	*/
+		<include refid="kr.co.gocle.include.paging-start"/>
+			SELECT *
+				FROM   ( SELECT TR_NUM,
+				               TO_CHAR (TR_SENDDATE, 'YYYY.MM.DD HH24:MI') TR_SENDDATE,
+				               TR_ID,
+				               TR_SENDSTAT,
+				               TR_RSLTSTAT,
+				               TR_MSGTYPE,
+				               TR_PHONE,
+				               TR_CALLBACK,
+				               TR_RSLTDATE,
+				               TR_MODIFIED,
+				               TR_MSG,
+				               TR_NET,
+				               TR_ETC1 AS TR_ETC_1,
+				               TR_ETC2 AS TR_ETC_2,
+				               TR_ETC3 AS TR_ETC_3,
+				               TR_ETC4 AS TR_ETC_4,
+				               TR_ETC5 AS TR_ETC_5,
+				               TR_ETC6 AS TR_ETC_6,
+				               (SELECT MEM_NAME||' ('||MEM_ID||')'
+				               FROM    COM_MEMBER
+				               WHERE   DELETE_YN = 'N'
+				               AND     MEM_SEQ   = TR_ETC1
+				               )
+				               AS SEND_NAME,
+				               (SELECT MEM_NAME||' ('||MEM_ID||')'
+				               FROM    COM_MEMBER
+				               WHERE   DELETE_YN = 'N'
+				               AND     MEM_ID    = TR_ETC2
+				               )
+				               AS RECEIVE_NAME,
+				               '' LEC_ID,
+				               '' PERIOD_ID,
+				               '' CLASS_ID,
+				               '' CATE_CODE,
+				               '' LESSON_ID
+				       FROM    SC_TRAN
+				       )
+				       AA
+				WHERE  1=1 
+
+				 <if test="searchCallback != null and searchCallback != ''">AND AA.TR_CALLBACK LIKE '%' || #{searchCallback  } || '%' </if>
+				 <if test="searchTrPhone != null and searchTrPhone != ''">AND AA.TR_PHONE LIKE '%' || #{searchTrPhone  } || '%' </if>
+				 
+				 <if test="searchCallback != null and searchCallback != ''">   </if>
+				 <if test="searchSendName != null and searchSendName != ''"> AND AA.SEND_NAME LIKE '%' || #{searchSendName  } || '%'   </if>
+				 <if test="searchReceiveName != null and searchReceiveName != ''"> AND AA.RECEIVE_NAME LIKE '%' || #{searchReceiveName  } || '%'    </if>
+ 				 
+				ORDER BY AA.TR_SENDDATE DESC 
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+		
+	<select id="getSmsHistory" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getSmsHistory	*/
+			SELECT TR_NUM, 
+				       TO_CHAR (TR_SENDDATE, 'YYYY.MM.DD') TR_SENDDATE,
+				       TR_ID, 
+				       TR_SENDSTAT, 
+				       TR_RSLTSTAT, 
+				       TR_MSGTYPE, 
+				       TR_PHONE, 
+				       TR_CALLBACK, 
+				       TR_RSLTDATE, 
+				       TR_MODIFIED, 
+				       TR_MSG, 
+				       TR_NET, 
+				       (SELECT MEM_NAME||' ('||MEM_ID||')'
+		               FROM    COM_MEMBER
+		               WHERE   DELETE_YN = 'N'
+		               AND     MEM_SEQ   = TR_ETC1
+		               )
+		               AS SEND_NAME,
+		               (SELECT MEM_NAME||' ('||MEM_ID||')'
+		               FROM    COM_MEMBER
+		               WHERE   DELETE_YN = 'N'
+		               AND     MEM_ID    = TR_ETC2
+		               )
+		               AS RECEIVE_NAME,
+				       TR_ETC1 AS TR_ETC_1, 
+				       TR_ETC2 AS TR_ETC_2, 
+				       TR_ETC3 AS TR_ETC_3, 
+				       TR_ETC4 AS TR_ETC_4, 
+				       TR_ETC5 AS TR_ETC_5, 
+				       TR_ETC6 AS TR_ETC_6  
+				  FROM SC_TRAN
+				 WHERE TR_NUM = #{trNum} 
+	</select>
+	
+	<select id="getReceiveMailYn" parameterType="java.lang.String" resultType="java.lang.String">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getReceiveMailYn	*/
+			SELECT RECEIVE_MAIL_YN
+		     FROM COM_MEMBER
+		    WHERE MEM_SEQ = #{memSeq} 
+	</select>
+	<select id="getReceiveMailYnId" parameterType="java.lang.String" resultType="java.lang.String">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getReceiveMailYnId	*/
+			SELECT RECEIVE_MAIL_YN
+		     FROM COM_MEMBER
+		    WHERE MEM_ID = #{memId} 
+	</select>	
+	<select id="getReceiveSmsYn" parameterType="java.lang.String" resultType="java.lang.String">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getReceiveSmsYn	*/
+			SELECT RECEIVE_SMS_YN
+		     FROM COM_MEMBER
+		    WHERE MEM_SEQ = #{memSeq} 
+	</select>
+	<select id="getReceiveSmsYnId" parameterType="java.lang.String" resultType="java.lang.String">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getReceiveSmsYnId	*/
+			SELECT RECEIVE_SMS_YN
+		     FROM COM_MEMBER
+		    WHERE MEM_ID = #{memId} 
+	</select>	
+	<select id="listMemberMemseq" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" >
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listMemberMemseq	*/
+			SELECT MEM_ID,MEM_SEQ,MEM_NAME,HP_NO,EMAIL
+		     FROM COM_MEMBER
+		    WHERE MEM_SEQ IN
+		    <foreach item="item" collection="memSeqs" index="index" open="(" separator="," close=")">
+   				#{item}
+			</foreach> 
+	</select>
+	<select id="listMemberMemid" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" >
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listMemberMemid	*/
+			SELECT MEM_ID,MEM_SEQ,MEM_NAME,HP_NO,EMAIL
+		     FROM COM_MEMBER
+		    WHERE MEM_ID IN
+		    <foreach item="item" collection="memIds" index="index" open="(" separator="," close=")">
+   				#{item}
+			</foreach> 
+			ORDER BY MEM_ID
+	</select>
+	<select id="getMemIds" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="java.lang.String" >
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getMemIds	*/
+			SELECT MEM_ID
+		     FROM COM_MEMBER
+		    WHERE MEM_SEQ IN
+		    <foreach item="item" collection="memSeqs" index="index" open="(" separator="," close=")">
+   				#{item}
+			</foreach> 
+			ORDER BY MEM_ID
+	</select>
+	<insert id="insertSendSms" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertSendSms	*/
+			INSERT 
+				  INTO SC_TRAN 
+				       ( 
+				           TR_NUM, 
+				           TR_SENDDATE, 
+				           TR_SENDSTAT, 
+				           TR_PHONE, 
+				           TR_CALLBACK, 
+				           TR_MSG, 
+				           TR_MSGTYPE, 
+				           TR_CLASS,
+				           TR_ETC1, 
+				           TR_ETC2, 
+				           TR_ETC3 
+				       ) 
+				       VALUES 
+				       (
+				           #{trNum}, 				           
+				           <if test='tFlag != "1"' >SYSDATE,  </if>
+				           <if test='tFlag == "1"' > TO_DATE (#{trSenddate}, 'YYYYMMDDHH24MISS'),   </if>
+				           '0', 
+				           #{trPhone}, 
+				           #{trCallBack}, 
+				           #{trMsg}, 
+				           #{trMsgtype},
+				           #{trClass}, 
+				           #{trEtc1}, 
+				           #{trEtc2}, 
+				           #{trEtc3} 
+				       )   
+	</insert>
+	
+	<insert id="insertSms" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertSms	*/
+			INSERT 
+				  INTO SC_TRAN 
+				       ( 
+				           TR_NUM, 
+				           TR_SENDDATE, 
+				           TR_SENDSTAT, 
+				           TR_PHONE, 
+				           TR_CALLBACK, 
+				           TR_MSG, 
+				           TR_MSGTYPE,
+				           TR_CLASS, 
+				           TR_ETC1, 
+				           TR_ETC2, 
+				           TR_ETC3 
+				       ) 
+				       VALUES 
+				       (
+				           #{trNum}, 				           
+				           <if test='tFlag != "1"' >SYSDATE,  </if> 
+				           <if test='tFlag == "1"' > TO_DATE (#{trSenddate}, 'YYYYMMDDHH24MISS'),   </if>
+				           '0', 
+				           #{trPhone}, 
+				           #{trCallBack}, 
+				           #{trMsg}, 
+				           #{trMsgtype},
+				           #{trClass},
+				           #{trEtc1}, 
+				           #{trEtc2}, 
+				           #{trEtc3} 
+				       )   
+	</insert>
+	<select id="getSubjectName" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="java.lang.String" >
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getSubjectName	*/
+		SELECT SUBJECT_NAME 
+		FROM LMS_SUBJECT 
+		WHERE DELETE_YN='N' 
+		AND SUBJECT_CODE=#{subjectCode} 
+		AND (YYYY,TERM) IN (SELECT H.* FROM  (SELECT HAK.YYYY,HAK.TERM 
+									FROM HAK_SCHEDULE HAK 
+									WHERE TO_CHAR(SYSDATE,'YYYYMMDD') BETWEEN HAK.START_DATE AND HAK.END_DATE
+									AND ROWNUM = 1 ) H
+									)
+									
+		AND ROWNUM = 1
+	</select>	
+	
+	<insert id="insertNoticeBatch" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertNoticeBatch	*/
+			INSERT 
+				  INTO COM_NOTICE_BATCH
+				       (
+				         BATCH_SEQ,REP_DAY, REP_SMS_USE_YN, REP_MAIL_USE_YN,REP_DAILY_YN, 
+				         DIS_DAY, DIS_SMS_USE_YN, DIS_MAIL_USE_YN, DIS_DAILY_YN,
+				         TPR_DAY, TPR_SMS_USE_YN, TPR_MAIL_USE_YN, TPR_DAILY_YN,
+				         INSERT_DATE, INSERT_USER, USE_YN 
+				       ) 
+				       VALUES
+				       ( 
+				         (SELECT NVL(MAX(BATCH_SEQ),0)+1 FROM COM_NOTICE_BATCH),#{repDay}, #{repSmsUseYn}, #{repMailUseYn}, #{repDailyYn}, 
+				         #{disDay}, #{disSmsUseYn}, #{disMailUseYn}, #{disDailyYn}, 
+				         #{tprDay}, #{tprSmsUseYn}, #{tprMailUseYn}, #{tprDailyYn}, 
+				         SYSDATE, #{sessionMemSeq}, #{useYn} 
+				       ) 
+	</insert>
+	
+	<select id="getNoticeBatch" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.getNoticeBatch	*/
+			SELECT BATCH_SEQ, 
+				       REP_DAY, 
+				       REP_SMS_USE_YN, 
+				       REP_MAIL_USE_YN, 
+				       REP_DAILY_YN,
+				       DIS_DAY, 
+				       DIS_SMS_USE_YN, 
+				       DIS_MAIL_USE_YN, 
+				       DIS_DAILY_YN,
+				       TPR_DAY, 
+				       TPR_SMS_USE_YN, 
+				       TPR_MAIL_USE_YN, 
+				       TPR_DAILY_YN,
+				       INSERT_DATE, 
+				       INSERT_USER, 
+				       USE_YN 
+				  FROM COM_NOTICE_BATCH 
+				WHERE ROWNUM = 1
+				ORDER BY INSERT_DATE DESC 
+	</select>
+	
+	
+	<select id="listNoticeBatchRep" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listNoticeBatchRep	*/
+			SELECT SUB.YYYY, 
+				       SUB.TERM, 
+				       SUB.SUBJECT_CODE, 
+				       SUB.CLASS, 
+				       SUB.SUBJECT_NAME, 
+				       MEM.MEM_SEQ, 
+				       REPLACE(MEM.HP_NO,'-','') AS HP_NO, 
+				       MEM.EMAIL, 
+				       MEM.MEM_NAME,
+				       
+				       TO_CHAR(REP.SUBMIT_END_DATE,'YYYY.MM.DD') SUBMIT_DAY,
+				       TO_CHAR(TO_DATE(REP.SUBMIT_END_DATE,'YYYY.MM.DD'), 'dy', 'NLS_DATE_LANGUAGE=korean') SUBMIT_WEEK
+				  FROM LMS_SUBJECT SUB 
+				     INNER JOIN LMS_LESSON LES 
+				         ON LES.YYYY = SUB.YYYY 
+				       AND LES.TERM = SUB.TERM 
+				       AND LES.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND LES.CLASS = SUB.CLASS 
+				       AND LES.DELETE_YN = 'N' 
+				       AND LES.LEC_STATUS = 'A' 
+				     INNER JOIN COM_MEMBER MEM 
+				         ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				       AND MEM.DELETE_YN = 'N' 
+				       AND MEM.OUT_YN = 'N' 
+				     INNER JOIN LMS_REPORT REP 
+				         ON REP.YYYY = SUB.YYYY 
+				       AND REP.TERM = SUB.TERM 
+				       AND REP.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND REP.CLASS = SUB.CLASS 
+				       AND REP.DELETE_YN = 'N' 
+
+				       <choose>
+				           	<when test="repDailyYn != null and repDailyYn != '' and repDailyYn == 'Y'.toString()">
+				               	AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ <= ]]> TO_CHAR(REP.SUBMIT_END_DATE,'YYYYMMDD')
+				               	AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(DATE_ADD(TO_CHAR(REP.SUBMIT_END_DATE,'YYYYMMDD'), INTERVAL -#{repDay} DAY),'YYYYMMDD')
+				           	</when>
+				           	<otherwise>
+				           		AND TO_CHAR(SYSDATE,'YYYYMMDD') = TO_CHAR(DATE_ADD(TO_CHAR(REP.SUBMIT_END_DATE,'YYYYMMDD'), INTERVAL -#{repDay} DAY),'YYYYMMDD')
+				           	</otherwise>
+			    	 </choose>
+	</select>
+	
+	
+	<select id="listNoticeBatchDis" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listNoticeBatchDis	*/
+			SELECT SUB.YYYY, 
+				       SUB.TERM, 
+				       SUB.SUBJECT_CODE, 
+				       SUB.CLASS AS SUBJECT_CLASS, 
+				       SUB.SUBJECT_NAME, 
+				       MEM.MEM_SEQ, 
+				       REPLACE(MEM.HP_NO,'-','') AS HP_NO, 
+				       MEM.EMAIL, 
+				       MEM.MEM_NAME,
+				       
+				       TO_CHAR(DIS.END_DATE,'YYYY.MM.DD') SUBMIT_DAY,
+				       TO_CHAR(TO_DATE(DIS.END_DATE,'YYYY.MM.DD'), 'dy', 'NLS_DATE_LANGUAGE=korean')  SUBMIT_WEEK
+				  FROM LMS_SUBJECT SUB 
+				     INNER JOIN LMS_LESSON LES 
+				         ON LES.YYYY = SUB.YYYY 
+				       AND LES.TERM = SUB.TERM 
+				       AND LES.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND LES.CLASS = SUB.CLASS 
+				       AND LES.DELETE_YN = 'N' 
+				       AND LES.LEC_STATUS = 'A' 
+				     INNER JOIN COM_MEMBER MEM 
+				         ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				       AND MEM.DELETE_YN = 'N' 
+				       AND MEM.OUT_YN = 'N' 
+				     INNER JOIN LMS_DISCUSS DIS 
+				         ON DIS.YYYY = SUB.YYYY 
+				       AND DIS.TERM = SUB.TERM 
+				       AND DIS.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND DIS.CLASS = SUB.CLASS 
+				       AND DIS.DELETE_YN = 'N' 
+				        
+				      <choose>
+				           	<when test="disDailyYn != null and disDailyYn != '' and disDailyYn == 'Y'.toString()">
+				           		AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ <= ]]> TO_CHAR(DIS.END_DATE,'YYYYMMDD')
+				               	AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(DATE_ADD(TO_CHAR(DIS.END_DATE,'YYYYMMDD'), INTERVAL -#{disDay} DAY),'YYYYMMDD')
+				           	</when>
+				           	<otherwise>
+				           		AND TO_CHAR(SYSDATE,'YYYYMMDD') = TO_CHAR(DATE_ADD(TO_CHAR(DIS.END_DATE,'YYYYMMDD'), INTERVAL -#{disDay} DAY),'YYYYMMDD')
+				           	</otherwise>
+			    	 </choose>
+				      
+				      
+				         
+	</select>
+	
+	<select id="listNoticeBatchTpr" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listNoticeBatchTpr	*/
+			SELECT SUB.YYYY, 
+				       SUB.TERM, 
+				       SUB.SUBJECT_CODE, 
+				       SUB.CLASS AS SUBJECT_CLASS, 
+				       SUB.SUBJECT_NAME, 
+				       MEM.MEM_SEQ, 
+				       REPLACE(MEM.HP_NO,'-','') AS HP_NO, 
+				       MEM.EMAIL, 
+				       MEM.MEM_NAME,
+				       
+				       TO_CHAR(TPR.SUBMIT_END_DATE,'YYYY.MM.DD') SUBMIT_DAY,
+				       TO_CHAR(TO_DATE(TPR.SUBMIT_END_DATE,'YYYY.MM.DD'), 'dy', 'NLS_DATE_LANGUAGE=korean') SUBMIT_WEEK
+				  FROM LMS_SUBJECT SUB 
+				     INNER JOIN LMS_LESSON LES 
+				         ON LES.YYYY = SUB.YYYY 
+				       AND LES.TERM = SUB.TERM 
+				       AND LES.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND LES.CLASS = SUB.CLASS 
+				       AND LES.DELETE_YN = 'N' 
+				       AND LES.LEC_STATUS = 'A' 
+				     INNER JOIN COM_MEMBER MEM 
+				         ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				       AND MEM.DELETE_YN = 'N' 
+				       AND MEM.OUT_YN = 'N' 
+				     INNER JOIN LMS_TEAM_PROJECT TPR 
+				         ON TPR.YYYY = SUB.YYYY 
+				       AND TPR.TERM = SUB.TERM 
+				       AND TPR.SUBJECT_CODE = SUB.SUBJECT_CODE 
+				       AND TPR.CLASS = SUB.CLASS 
+				       AND TPR.DELETE_YN = 'N' 
+				       
+				       <choose>
+				           	<when test="tprDailyYn != null and tprDailyYn != '' and tprDailyYn == 'Y'.toString()">
+				           		 AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ <= ]]> TO_CHAR(TPR.SUBMIT_END_DATE,'YYYYMMDD')
+				               	 AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> TO_CHAR(DATE_ADD(TO_CHAR(TPR.SUBMIT_END_DATE,'YYYYMMDD'), INTERVAL -#{tprDay} DAY),'YYYYMMDD')
+				           	</when>
+				           	<otherwise>
+				           		 AND TO_CHAR(SYSDATE,'YYYYMMDD') = TO_CHAR(DATE_ADD(TO_CHAR(TPR.SUBMIT_END_DATE,'YYYYMMDD'), INTERVAL -#{tprDay} DAY),'YYYYMMDD')
+				           	</otherwise>
+			    	 </choose>
+				       
+	</select>
+	
+	<select id="listCompanyCcnMember" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listCompanyCcnMember	*/
+			SELECT MEM.MEM_NAME,MEM.MEM_ID,MEM.EMAIL, 
+					   DECODE(NVL(MEM.HP_NO,''),'',MEM.HP_NO1||'-'||MEM.HP_NO2||'-'||MEM.HP_NO3 ,MEM.HP_NO) AS HP_NO,
+				       FN_GETCOMPAYNAME(CCN.COMPANY_ID) AS COMPANY_NAME  
+				  FROM COM_MEMBER MEM 
+				     INNER JOIN  LMS_COMP_CCN_MAPPING CCN 
+				         ON MEM.MEM_SEQ = CCN.MEM_SEQ 
+				       AND CCN.DELETE_YN = 'N' 
+				       AND CCN.COMPANY_ID = #{companyId}
+				 WHERE MEM.DELETE_YN = 'N'
+				       
+	</select>
+	
+	<select id="listMySendHistoty" parameterType="String" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listSendMaster	*/
+			SELECT * FROM COM_SEND_MASTER WHERE DELETE_YN = 'N' AND REAL_TYPE_YN = 'N' AND SEND_DATE = #{value}
+	</select>
+	
+	<select id="listSendMaster" parameterType="String" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listSendMaster	*/
+			SELECT * FROM COM_SEND_MASTER WHERE DELETE_YN = 'N' AND REAL_TYPE_YN = 'N' AND SEND_DATE = #{value}
+	</select>
+	
+	<select id="listSendDetail" parameterType="String" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.listSendDetail	*/
+			SELECT A.*, 
+				       B.MEM_SEQ, 
+				       B.HP_NO, 
+				       B.EMAIL,
+				       B.MEM_NAME 
+				  FROM COM_SEND_DETAIL A 
+				   INNER JOIN COM_MEMBER B 
+				       ON A.RECIVE_MEM_SEQ = B.MEM_SEQ 
+				       AND B.DELETE_YN = 'N' 
+				 WHERE A.DELETE_YN = 'N' 
+				       AND SEND_SEQ = #{sendSeq}
+	</select>
+	
+	
+	<insert id="insertSendMaster" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertSendMaster	*/
+			INSERT 
+			  INTO COM_SEND_MASTER 
+			       ( 
+			           SEND_SEQ, 
+			           SEND_MEM_SEQ, 
+			           SEND_TYPE, 
+			           REAL_TYPE_YN, 
+			           TEMPLET_TYPE, 
+			           SEND_DATE, 
+			           TITLE,
+			           CONTENT, 
+			           ATCH_FILE_ID, 
+			           SEND_YN, 
+			           INSERT_DATE, 
+			           INSERT_USER 
+			       ) 
+			       VALUES 
+			       ( 
+			           #{sendSeq}, 
+			           #{sessionMemSeq}, 
+			           #{sendType}, 
+			           #{realTypeYn}, 
+			           #{templetType}, 
+			           #{sendDate}, 
+			           #{title}, 
+			           #{content}, 
+			           #{atchFileId}, 
+			           #{sendYn}, 
+			           SYSDATE, 
+			           #{sessionMemSeq}  
+			       )   
+	</insert>
+	
+	<update id="updateSendMasterStatus" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.updateSendMasterStatus	*/
+			UPDATE COM_SEND_MASTER 
+		       SET SEND_YN = #{sendYn} , 
+		       UPDATE_DATE = SYSDATE 
+		 WHERE SEND_SEQ = #{sendSeq}    
+	</update>
+	
+	<insert id="insertSendDetail" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.insertSendDetail	*/
+			INSERT 
+			  INTO COM_SEND_DETAIL 
+			       ( 
+			           SEND_DETAIL_SEQ, 
+			           SEND_SEQ, 
+			           RECIVE_MEM_SEQ, 
+			           RECIVE_YN, 
+			           TITLE,
+			           CONTENT, 
+			           INSERT_DATE, 
+			           INSERT_USER 
+			       ) 
+			       VALUES 
+			       ( 
+			           #{sendDetailSeq}, 
+			           #{sendSeq}, 
+			           #{reciveMemSeq}, 
+			           #{reciveYn}, 
+			           #{title}, 
+			           #{content}, 
+			           SYSDATE, 
+			           #{sessionMemSeq} 
+			       )   
+	</insert>
+	
+	<update id="updateSendDetailStatus" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.updateSendDetailStatus	*/
+			UPDATE COM_SEND_DETAIL 
+		       SET RECIVE_YN = #{reciveYn} , 
+		       UPDATE_DATE = SYSDATE 
+		 WHERE SEND_DETAIL_SEQ=#{sendDetailSeq} 
+		       AND SEND_SEQ = #{sendSeq} 
+		       AND RECIVE_MEM_SEQ = #{reciveMemSeq}    
+	</update>
+	
+	
+	
+</mapper>

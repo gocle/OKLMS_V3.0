@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ~ *******************************************************************************
+  ~  * COPYRIGHT(C) 2016 SMART INFORMATION TECHNOLOGY. ALL RIGHTS RESERVED.
+  ~  * This software is the proprietary information of SMART INFORMATION TECHNOLOGY..
+  ~  *
+  ~  * Revision History
+  ~  * Author   Date            Description
+  ~  * ======   =========      ====================================
+  ~  * 이진근    2017. 01. 09          First Draft.
+  ~  *
+  ~  ******************************************************************************* 
+  -->
+
+<mapper namespace="kr.co.gocle.oklms.lu.send.service.impl.SendMapper">
+
+	
+	
+	<sql id="list-where">
+     	<if test="deptCode != null and deptCode != ''">	AND TBL.DEPT_CODE = #{deptCode} 	 </if>
+	 	<if test="subjectGrade != null and subjectGrade != ''">	AND TBL.SUBJECT_GRADE = #{subjectGrade}  	 </if>
+	 	<if test="subjectName != null and subjectName != ''">	AND TBL.SUBJECT_NAME LIKE '%' || #{subjectName  } || '%'   	 </if>   
+		<if test="companyName != null and companyName != ''">	 AND TBL.COMPANY_NAME LIKE '%' || #{companyName  } || '%'   	 </if>
+		<if test="searchGroup != null and searchGroup != ''">	 AND TBL.MEM_TYPE LIKE '%' || #{searchGroup  } || '%'   	 </if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			AND (TBL.MEM_NAME LIKE '%' || #{searchKeyword  } || '%' OR TBL.MEM_ID LIKE '%' || #{searchKeyword  } || '%'  )
+	    </if>
+	 	<if test="adYear != null and adYear != ''">	AND TBL.AD_YEAR = #{adYear}  	 </if>
+	</sql>
+	
+
+	<select id="listSendCdp" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendCdp ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				              <!-- CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				              <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,LES.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_LESSON LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE = 'STD' 
+				            LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO    
+				        WHERE LES.DELETE_YN = 'N' 
+				              AND LES.LEC_STATUS = 'A' 
+				              <if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT CCN.COMPANY_ID
+											                FROM LMS_COMP_CCN_MAPPING CCN 
+											                     WHERE CCN.DELETE_YN = 'N' 
+											                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'CCM' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT COMPANY_ID FROM COM_MEMBER WHERE DELETE_YN = 'N' 
+											                     AND MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_INS_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_TUT_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'CDP' and sessionMemType != null and sessionMemType != ''">   
+							   		AND MEM.DEPT_NO = #{sessionDeptNo} 
+							   </if>
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSend" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSend ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				              <!-- CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				               <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,LES.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_LESSON LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE = 'STD' 
+				            LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO  
+				        WHERE LES.DELETE_YN = 'N' 
+				              AND LES.LEC_STATUS = 'A' 
+				              <if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT CCN.COMPANY_ID
+											                FROM LMS_COMP_CCN_MAPPING CCN 
+											                     WHERE CCN.DELETE_YN = 'N' 
+											                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'CCM' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT COMPANY_ID FROM COM_MEMBER WHERE DELETE_YN = 'N' 
+											                     AND MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_INS_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'COT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_TUT_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'CDP' and sessionMemType != null and sessionMemType != ''">   
+							   		AND MEM.DEPT_NO IN (
+							   			SELECT DEPT_NO FROM LMS_DEPT_CDP_MAPPING WHERE MEM_SEQ = #{sessionMemSeq} 
+							   		) 
+							   </if>
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSendCcn" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendCcn ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT MEM.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_TYPE, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE
+				         FROM COM_MEMBER MEM 
+				          
+				        WHERE MEM.DELETE_YN = 'N' 
+				        		AND MEM.MEM_TYPE IN('STD','COT','CCM') 
+				              <if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT CCN.COMPANY_ID
+											                FROM LMS_COMP_CCN_MAPPING CCN 
+											                     WHERE CCN.DELETE_YN = 'N' 
+											                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+				       ) TBL  
+				 WHERE 1=1     
+				  <include refid="list-where"/>	
+			ORDER BY TBL.MEM_NAME 
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	
+	<select id="listSendEmailResult" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendEmailResult ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        
+	        SELECT A.SEND_SEQ,
+				       A.SEND_MEM_SEQ,
+				       A.SEND_TYPE,
+				       A.REAL_TYPE_YN,
+				       A.TEMPLET_TYPE,
+				       A.SEND_DATE,
+				       A.TITLE,
+				       CONTENT,
+				       A.ATCH_FILE_ID,
+				       A.SEND_YN,
+				       TO_CHAR(A.INSERT_DATE,'YYYY.MM.DD HH24:MM') AS INSERT_DATE, 
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.RECIVE_YN = 'Y' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) SUCCESS_CNT, 
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.RECIVE_YN = 'N' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) FAIL_CNT ,
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) TOT_CNT  
+				  FROM COM_SEND_MASTER A     
+				 WHERE A.DELETE_YN = 'N' 
+				       AND A.SEND_TYPE = 'EMAIL'
+				       AND A.SEND_MEM_SEQ = #{sessionMemSeq}
+				       
+				       <if test="sendYn != null and sendYn != ''"> 
+				       AND A.SEND_YN = #{sendYn}
+				       </if>
+				       <if test="realTypeYn != null and realTypeYn != ''"> 
+				       AND A.REAL_TYPE_YN = #{realTypeYn}
+				       </if>
+				       <if test="templetType != null and templetType != ''"> 
+				       AND A.TEMPLET_TYPE = #{templetType}
+ 						</if>
+				       
+				       ORDER BY A.SEND_SEQ DESC
+	        
+	       
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSendSmsResult" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendSmsResult ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT A.SEND_SEQ,
+				       A.SEND_MEM_SEQ,
+				       A.SEND_TYPE,
+				       A.REAL_TYPE_YN,
+				       A.TEMPLET_TYPE,
+				       A.SEND_DATE,
+				       A.TITLE,
+				       CONTENT,
+				       A.ATCH_FILE_ID,
+				       A.SEND_YN,
+				       TO_CHAR(A.INSERT_DATE,'YYYY.MM.DD HH24:MM') AS INSERT_DATE, 
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.RECIVE_YN = 'Y' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) SUCCESS_CNT, 
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.RECIVE_YN = 'N' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) FAIL_CNT,
+				       (SELECT COUNT(*) 
+				         FROM COM_SEND_DETAIL B 
+				        WHERE B.DELETE_YN = 'N' 
+				              AND B.SEND_SEQ = A.SEND_SEQ 
+				       ) TOT_CNT  
+				  FROM COM_SEND_MASTER A     
+				 WHERE A.DELETE_YN = 'N' 
+				       AND A.SEND_TYPE = 'SMS'
+				       AND A.SEND_MEM_SEQ = #{sessionMemSeq}
+				       
+				       <if test="sendYn != null and sendYn != ''"> 
+				       AND A.SEND_YN = #{sendYn}
+				       </if>
+				       <if test="realTypeYn != null and realTypeYn != ''"> 
+				       AND A.REAL_TYPE_YN = #{realTypeYn}
+				       </if>
+				       <if test="templetType != null and templetType != ''"> 
+				       AND A.TEMPLET_TYPE = #{templetType}
+ 						</if>
+				       
+				       ORDER BY A.SEND_SEQ DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSendPrt" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendPrt ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				              <!-- CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				             <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,INS.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_SUBJ_INS_MAPPING LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE = 'STD' 
+				             LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO       
+				        WHERE INS.DELETE_YN = 'N' 
+				               <if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT CCN.COMPANY_ID
+											                FROM LMS_COMP_CCN_MAPPING CCN 
+											                     WHERE CCN.DELETE_YN = 'N' 
+											                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'CCM' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT COMPANY_ID FROM COM_MEMBER WHERE DELETE_YN = 'N' 
+											                     AND MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  </if>
+							  <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_INS_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+							   		AND (MEM.MEM_SEQ) IN
+														(
+															SELECT MEM_SEQ 
+															  FROM LMS_LESSON 
+															 WHERE (
+															           YYYY,
+															           TERM,
+															           SUBJECT_CODE,
+															           CLASS
+															       ) 
+															       IN 
+															       (SELECT YYYY,
+															              TERM,
+															              SUBJECT_CODE,
+															              CLASS 
+															         FROM LMS_SUBJ_TUT_MAPPING 
+															        WHERE MEM_SEQ = #{sessionMemSeq}  
+															       )
+														)		
+							   </if>
+							   <if test="sessionMemType == 'CDP' and sessionMemType != null and sessionMemType != ''">   
+							   		AND MEM.DEPT_NO = #{sessionDeptNo} 
+							   </if>
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSendCompanyMember" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendCompanyMember ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				       		  MEM.MEM_TYPE,	
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				              <!-- CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				              <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,LES.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_SUBJ_TUT_MAPPING LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE IN ( 'COT' , 'CCM'  ) 
+				            LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO        
+				        WHERE LES.DELETE_YN = 'N' 
+				        			AND MEM.MEM_TYPE IN 
+							   		AND (MEM.COMPANY_ID) IN
+														(
+															SELECT COMPANY_ID
+											                FROM COM_MEMBER
+											                     WHERE DELETE_YN = 'N' 
+											                     AND MEM_SEQ = #{sessionMemSeq} 
+														)		
+							  
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<select id="listSendResult" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendResult ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				             <!--  CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				              <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,LES.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_LESSON LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE = 'STD' 
+				            LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO        
+				        WHERE LES.DELETE_YN = 'N' 
+				              AND LES.LEC_STATUS = 'A' 
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	
+	
+	<select id="listSendResultDetail" parameterType="kr.co.gocle.oklms.lu.send.vo.SendVO" resultType="kr.co.gocle.oklms.lu.send.vo.SendVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendResultDetail ====== */
+	       	<include refid="kr.co.gocle.include.paging-start"/>
+	        SELECT * 
+				  FROM 
+				       (SELECT LES.MEM_SEQ, 
+				              MEM.MEM_ID, 
+				              MEM.MEM_NAME, 
+				              MEM.COMPANY_ID, 
+				              FN_GETCOMPAYNAME(MEM.COMPANY_ID) AS COMPANY_NAME, 
+				              MEM.DEPT_NM AS DEPT_NAME, 
+				              MEM.DEPT_NO AS DEPT_CODE, 
+				             <!--  CASE WHEN SUBSTR(MEM.MEM_ID,1,2) != '20' 
+				              	THEN SUBSTR('20'||MEM.MEM_ID,1,4) 
+				              	ELSE SUBSTR(MEM.MEM_ID,1,4)  
+				              END AD_YEAR,  -->
+				              <!-- (TO_CHAR(SYSDATE,'YYYY')+1) - MEM.LEC_TARGET_YEAR AS SUBJECT_GRADE,  -->
+				              SK.ENT_YEAR AS AD_YEAR, 
+				              SK.SCH_YR AS SUBJECT_GRADE,  
+				              LES.YYYY , 
+				              LES.TERM , 
+				              LES.SUBJECT_CODE , 
+				              LES.CLASS , 
+				              FN_GETSUBJECT_NAME(LES.YYYY ,LES.TERM ,LES.SUBJECT_CODE ,LES.CLASS ) AS SUBJECT_NAME 
+				         FROM LMS_LESSON LES 
+				            INNER JOIN COM_MEMBER MEM 
+				                ON MEM.MEM_SEQ = LES.MEM_SEQ 
+				              AND MEM.DELETE_YN = 'N' 
+				              AND MEM.MEM_TYPE = 'STD' 
+				            LEFT OUTER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SK ON MEM.MEM_ID = SK.STUDNO        
+				        WHERE LES.DELETE_YN = 'N' 
+				              AND LES.LEC_STATUS = 'A' 
+				       ) TBL 
+				 WHERE 1=1    
+				  <include refid="list-where"/>	
+			ORDER BY TBL.YYYY DESC, TBL.TERM DESC
+			<include refid="kr.co.gocle.include.paging-end"/>	
+	</select>
+	
+	<update id="deleteSendMaster" parameterType="String">
+		/**	kr.co.gocle.oklms.commbiz.mail.service.impl.MailMapper.deleteSendMaster	*/
+			UPDATE COM_SEND_MASTER
+		       SET DELETE_YN = 'Y', 
+		       UPDATE_DATE = SYSDATE, 
+		       UPDATE_USER = #{sessionMemSeq} 
+		 WHERE SEND_SEQ= #{sendSeq} 
+	</update>
+	
+	
+	<select id="getSendMaster" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.getSendMaster ====== */
+	       	SELECT SEND_SEQ,
+				       SEND_MEM_SEQ,
+				       SEND_TYPE,
+				       REAL_TYPE_YN,
+				       TEMPLET_TYPE,
+				       SEND_DATE,
+				       TITLE,
+				       CONTENT,
+				       ATCH_FILE_ID,
+				       SEND_YN,
+				       TO_CHAR(INSERT_DATE,'YYYY.MM.DD HH24:MM') AS INSERT_DATE,
+				       INSERT_USER,
+				       TO_CHAR(UPDATE_DATE,'YYYY.MM.DD HH24:MM') AS UPDATE_DATE,
+				       UPDATE_USER,
+				       DELETE_YN 
+				  FROM COM_SEND_MASTER
+				  WHERE SEND_SEQ = #{sendSeq}
+				  AND DELETE_YN = 'N'
+	</select>
+	
+	<select id="listSendDetail" parameterType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO" resultType="kr.co.gocle.oklms.commbiz.mail.vo.MailVO">
+		/* ====== kr.co.gocle.oklms.lu.send.service.impl.SubjectMapper.listSendDetail ====== */
+	       	SELECT A.SEND_DETAIL_SEQ,
+				       A.SEND_SEQ,
+				       A.RECIVE_MEM_SEQ,
+				       A.RECIVE_YN,
+				       A.TITLE,
+				       A.CONTENT,
+				       TO_CHAR(A.INSERT_DATE,'YYYY.MM.DD HH24:MM') AS INSERT_DATE,
+				       A.INSERT_USER,
+				       TO_CHAR(A.UPDATE_DATE,'YYYY.MM.DD HH24:MM') AS UPDATE_DATE,
+				       A.UPDATE_USER,
+				       B.MEM_ID,
+				       B.MEM_NAME
+				  FROM COM_SEND_DETAIL A
+				  INNER JOIN COM_MEMBER B
+				  ON B.MEM_SEQ = A.RECIVE_MEM_SEQ
+				WHERE A.SEND_SEQ = #{sendSeq}
+				  ORDER BY B.MEM_ID
+	</select>
+	
+	
+
+</mapper>

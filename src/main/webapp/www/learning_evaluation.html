@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="Generator" content="EditPlus®">
+		<meta name="Author" content="">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<title>학습 평가</title>
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/herenn.css">
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="content-top" >
+				<div class="content-tit" style="padding-top:15px;">
+					<h2 class="page-tit" style="display:none;">
+						<span>클래스 </span>
+					</h2>
+					<button type="button" class="search-btn" style="display:none;"><img src="img/search-icon.png"></button>
+				</div>
+			</div>
+			<div class="le-contents">
+				<div class="e-cate">
+					<h3>[설문1] 당신은 교회를 얼마나 다니셨습니까?</h3>
+					<ul class="radio-list">
+						<li class="check-on"><input type="radio" name="period" value="" class="radio-check"><label><span class="icon-check"></span>1개월 미만</label></li>
+						<li><input type="radio" name="period" value="" class="radio-check"><label><span class="icon-check"></span>1개월 이상 ~ 3개월 미만</label></li>
+						<li><input type="radio" name="period" value="" class="radio-check"><label><span class="icon-check"></span>3개월 이상 ~ 6개월 미만</label></li>
+						<li><input type="radio" name="period" value="" class="radio-check"><label><span class="icon-check"></span>6개월 이상 ~ 1년 미만</label></li>
+						<li><input type="radio" name="period" value="" class="radio-check"><label><span class="icon-check"></span>1년 이상</label></li>
+					</ul>
+				</div>
+
+				<div class="e-cate">
+					<h3>[설문2] CGNTV 어플에 대해 만족합니다.</h3>
+					<ul class="radio-list">
+						<li class="check-on"><input type="radio" name="satisfaction" value="" class="radio-check"><label><span class="icon-check"></span>매우 그렇다</label></li>
+						<li><input type="radio" name="satisfaction" value="" class="radio-check"><label><span class="icon-check"></span>그렇다</label></li>
+						<li><input type="radio" name="satisfaction" value="" class="radio-check"><label><span class="icon-check"></span>보통이다</label></li>
+						<li><input type="radio" name="satisfaction" value="" class="radio-check"><label><span class="icon-check"></span>그렇지 않다</label></li>
+						<li><input type="radio" name="satisfaction" value="" class="radio-check"><label><span class="icon-check"></span>매우 그렇지않다</label></li>
+					</ul>
+				</div>
+
+				<div class="e-cate ">
+					<h3>[설문3] CGNTV를 통해 지식을 넓히는데 도움이 되었습니다.</h3>
+					<ul class="radio-list">
+						<li class="check-on"><input type="radio" name="satisfaction2" value="" class="radio-check"><label><span class="icon-check"></span>매우 그렇다</label></li>
+						<li><input type="radio" name="satisfaction2" value="" class="radio-check"><label><span class="icon-check"></span>그렇다</label></li>
+						<li><input type="radio" name="satisfaction2" value="" class="radio-check"><label><span class="icon-check"></span>보통이다</label></li>
+						<li><input type="radio" name="satisfaction2" value="" class="radio-check"><label><span class="icon-check"></span>그렇지 않다</label></li>
+						<li><input type="radio" name="satisfaction2" value="" class="radio-check"><label><span class="icon-check"></span>매우 그렇지않다</label></li>
+					</ul>
+				</div>
+				
+				
+			</div>
+			<div class="button-wrap button-wrap2 clearfix"> 
+				<button type="button" class="registration cancel-btn">취소</button>
+				<button type="button" class=" registration submit-btn">제출하기</button>
+			</div>
+		</div>
+		<script src="js/jquery-3.5.1.min.js"></script>
+		 <script>
+			$(document).ready(function(){
+				$('.radio-check').click(function(){
+					$(this).parent('li').siblings().removeClass('check-on');
+					$(this).parent('li').addClass('check-on');
+				});
+			});
+	    </script>
+	</body>
+</html>

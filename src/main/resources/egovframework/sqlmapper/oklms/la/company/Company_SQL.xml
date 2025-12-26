@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.gocle.oklms.la.company.service.impl.CompanyMapper">
+	<sql id="listCompanyr-where">
+		<if test="companyId != null  and companyId != ''">
+			AND COM.COMPANY_ID = #{companyId}
+		</if>
+		<!-- <if test="traningProcessId != null  and traningProcessId != ''">
+			AND TP.TRANING_PROCESS_ID = #{traningProcessId}
+		</if> -->
+		<if test="searchCompanyName != null and searchCompanyName != ''">
+			AND COM.COMPANY_NAME LIKE '%' || #{searchCompanyName  } || '%'  
+	    </if>
+	    <if test="searchEmployInsManageNo != null and searchEmployInsManageNo != ''">
+			AND COM.COMP_MANAGE_NO  LIKE '%' || #{searchEmployInsManageNo  } || '%' 
+	    </if>
+	    
+	     <choose>
+            <when test="searchName != null and searchName != ''">
+                	<if test="searchName eq 'NAME'">
+                		<if test="searchWord != null and searchWord != ''">
+                			AND COM.COMPANY_NAME LIKE '%' || #{searchWord  } || '%'  
+                		</if>
+                	</if>
+                	<if test="searchName eq 'ID'">
+                		<if test="searchWord != null and searchWord != ''">
+                			AND COM.COMPANY_ID LIKE '%' || #{searchWord  } || '%'   
+                		</if>
+                	</if>
+            </when>
+            <otherwise>
+            	<if test="searchWord != null and searchWord != ''">
+            		AND ( COM.COMPANY_NAME LIKE '%' || #{searchWord  } || '%' OR COM.COMPANY_ID LIKE '%' || #{searchWord  } || '%' )
+            	</if>
+            </otherwise>
+        </choose>
+	    
+	</sql>
+
+	<select id="getCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+	/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.getCompany ====== */
+
+			   	 SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,COM.COMPANY_NO AS companyNo
+					,COM.COMP_MANAGE_NO  AS employInsManageNo
+					,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					,COM.COMPANY_DIV_CD AS companyDivCd
+					,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					,COM.CHOICE_DAY AS choiceDay
+					,COM.CEO AS ceo
+                    ,COM.NAME AS name
+                    ,COM.EMAIL AS email
+					,COM.ZIP_CODE AS zipCode
+					,COM.ADDRESS AS address
+					,COM.ADDRESS_DTL AS addressDtl
+					,COM.TEL_NO1 AS telNo1
+					,COM.TEL_NO2 AS telNo2
+					,COM.TEL_NO3 AS telNo3
+					,COM.POSITION AS position
+					,COM.DELETE_YN AS deleteYn
+					,COM.INSERT_DATE AS insertDate
+					,COM.INSERT_USER AS insertUser
+					,COM.UPDATE_DATE AS updateDate
+					,COM.UPDATE_USER AS updateUser,
+					COM.HOMEPAGE_URL,
+			       COM.TRANING_STATUS_CD,
+			       COM.COMPANY_STATUS_CD,
+			       COM.CONTROL_PLACE_NAME,
+			       COM.STU_LEVEL_NAME1,
+			       COM.STU_LEVEL_NAME2,
+			       COM.STU_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME1,
+			       COM.COMP_LEVEL_NAME2,
+			       COM.COMP_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME4,
+			       COM.MAKE_DAY,
+			       COM.HP_NO1,
+			       COM.HP_NO2,
+			       COM.HP_NO3,
+			       COM.FAX_NO1,
+			       COM.FAX_NO2,
+			       COM.FAX_NO3,
+			       COM.CREDIT_LEVEL,
+			       COM.ASSETS,
+			       COM.LIABILITIES,
+			       COM.EQUITIES,
+			       COM.REVENUE,
+			       COM.OPERATING_INCOME,
+			       COM.NET_INCOME,
+			       COM.EVAL_DAY,
+			       COM.SEARCH_PLACE_NAME 
+				 FROM LMS_COMPANY COM
+			 	WHERE COM.COMPANY_ID 	= #{companyId}
+	</select>
+
+	<select id="listCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompany ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			   SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,COM.COMPANY_NO AS companyNo
+					,COM.COMP_MANAGE_NO  AS employInsManageNo
+					,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					,COM.COMPANY_DIV_CD AS companyDivCd
+					,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					,COM.CHOICE_DAY AS choiceDay
+					,COM.CEO AS ceo
+                    ,COM.NAME AS name
+					,COM.ZIP_CODE AS zipCode
+					,COM.ADDRESS AS address
+					,COM.ADDRESS_DTL AS addressDtl
+					,COM.TEL_NO1 AS telNo1
+					,COM.TEL_NO2 AS telNo2
+					,COM.TEL_NO3 AS telNo3
+					,COM.POSITION AS position
+					,COM.DELETE_YN AS deleteYn
+					,COM.INSERT_DATE AS insertDate
+					,COM.INSERT_USER AS insertUser
+					,COM.UPDATE_DATE AS updateDate
+					,COM.UPDATE_USER AS updateUser,
+					COM.HOMEPAGE_URL,
+			       COM.TRANING_STATUS_CD,
+			       COM.COMPANY_STATUS_CD,
+			       COM.CONTROL_PLACE_NAME,
+			       COM.STU_LEVEL_NAME1,
+			       COM.STU_LEVEL_NAME2,
+			       COM.STU_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME1,
+			       COM.COMP_LEVEL_NAME2,
+			       COM.COMP_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME4,
+			       COM.MAKE_DAY,
+			       COM.HP_NO1,
+			       COM.HP_NO2,
+			       COM.HP_NO3,
+			       COM.FAX_NO1,
+			       COM.FAX_NO2,
+			       COM.FAX_NO3,
+			       COM.CREDIT_LEVEL,
+			       COM.ASSETS,
+			       COM.LIABILITIES,
+			       COM.EQUITIES,
+			       COM.REVENUE,
+			       COM.OPERATING_INCOME,
+			       COM.NET_INCOME,
+			       COM.EVAL_DAY,
+			       COM.SEARCH_PLACE_NAME
+				 FROM LMS_COMPANY COM
+			 	WHERE 1=1
+			 	AND COM.DELETE_YN = 'N'
+			 	
+			   <if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+			   		AND (COM.COMPANY_ID) IN
+										(
+											SELECT CCN.COMPANY_ID
+							                FROM LMS_COMP_CCN_MAPPING CCN 
+							                     WHERE CCN.DELETE_YN = 'N' 
+							                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+										)		
+			   </if>
+			   
+			   <if test="sessionMemType == 'PRT' and sessionMemType != null and sessionMemType != ''">   
+			   		AND (COM.COMPANY_ID) IN
+										(SELECT COMPANY_ID 
+										         FROM LMS_TRANING_PROCESS_MAPPING 
+										        WHERE DELETE_YN = 'N' 
+										              AND 
+										              (
+										                  YYYY,
+										                  TERM,
+										                  SUBJECT_CODE,
+										                  CLASS
+										              ) 
+										              IN 
+										              (SELECT YYYY,
+										                     TERM,
+										                     SUBJECT_CODE,
+										                     CLASS 
+										                FROM LMS_SUBJ_INS_MAPPING INS 
+										               WHERE INS.DELETE_YN = 'N' 
+										                     AND MEM_SEQ = #{sessionMemSeq} 
+										              ) 
+										       )	
+			   </if>
+			 	
+			<include refid="listCompanyr-where"/>
+			ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+	
+	<select id="listAllCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listAllCompany ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			   SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,COM.COMPANY_NO AS companyNo
+					,COM.COMP_MANAGE_NO  AS employInsManageNo
+					,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					,COM.COMPANY_DIV_CD AS companyDivCd
+					,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					,COM.CHOICE_DAY AS choiceDay
+					,COM.CEO AS ceo
+                    ,COM.NAME AS name
+					,COM.ZIP_CODE AS zipCode
+					,COM.ADDRESS AS address
+					,COM.ADDRESS_DTL AS addressDtl
+					,COM.TEL_NO1 AS telNo1
+					,COM.TEL_NO2 AS telNo2
+					,COM.TEL_NO3 AS telNo3
+					,COM.POSITION AS position
+					,COM.DELETE_YN AS deleteYn
+					,COM.INSERT_DATE AS insertDate
+					,COM.INSERT_USER AS insertUser
+					,COM.UPDATE_DATE AS updateDate
+					,COM.UPDATE_USER AS updateUser,
+					COM.HOMEPAGE_URL,
+			       COM.TRANING_STATUS_CD,
+			       COM.COMPANY_STATUS_CD,
+			       COM.CONTROL_PLACE_NAME,
+			       COM.STU_LEVEL_NAME1,
+			       COM.STU_LEVEL_NAME2,
+			       COM.STU_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME1,
+			       COM.COMP_LEVEL_NAME2,
+			       COM.COMP_LEVEL_NAME3,
+			       COM.COMP_LEVEL_NAME4,
+			       COM.MAKE_DAY,
+			       COM.HP_NO1,
+			       COM.HP_NO2,
+			       COM.HP_NO3,
+			       COM.FAX_NO1,
+			       COM.FAX_NO2,
+			       COM.FAX_NO3,
+			       COM.CREDIT_LEVEL,
+			       COM.ASSETS,
+			       COM.LIABILITIES,
+			       COM.EQUITIES,
+			       COM.REVENUE,
+			       COM.OPERATING_INCOME,
+			       COM.NET_INCOME,
+			       COM.EVAL_DAY,
+			       COM.SEARCH_PLACE_NAME
+				 FROM LMS_COMPANY COM
+			 	WHERE 1=1
+			 	AND COM.DELETE_YN = 'N'
+			 	
+			 	<if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+			   		AND (COM.COMPANY_ID) IN
+										(
+											SELECT CCN.COMPANY_ID
+							                FROM LMS_COMP_CCN_MAPPING CCN 
+							                     WHERE CCN.DELETE_YN = 'N' 
+							                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+										)		
+			   </if>
+			 	
+			<include refid="listCompanyr-where"/>
+			ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+
+
+	<select id="listCompanySearch" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanySearch ====== */
+			   SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,COM.COMPANY_NO AS companyNo
+					,COM.COMP_MANAGE_NO  AS employInsManageNo
+					,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					,COM.COMPANY_DIV_CD AS companyDivCd
+					,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					,COM.CHOICE_DAY AS choiceDay
+					,COM.CEO AS ceo
+                    ,COM.NAME AS name
+					,COM.ZIP_CODE AS zipCode
+					,COM.ADDRESS AS address
+					,COM.ADDRESS_DTL AS addressDtl
+					,COM.TEL_NO1 AS telNo1
+					,COM.TEL_NO2 AS telNo2
+					,COM.TEL_NO3 AS telNo3
+					,COM.POSITION AS position
+					,COM.DELETE_YN AS deleteYn
+					,COM.INSERT_DATE AS insertDate
+					,COM.INSERT_USER AS insertUser
+					,COM.UPDATE_DATE AS updateDate
+					,COM.UPDATE_USER AS updateUser
+				 FROM LMS_COMPANY COM
+			 	WHERE 1=1
+			 	AND COM.DELETE_YN = 'N'
+			<include refid="listCompanyr-where"/>
+			ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+	</select>
+	
+	<select id="listCompanySearch1" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanySearch1 ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			   SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,COM.COMPANY_NO AS companyNo
+					,COM.COMP_MANAGE_NO  AS employInsManageNo
+					,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					,COM.COMPANY_DIV_CD AS companyDivCd
+					,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					,COM.CHOICE_DAY AS choiceDay
+					,COM.CEO AS ceo
+                    ,COM.NAME AS name
+					,COM.ZIP_CODE AS zipCode
+					,COM.ADDRESS AS address
+					,COM.ADDRESS_DTL AS addressDtl
+					,COM.TEL_NO1 AS telNo1
+					,COM.TEL_NO2 AS telNo2
+					,COM.TEL_NO3 AS telNo3
+					,COM.POSITION AS position
+					,COM.DELETE_YN AS deleteYn
+					,COM.INSERT_DATE AS insertDate
+					,COM.INSERT_USER AS insertUser
+					,COM.UPDATE_DATE AS updateDate
+					,COM.UPDATE_USER AS updateUser
+				 FROM LMS_COMPANY COM
+			 	WHERE 1=1
+			 	AND COM.DELETE_YN = 'N'
+			 	
+			 	<if test="searchWord != null and searchWord != ''">
+            		AND ( COM.COMPANY_NAME LIKE '%' || #{searchWord  } || '%' OR COM.COMP_MANAGE_NO LIKE '%' || #{searchWord  } || '%' )
+            	</if>
+			 	
+			ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+			<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+
+	<select id="listCompanyTraningProcessSearch" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanyTraningProcessSearch ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			   SELECT COM.COMPANY_ID AS companyId
+					 ,COM.COMPANY_NAME AS companyName
+					 ,COM.COMPANY_NO AS companyNo
+					 ,COM.COMP_MANAGE_NO  AS employInsManageNo
+					 ,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					 ,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					 ,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					 ,COM.COMPANY_DIV_CD AS companyDivCd
+					 ,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					 ,COM.CHOICE_DAY AS choiceDay
+					 ,COM.CEO AS ceo
+                     ,COM.NAME AS name
+					 ,COM.ZIP_CODE AS zipCode
+					 ,COM.ADDRESS AS address
+					 ,COM.ADDRESS_DTL AS addressDtl
+					 ,COM.TEL_NO1 AS telNo1
+					 ,COM.TEL_NO2 AS telNo2
+					 ,COM.TEL_NO3 AS telNo3
+					 ,COM.POSITION AS position
+					 ,COM.DELETE_YN AS deleteYn
+					 ,TP.TRANING_PROCESS_ID AS traningProcessId
+					 ,TP.HRD_TRANING_NAME AS hrdTraningName
+                     ,TP.HRD_TRANING_NO AS hrdTraningNo
+				 FROM LMS_COMPANY COM
+				     ,LMS_TRANING_PROCESS TP
+			 	WHERE 1=1
+			 	AND COM.COMPANY_ID = TP.COMPANY_ID
+			 	AND COM.DELETE_YN = 'N'
+			 	AND TP.DELETE_YN = 'N'
+			 	<include refid="listCompanyr-where"/>
+			 	
+			 	<!-- HRD 담당자일경우 소속기업만 조회-->
+				<if test="sessionMemType == 'CCM' and sessionCompanyId != null and sessionCompanyId != ''">   
+		   			AND COM.COMPANY_ID = #{sessionCompanyId}
+		   		</if> 	
+		   		
+		   		<!-- 기업현장교사일경우 소속기업만 조회-->
+				<if test="sessionMemType == 'COT' and sessionCompanyId != null and sessionCompanyId != ''">   
+		   			AND COM.COMPANY_ID = #{sessionCompanyId}
+		   		</if> 
+		   		
+		   		<!-- 센터 담당자일경우 담당기업만 조회-->
+		   		<if test="sessionMemType == 'CCN' and sessionMemType != null and sessionMemType != ''">   
+			   		AND (COM.COMPANY_ID) IN
+										(
+											SELECT CCN.COMPANY_ID
+							                FROM LMS_COMP_CCN_MAPPING CCN 
+							                     WHERE CCN.DELETE_YN = 'N' 
+							                     AND CCN.MEM_SEQ = #{sessionMemSeq} 
+										)		
+			   </if>
+			 	
+			 	
+				ORDER BY COM.COMPANY_NAME ASC
+				<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+
+	<select id="listCompanyTraningProcess" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanyTraningProcess ====== */
+			   SELECT COM.COMPANY_ID AS companyId
+					 ,COM.COMPANY_NAME AS companyName
+					 ,COM.COMPANY_NO AS companyNo
+					 ,COM.COMP_MANAGE_NO  AS employInsManageNo
+					 ,COM.BIG_BUSINESS_TYPE AS bigBusinessType
+					 ,COM.MIDDLE_BUSINESS_TYPE AS middleBusinessType
+					 ,COM.SMAIL_BUSINESS_TYPE AS smailBusinessType
+					 ,COM.COMPANY_DIV_CD AS companyDivCd
+					 ,COM.REGULAR_EMPLOYMENT_CNT AS regularEmploymentCnt
+					 ,COM.CHOICE_DAY AS choiceDay
+					 ,COM.CEO AS ceo
+                     ,COM.NAME AS name
+					 ,COM.ZIP_CODE AS zipCode
+					 ,COM.ADDRESS AS address
+					 ,COM.ADDRESS_DTL AS addressDtl
+					 ,COM.TEL_NO1 AS telNo1
+					 ,COM.TEL_NO2 AS telNo2
+					 ,COM.TEL_NO3 AS telNo3
+					 ,COM.POSITION AS position
+					 ,COM.DELETE_YN AS deleteYn
+					 ,TP.TRANING_PROCESS_ID AS traningProcessId
+					 ,TP.HRD_TRANING_NAME AS hrdTraningName
+                     ,TP.HRD_TRANING_NO AS hrdTraningNo
+				 FROM LMS_COMPANY COM
+				     ,LMS_TRANING_PROCESS TP
+			 	WHERE 1=1
+			 	AND COM.COMPANY_ID = TP.COMPANY_ID
+			 	AND COM.DELETE_YN = 'N'
+			 	AND TP.DELETE_YN = 'N'
+			 	<include refid="listCompanyr-where"/>
+				ORDER BY COM.COMPANY_NAME ASC
+	</select>
+
+	<insert id="insertCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.insertCompany ====== */
+			INSERT INTO LMS_COMPANY (
+						COMPANY_ID
+						,COMPANY_NAME
+						,COMPANY_NO
+						,CEO
+						,NAME
+						,ZIP_CODE
+						,ADDRESS
+						,ADDRESS_DTL
+						,TEL_NO1
+						,TEL_NO2
+						,TEL_NO3
+						,COMP_MANAGE_NO 
+						,BIG_BUSINESS_TYPE
+						,MIDDLE_BUSINESS_TYPE
+						,SMAIL_BUSINESS_TYPE
+						,COMPANY_DIV_CD
+						,EMAIL
+						,REGULAR_EMPLOYMENT_CNT
+						,CHOICE_DAY
+						,POSITION
+						,INSERT_DATE
+						,INSERT_USER,
+						HOMEPAGE_URL,
+				       TRANING_STATUS_CD,
+				       COMPANY_STATUS_CD,
+				       CONTROL_PLACE_NAME,
+				       STU_LEVEL_NAME1,
+				       STU_LEVEL_NAME2,
+				       STU_LEVEL_NAME3,
+				       COMP_LEVEL_NAME1,
+				       COMP_LEVEL_NAME2,
+				       COMP_LEVEL_NAME3,
+				       COMP_LEVEL_NAME4,
+				       MAKE_DAY,
+				       HP_NO1,
+				       HP_NO2,
+				       HP_NO3,
+				       FAX_NO1,
+				       FAX_NO2,
+				       FAX_NO3,
+				       CREDIT_LEVEL,
+				       ASSETS,
+				       LIABILITIES,
+				       EQUITIES,
+				       REVENUE,
+				       OPERATING_INCOME,
+				       NET_INCOME,
+				       EVAL_DAY,
+				       SEARCH_PLACE_NAME
+						
+					)
+					VALUES
+					(
+						 #{companyId}
+						,#{companyName}
+						,#{companyNo}
+						,#{ceo}
+						,#{name}
+						,#{zipCode}
+						,#{address}
+						,#{addressDtl}
+						,#{telNo1}
+						,#{telNo2}
+						,#{telNo3}
+						,#{employInsManageNo}
+						,#{bigBusinessType}
+						,#{middleBusinessType}
+						,#{smailBusinessType}
+						,#{companyDivCd}
+						,#{email}
+						,#{regularEmploymentCnt}
+						,#{choiceDay}
+						,#{position}
+						,SYSDATE
+						,#{sessionMemSeq},
+						#{homepageUrl},
+				       #{traningStatusCd},
+				       #{companyStatusCd},
+				       #{controlPlaceName},
+				       #{stuLevelName1},
+				       #{stuLevelName2},
+				       #{stuLevelName3},
+				       #{compLevelName1},
+				       #{compLevelName2},
+				       #{compLevelName3},
+				       #{compLevelName4},
+				       #{makeDay},
+				       #{hpNo1},
+				       #{hpNo2},
+				       #{hpNo3},
+				       #{faxNo1},
+				       #{faxNo2},
+				       #{faxNo3},
+				       #{creditLevel},
+				       #{assets},
+				       #{liabilities},
+				       #{equities},
+				       #{revenue},
+				       #{operatingIncome},
+				       #{netIncome},
+				       #{evalDay},
+				       #{searchPlaceName} 
+					)
+
+	</insert>
+	
+	<insert id="updateCompanyMember" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.updateCompanyMember ====== */
+			UPDATE COM_MEMBER SET COMPANY_ID = #{companyId}
+			WHERE MEM_ID = #{memId}
+
+	</insert>
+	
+
+	<update id="updateCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.updateCompany ====== */
+	        UPDATE LMS_COMPANY
+	        SET UPDATE_DATE 	= SYSDATE
+	            ,UPDATE_USER=#{sessionMemSeq}
+				<!-- <if test="companyId != null and companyId !='' ">,COMPANY_ID=#{companyId}</if> -->
+				<if test="companyName != null and companyName !='' ">,COMPANY_NAME=#{companyName}</if>
+				<if test="companyNo != null and companyNo !='' ">,COMPANY_NO=#{companyNo}</if>
+				<if test="ceo != null and ceo !='' ">,CEO=#{ceo}</if>
+				<if test="name != null and name !='' ">,NAME=#{name}</if>
+				<if test="zoneCode != null and zoneCode !='' ">,ZONE_CODE=#{zoneCode}</if>
+				<if test="zipCode != null and zipCode !='' ">,ZIP_CODE=#{zipCode}</if>
+				<if test="address != null and address !='' ">,ADDRESS=#{address}</if>
+				<if test="addressDtl != null and addressDtl !='' ">,ADDRESS_DTL=#{addressDtl}</if>
+				<if test="telNo1 != null and telNo1 !='' ">,TEL_NO1=#{telNo1}</if>
+				<if test="telNo2 != null and telNo2 !='' ">,TEL_NO2=#{telNo2}</if>
+				<if test="telNo3 != null and telNo3 !='' ">,TEL_NO3=#{telNo3}</if>
+				<if test="deleteYn != null and deleteYn !='' ">,DELETE_YN=#{deleteYn}</if>
+				<if test="employInsManageNo != null and employInsManageNo !='' ">,COMP_MANAGE_NO =#{employInsManageNo}</if>
+				<if test="bigBusinessType != null and bigBusinessType !='' ">,BIG_BUSINESS_TYPE=#{bigBusinessType}</if>
+				<if test="middleBusinessType != null and middleBusinessType !='' ">,MIDDLE_BUSINESS_TYPE=#{middleBusinessType}</if>
+				<if test="smailBusinessType != null and smailBusinessType !='' ">,SMAIL_BUSINESS_TYPE=#{smailBusinessType}</if>
+				<if test="email != null and email !='' ">,EMAIL=#{email}</if>
+				<if test="regularEmploymentCnt != null and regularEmploymentCnt !='' ">,REGULAR_EMPLOYMENT_CNT=#{regularEmploymentCnt}</if>
+				<if test="companyDivCd != null and companyDivCd !='' ">,COMPANY_DIV_CD=#{companyDivCd}</if>
+				<if test="choiceDay != null and choiceDay !='' ">,CHOICE_DAY=#{choiceDay}</if>
+				<if test="position != null and position !='' ">,POSITION=#{position}</if>
+				<if test="homepageUrl != null and homepageUrl !='' ">,HOMEPAGE_URL=#{homepageUrl}</if>
+				<if test="traningStatusCd != null and traningStatusCd !='' ">,TRANING_STATUS_CD=#{traningStatusCd}</if>
+				<if test="companyStatusCd != null and companyStatusCd !='' ">,COMPANY_STATUS_CD=#{companyStatusCd}</if>
+				<if test="controlPlaceName != null and controlPlaceName !='' ">,CONTROL_PLACE_NAME=#{controlPlaceName}</if>
+				<if test="stuLevelName1 != null and stuLevelName1 !='' ">,STU_LEVEL_NAME1=#{stuLevelName1}</if>
+				<if test="stuLevelName2 != null and stuLevelName2 !='' ">,STU_LEVEL_NAME2=#{stuLevelName2}</if>
+				<if test="stuLevelName3 != null and stuLevelName3 !='' ">,STU_LEVEL_NAME3=#{stuLevelName3}</if>
+				<if test="compLevelName1 != null and compLevelName1 !='' ">,COMP_LEVEL_NAME1=#{compLevelName1}</if>
+				<if test="compLevelName2 != null and compLevelName2 !='' ">,COMP_LEVEL_NAME2=#{compLevelName2}</if>
+				<if test="compLevelName3 != null and compLevelName3 !='' ">,COMP_LEVEL_NAME3=#{compLevelName3}</if>
+				<if test="compLevelName4 != null and compLevelName4 !='' ">,COMP_LEVEL_NAME4=#{compLevelName4}</if>
+				<if test="makeDay != null and makeDay !='' ">,MAKE_DAY=#{makeDay}</if>
+				<if test="hpNo1 != null and hpNo1 !='' ">,HP_NO1=#{hpNo1}</if>
+				<if test="hpNo2 != null and hpNo2 !='' ">,HP_NO2=#{hpNo2}</if>
+				<if test="hpNo3 != null and hpNo3 !='' ">,HP_NO3=#{hpNo3}</if>
+				<if test="faxNo1 != null and faxNo1 !='' ">,FAX_NO1=#{faxNo1}</if>
+				<if test="faxNo2 != null and faxNo2 !='' ">,FAX_NO2=#{faxNo2}</if>
+				<if test="faxNo3 != null and faxNo3 !='' ">,FAX_NO3=#{faxNo3}</if>
+				<if test="creditLevel != null and creditLevel !='' ">,CREDIT_LEVEL=#{creditLevel}</if>
+				<if test="assets != null and assets !='' ">,ASSETS=#{assets}</if>
+				<if test="liabilities != null and liabilities !='' ">,LIABILITIES=#{liabilities}</if>
+				<if test="equities != null and equities !='' ">,EQUITIES=#{equities}</if>
+				<if test="revenue != null and revenue !='' ">,REVENUE=#{revenue}</if>
+				<if test="operatingIncome != null and operatingIncome !='' ">,OPERATING_INCOME=#{operatingIncome}</if>
+				<if test="netIncome != null and netIncome !='' ">,NET_INCOME=#{netIncome}</if>
+				<if test="evalDay != null and evalDay !='' ">,EVAL_DAY=#{evalDay}</if>
+				<if test="searchPlaceName != null and searchPlaceName !='' ">,SEARCH_PLACE_NAME=#{searchPlaceName}</if>
+				
+
+		     WHERE COMPANY_ID 	= #{companyId}
+	</update>
+
+	 <delete id="deleteCompany"  parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO"  >
+	 	/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.deleteCompany ====== */
+		UPDATE LMS_COMPANY
+		SET
+			  UPDATE_DATE = SYSDATE
+			  , UPDATE_USER=#{sessionMemSeq}
+			  , DELETE_YN = 'Y'
+		WHERE COMPANY_ID 	= #{companyId}
+ 	</delete>
+
+ 	<select id="getCompanyNoCnt" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	    /* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.getCompanyNoCnt ====== */
+	        SELECT
+	               COUNT(*) CNT
+	          FROM LMS_COMPANY
+	          WHERE 1=1
+	          AND COMPANY_NO=#{companyNo}
+
+	</select>
+	
+	
+	
+	<select id="listCcnCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCcnCompany ====== */
+			   SELECT COM.COMPANY_ID   AS companyId ,
+				       COM.COMPANY_NAME AS companyName,
+				       (SELECT  LISTAGG(FN_GETUSERNAME(CCN.MEM_SEQ), ',') WITHIN GROUP( ORDER BY FN_GETUSERNAME(CCN.MEM_SEQ))
+				       FROM     LMS_COMP_CCN_MAPPING CCN
+				       WHERE    DELETE_YN      = 'N'
+				       AND      COM.COMPANY_ID = CCN.COMPANY_ID
+				       )
+				       AS CCN_NAMES,
+				       (SELECT COUNT(1)
+				       FROM    LMS_COMP_CCN_MAPPING CCN
+				       WHERE   DELETE_YN      = 'N'
+				       AND     COM.COMPANY_ID = CCN.COMPANY_ID
+				       AND     CCN.MEM_SEQ    = #{memSeq}
+				       )
+				       AS MAPPING_CNT
+				FROM   LMS_COMPANY COM
+				WHERE  1             =1
+					AND    COM.DELETE_YN = 'N'
+			 	
+			 	<if test="companyName != null and companyName != ''">
+					AND COM.COMPANY_NAME LIKE '%' || #{companyName  } || '%' 
+			    </if>
+			 	
+			ORDER BY COM.COMPANY_NAME ASC
+	</select>
+	
+	<select id="listCcnMappingCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCcnMappingCompany ====== */
+			   SELECT COM.COMPANY_ID AS companyId
+					,COM.COMPANY_NAME AS companyName
+					,(SELECT COUNT(1) 
+			         FROM LMS_COMP_CCN_MAPPING CCN 
+			        WHERE DELETE_YN = 'N' 
+			        	  AND COM.COMPANY_ID = CCN.COMPANY_ID	
+			              AND CCN.MEM_SEQ = #{memSeq} 
+			       ) AS MAPPING_CNT 
+				 FROM LMS_COMPANY COM 
+				 	 
+					 INNER JOIN LMS_TRANING_PROCESS_MAPPING MAP
+					 ON COM.COMPANY_ID = MAP.COMPANY_ID
+					 AND MAP.DELETE_YN = 'N'
+					 
+			 	WHERE 1=1
+			 	AND COM.DELETE_YN = 'N'
+			 	
+			 	<if test="companyName != null and companyName != ''">
+					AND COM.COMPANY_NAME LIKE '%' || #{companyName  } || '%'  
+					
+			    </if>
+			 	GROUP BY COM.COMPANY_ID, COM.COMPANY_NAME
+			ORDER BY COM.COMPANY_NAME ASC
+	</select>
+	
+	
+	<select id="listCcnMember" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCcnMember ====== */
+			   SELECT MEM.MEM_NAME AS CCN_NAME , 
+			       MEM.MEM_SEQ, 
+			       <!-- (SELECT LISTAGG(FN_GETCOMPAYNAME(CCN.COMPANY_ID), ',') WITHIN 
+			       GROUP( 
+					ORDER BY FN_GETCOMPAYNAME(CCN.COMPANY_ID))
+			         FROM LMS_COMP_CCN_MAPPING CCN 
+			        WHERE CCN.DELETE_YN = 'N' 
+			              AND CCN.MEM_SEQ = MEM.MEM_SEQ 
+			       ) AS COMPANY_NAMES  -->
+			       (SELECT  SUBSTR( XMLAgg(XMLElement(x, ', ', FN_GETCOMPAYNAME(CCN.COMPANY_ID)) ORDER BY FN_GETCOMPAYNAME(CCN.COMPANY_ID)).Extract('//text()').getCLOBval() , 3) abono
+			          FROM     LMS_COMP_CCN_MAPPING CCN
+			          WHERE    CCN.DELETE_YN = 'N'
+			          AND      CCN.MEM_SEQ   = MEM.MEM_SEQ
+			          )
+		          AS COMPANY_NAMES
+			  FROM COM_MEMBER MEM 
+			 WHERE MEM.DELETE_YN = 'N' 
+			    <if test="searchKeyword != null and searchKeyword != ''">
+					AND MEM.MEM_NAME LIKE '%' || #{searchKeyword  } || '%' 
+			    </if> 
+			    
+			    AND ( MEM_SEQ ) IN 
+			    ( 
+			    	SELECT MEM_SEQ FROM COM_AUTH_MEMBER 
+			    		WHERE AUTH_GROUP_ID = '2016AUTH0000005'
+			    		AND MEM_TYPE = 'CCN'
+			    )
+			ORDER BY MEM.MEM_NAME
+	</select>
+	
+	 <delete id="deleteCcnCompany"  parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO"  >
+	 	/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.deleteCcnMember ====== */
+		DELETE FROM LMS_COMP_CCN_MAPPING
+			WHERE MEM_SEQ 	= #{memSeq}
+ 	</delete>
+ 	
+ 	<delete id="deleteCcnMappingCompany"  parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO"  >
+	 	/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.deleteCcnMappingCompany ====== */
+		DELETE FROM LMS_COMP_CCN_MAPPING
+			WHERE COMPANY_ID = #{companyId}
+ 	</delete>
+ 	
+ 	 <insert id="insertCcnCompany"  parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO"  >
+	 	/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.insertCcnMember ====== */
+		INSERT INTO LMS_COMP_CCN_MAPPING
+			       (
+			         COMPANY_ID,
+			         MEM_SEQ,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES 
+			       (
+			         #{companyId},
+			         #{memSeq},
+			         SYSDATE,
+			         #{sessionMemSeq}
+			       )
+ 	</insert>
+ 	
+ 	<select id="getMyCompanyCcn" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="String">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listMyCompanyCcn ====== */
+			  SELECT LISTAGG(FN_GETCOMPAYNAME(CCN.COMPANY_ID), ',') WITHIN 
+					GROUP( 
+					ORDER BY FN_GETCOMPAYNAME(CCN.COMPANY_ID))
+				  FROM LMS_COMP_CCN_MAPPING CCN 
+				 WHERE CCN.DELETE_YN = 'N' 
+				       AND CCN.MEM_SEQ = #{sessionMemSeq} 
+	</select>
+	
+	<select id="listCompanyStat" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanyStat ====== */
+			<include refid="kr.co.gocle.include.paging-start"/>
+				   SELECT  
+								COM.COMPANY_NAME
+								,COM.COMPANY_ID
+								, (SELECT  LISTAGG(FN_GETUSERNAME(CCN.MEM_SEQ), ',') WITHIN GROUP( ORDER BY FN_GETUSERNAME(CCN.MEM_SEQ))
+							       FROM     LMS_COMP_CCN_MAPPING CCN
+							       WHERE    DELETE_YN      = 'N'
+							       AND      COM.COMPANY_ID = CCN.COMPANY_ID
+							       )
+							       AS CCN_NAMES
+								,COM.HOMEPAGE_URL
+								,COM.TRANING_STATUS_CD
+								,COM.COMPANY_STATUS_CD
+								,COM.CONTROL_PLACE_NAME
+								
+								,COM.STU_LEVEL_NAME1
+								,COM.STU_LEVEL_NAME2
+								,COM.STU_LEVEL_NAME3
+								,COM.COMP_LEVEL_NAME1
+								,COM.COMP_LEVEL_NAME2
+								,COM.COMP_LEVEL_NAME3
+								,COM.COMP_LEVEL_NAME4
+								
+								
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1891' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1)  DEPARTMENT_A
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1931' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_B
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1932' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_C
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1917' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_D
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1916' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_E
+								
+								,COM.COMPANY_NO 
+								,COM.COMP_MANAGE_NO EMPLOY_INS_MANAGE_NO
+								,COM.CEO
+								,COM.SMAIL_BUSINESS_TYPE
+								,COM.REGULAR_EMPLOYMENT_CNT
+								,COM.MAKE_DAY
+								
+								,COM.ADDRESS
+								,COM.ADDRESS_DTL
+								
+								,COM.NAME
+								,COM.EMAIL
+								,COM.TEL_NO1
+								,COM.TEL_NO2
+								,COM.TEL_NO3
+								
+								,COM.HP_NO1
+								,COM.HP_NO2
+								,COM.HP_NO3
+								
+								,COM.FAX_NO1
+								,COM.FAX_NO2
+								,COM.FAX_NO3
+								
+								,COM.CREDIT_LEVEL
+								,COM.ASSETS
+								,COM.LIABILITIES
+								,COM.EQUITIES
+								,COM.REVENUE
+								,COM.OPERATING_INCOME
+								,COM.NET_INCOME
+								,COM.EVAL_DAY
+								,COM.SEARCH_PLACE_NAME
+								FROM LMS_COMPANY COM 
+								WHERE COM.DELETE_YN='N'
+ 
+				 	  <if test="searchKeyword != null and searchKeyword != ''">   
+			   					AND (COM.COMPANY_ID) IN
+										(
+											SELECT CCN.COMPANY_ID
+							                FROM LMS_COMP_CCN_MAPPING CCN 
+							                INNER JOIN COM_MEMBER CM ON CM.DELETE_YN='N' AND CM.MEM_SEQ = CCN.MEM_SEQ
+							                     WHERE CCN.DELETE_YN = 'N' 
+							                      AND CM.MEM_NAME = #{searchKeyword}
+										)		
+			   		 </if>
+					  <if test="traningStatusCd != null and traningStatusCd != ''">
+				 	  		 AND COM.TRANING_STATUS_CD = #{traningStatusCd}
+				 	  </if>
+				 	  <if test="companyStatusCd != null and companyStatusCd != ''">
+				 	  		 AND COM.COMPANY_STATUS_CD = #{companyStatusCd}
+				 	  </if>
+				ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+			<include refid="kr.co.gocle.include.paging-end"/>
+		</select>
+		
+		<select id="listCompanyStat1" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listCompanyStat1 ====== */
+				   SELECT  
+								COM.COMPANY_NAME
+								,COM.COMPANY_ID
+								
+								FROM LMS_COMPANY COM 
+								WHERE COM.DELETE_YN='N'
+ 
+				ORDER BY NVL(COM.INSERT_DATE,SYSDATE-365) DESC, COM.COMPANY_ID  DESC
+		</select>
+		
+		<select id="listMember" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO" resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listMember ====== */
+				   SELECT  
+								COM.MEM_ID,COM.COMPANY_ID
+								FROM COM_MEMBER COM
+								WHERE COM.DELETE_YN='N'
+								AND COMPANY_ID IS NULL
+ 								AND MEM_TYPE = 'STD'
+				ORDER BY COM.MEM_ID  DESC
+		</select>
+		
+		
+		<select id="mainCompanyStat"   resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		<!-- SELECT 
+			SUM(THK) DEPARTMENT_A,
+			SUM(THK1) DEPARTMENT_B,
+			SUM(HK) DEPARTMENT_C,
+			SUM(HK1) DEPARTMENT_D,
+			SUM(NOM) DEPARTMENT_E,
+			SUM(NOM1) DEPARTMENT_F 
+			FROM  (
+						SELECT 
+						X.COMPANY_ID
+						,CASE 
+						WHEN X.HK=1 AND X.NOM=1 THEN 1
+						ELSE  0 END THK
+						,CASE 
+						WHEN X.HK=1 AND X.NOM=1 AND (X.HK1 =1 OR X.NOM1 =1) THEN 1
+						ELSE  0 END THK1
+						,X.HK
+						,X.HK1
+						,X.NOM
+						,X.NOM1 
+						FROM (
+									SELECT 
+									LC.COMPANY_ID,
+									(SELECT 1 FROM COM_MEMBER A ,COM_DEPT B
+									WHERE A.DEPT_NO=B.DEPT_CD AND B.MST_YN='Y' AND A.COMPANY_ID = LC.COMPANY_ID AND ROWNUM=1 ) HK
+									,(SELECT 1 FROM COM_MEMBER A ,COM_DEPT B
+									WHERE A.DEPT_NO=B.DEPT_CD AND B.MST_YN='Y' AND A.COMPANY_ID = LC.COMPANY_ID AND A.STD_STATUS='1' AND ROWNUM=1 ) HK1
+									,(SELECT 1 FROM COM_MEMBER A ,COM_DEPT B
+									WHERE A.DEPT_NO=B.DEPT_CD AND B.MST_YN='N' AND A.COMPANY_ID = LC.COMPANY_ID AND ROWNUM=1 ) NOM
+									,(SELECT 1 FROM COM_MEMBER A ,COM_DEPT B
+									WHERE A.DEPT_NO=B.DEPT_CD AND B.MST_YN='N' AND A.COMPANY_ID = LC.COMPANY_ID AND A.STD_STATUS='1' AND ROWNUM=1 ) NOM1
+									FROM LMS_COMPANY LC
+									) X
+						) -->
+						
+				SELECT SUM(THK) DEPARTMENT_A, 
+					       SUM(THK1) DEPARTMENT_B, 
+					       SUM(NOM) DEPARTMENT_C, 
+					       SUM(NOM1) DEPARTMENT_D, 
+					       SUM(HK) DEPARTMENT_E, 
+					       SUM(HK1) DEPARTMENT_F 
+					  FROM 
+					       (SELECT X.HK + X.NOM AS THK, 
+					              X.HK1 + X.NOM1 AS THK1, 
+					              X.HK , 
+					              X.HK1 , 
+					              X.NOM , 
+					              X.NOM1 
+					         FROM 
+					              (SELECT 
+					                     (SELECT COUNT(DISTINCT B.COMPANY_ID) 
+					                       FROM LMS_TRANING_PROCESS_SEARCH A 
+					                        INNER JOIN LMS_TRANING_PROCESS B 
+					                            ON A.TRANING_PROCESS_ID = B.TRANING_PROCESS_ID 
+					                            AND B.DELETE_YN = 'N' 
+					                        INNER JOIN COM_DEPT C 
+					                            ON C.DEPT_CD = A.DEPT_NO 
+					                            AND C.MST_YN='Y' 
+					                      WHERE A.DELETE_YN = 'N' 
+					                     ) HK , 
+					                     (SELECT COUNT(DISTINCT B.COMPANY_ID) 
+					                       FROM LMS_TRANING_PROCESS_SEARCH A 
+					                        INNER JOIN LMS_TRANING_PROCESS B 
+					                            ON A.TRANING_PROCESS_ID = B.TRANING_PROCESS_ID 
+					                            AND B.DELETE_YN = 'N' 
+					                        INNER JOIN COM_DEPT C 
+					                            ON C.DEPT_CD = A.DEPT_NO 
+					                            AND C.MST_YN='Y' 
+					                      WHERE A.DELETE_YN = 'N' 
+					                            AND A.TRANING_STATUS_CD = '1' 
+					                     ) HK1 , 
+					                     (SELECT COUNT(DISTINCT B.COMPANY_ID) 
+					                       FROM LMS_TRANING_PROCESS_SEARCH A 
+					                        INNER JOIN LMS_TRANING_PROCESS B 
+					                            ON A.TRANING_PROCESS_ID = B.TRANING_PROCESS_ID 
+					                            AND B.DELETE_YN = 'N' 
+					                        INNER JOIN COM_DEPT C 
+					                            ON C.DEPT_CD = A.DEPT_NO 
+					                            AND C.MST_YN='N' 
+					                      WHERE A.DELETE_YN = 'N' 
+					                     ) NOM , 
+					                     (SELECT COUNT(DISTINCT B.COMPANY_ID) 
+					                       FROM LMS_TRANING_PROCESS_SEARCH A 
+					                        INNER JOIN LMS_TRANING_PROCESS B 
+					                            ON A.TRANING_PROCESS_ID = B.TRANING_PROCESS_ID 
+					                            AND B.DELETE_YN = 'N' 
+					                        INNER JOIN COM_DEPT C 
+					                            ON C.DEPT_CD = A.DEPT_NO 
+					                            AND C.MST_YN='N' 
+					                      WHERE A.DELETE_YN = 'N' 
+					                            AND A.TRANING_STATUS_CD = '1' 
+					                     ) NOM1 
+					                FROM DUAL 
+					              ) X 
+					       )   		
+		</select>
+		
+		<select id="mainCompanyStatCnt"   resultType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			SELECT SUM(DECODE(TRANING_STATUS_CD,'1',1,0)) AS STATUS_1, 
+				       SUM(DECODE(TRANING_STATUS_CD,'2',1,0)) AS STATUS_2, 
+				       SUM(DECODE(TRANING_STATUS_CD,'3',1,0)) AS STATUS_3,
+				       COUNT(*) AS STATUS_TOTAL_CNT  
+				  FROM LMS_COMPANY 
+				 WHERE DELETE_YN = 'N' 
+		</select>
+		
+		
+		<update id="updateMemberPw" parameterType="egovframework.com.cmm.LoginVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.updateCompanyMember ====== */
+			UPDATE COM_MEMBER SET MEM_PASSWORD = #{encryptShaPw}
+			WHERE MEM_SEQ = #{memSeq}
+		</update>
+		
+		<update id="updateTempMemberPw" parameterType="egovframework.com.cmm.LoginVO">
+		/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.updateCompanyMember ====== */
+			UPDATE TEMP_OUT_MEMBER_INFO SET LOGIN_PWD = #{encryptShaPw}
+			WHERE LOGIN_ID = #{memSeq}
+		</update>
+		
+		
+		<select id="listPwMember" parameterType="egovframework.com.cmm.LoginVO" resultType="egovframework.com.cmm.LoginVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listMember ====== */
+				   SELECT MEM_SEQ,MEM_PASSWORD AS memPasswordEncripted FROM COM_MEMBER WHERE MEM_PASSWORD IS NOT NULL
+		</select>
+		
+		<select id="listPwTempMember" parameterType="egovframework.com.cmm.LoginVO" resultType="egovframework.com.cmm.LoginVO">
+			/* ====== kr.co.gocle.oklms.la.company.service.impl.CompanyMapper.listMember ====== */
+				   SELECT  LOGIN_ID AS MEM_SEQ ,LOGIN_PWD AS memPasswordEncripted 
+								FROM TEMP_OUT_MEMBER_INFO  WHERE LOGIN_PWD IS NOT NULL AND LOGIN_ID IS NOT NULL 
+		</select>
+		
+</mapper>

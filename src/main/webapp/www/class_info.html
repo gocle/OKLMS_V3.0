@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="Generator" content="EditPlus®">
+		<meta name="Author" content="">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<title>클래스</title>
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/herenn.css">
+	</head>
+	<body>
+		<div class="wrap info-enter">
+			<div class="content-top">
+				<div class="content-tit">
+					<button type="button" class="back-btn back-btn2"></button>
+					<h2 class="page-tit page-tit2"><span>정보입력</span></h2>
+				</div>
+			</div>
+			<div class="contents">
+				<div class="info-input">
+					<dl>
+						<dt>생년월일</dt>
+						<dd>
+							<input type="text" placeholder="생년월일 ( 000 / 00 / 00 )" class="one-txt"></input>
+						</dd>
+					</dl>
+					<dl>
+						<dt>성별</dt>
+						<dd>
+							<input type="text" placeholder="남성 / 여성" class="one-txt"></input>
+						</dd>
+					</dl>
+					<dl>
+						<dt>휴대폰</dt>
+						<dd class="phone">
+							<input type="text" placeholder="휴대폰 번호" class="one-txt"></input>
+							<button type="button" class="certified">본인인증</button>
+						</dd>
+					</dl>
+					<dl>
+						<dt>교회명</dt>
+						<dd>
+							<select class="common-s church-name">
+								<option value="">교회명</option>
+								<option value="">교회명</option>
+								<option value="">교회명</option>
+							</select>
+						</dd>
+					</dl>
+					<dl>
+						<dt>교회직분</dt>
+						<dd>
+							<select class="common-s church-job">
+								<option value="">교회직분</option>
+								<option value="">교회직분</option>
+								<option value="">교회직분</option>
+							</select>
+						</dd>
+					</dl>
+					<dl>
+						<dt>관심<br>카테고리</dt>
+						<dd class="interest">
+							<ul class="checkbox-list clearfix">
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>예배</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>집회</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>세미나/강의</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>문화</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>말씀</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>큐티</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>어린이</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>다큐</label></li>
+								<li><input type="checkbox" name="interest-c" value="" class="interest-check"><label><span class="icon-check"></span>보도</label></li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</div>
+			<div class="button-wrap"> 
+				<button type="button" class="registration">등록하기</button>
+			</div>
+		</div>
+
+		<script src="js/jquery-3.5.1.min.js"></script>
+		 <script>
+			$(document).ready(function(){
+				$('.interest-check').click(function(){
+					$(this).parent('li').toggleClass('check-on');
+				});
+			});
+	    </script>
+	</body>
+</html>

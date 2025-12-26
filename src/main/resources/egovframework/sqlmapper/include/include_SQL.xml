@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.gocle.include">
+
+	<sql id="paging-start">
+		  SELECT data.*
+				, TOTAL_COUNT - (ROW_NUM-1) LINE_NUM
+			FROM (
+					SELECT 	'' || COUNT(1) OVER() TOTAL_COUNT
+							, data.* 
+					  FROM 	(
+					  				SELECT 
+											rownum ROW_NUM
+											, data.* 
+									  FROM (
+	</sql>
+	
+	
+	
+	
+	
+	
+	<sql id="paging-end">
+										) data
+							) data	
+				) data 
+		<![CDATA[	
+			WHERE data.row_num > ( NVL(#{pageIndex , jdbcType=VARCHAR }, 1) -1) * NVL(#{pageSize , jdbcType=VARCHAR } ,10)   
+			  AND data.row_num <= NVL(#{pageIndex , jdbcType=VARCHAR }, 1)  * NVL(#{pageSize , jdbcType=VARCHAR } ,10)		
+		]]>
+	</sql>
+	
+	
+	
+	
+	
+	
+	<sql id="paging-end2">
+										) data
+							) data	
+				) data 
+		<![CDATA[	
+			WHERE data.row_num > ( NVL(#{pageIndex , jdbcType=VARCHAR }, 1) -1) * NVL(#{pageSize , jdbcType=VARCHAR } ,10)   
+			  AND rownum <= NVL(#{pageSize , jdbcType=VARCHAR } ,10)		
+		]]>
+	</sql>
+	
+	
+	
+	
+	
+	
+	<sql id="paging-end_____">
+										) data	
+							) data	
+				) data 
+		<![CDATA[	
+			WHERE data.row_num >= #{page_start_row , jdbcType=VARCHAR } 
+			  AND data.row_num <= #{page_end_row , jdbcType=VARCHAR} 		
+		]]>
+	</sql>
+
+</mapper>

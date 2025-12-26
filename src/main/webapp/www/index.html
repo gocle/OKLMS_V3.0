@@ -1,0 +1,253 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Expires" content="-1" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>CGN-코딩가이드</title>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+html, body, ul, li, h1 {
+	padding: 0;
+	margin: 0
+}
+body {
+	padding: 1%;
+	color: #555;
+	font: 62.5%/1 'Nanum Gothic', '나눔고딕', '돋음', 'Dotum', Arial, Sans-serif;
+	line-height: 1.5;
+	font-size:13px;
+}
+a:link, a:visited {
+	text-decoration: none;
+	color: #ac66ac;
+	font-weight: bold
+}
+a:hover, a:active, a:focus {
+	text-decoration: underline;
+	color: #ac66ac
+}
+.top_info {
+	position: relative;
+	padding: 0 10px 10px
+}
+.top_info span {
+	display: block;
+}
+.top_info h1 {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #cc3b09
+}
+.sub {
+	position: absolute;
+	right: 10px;
+	top: 0;
+	color: #cc3b09;
+	font-weight: bold;
+	font-size: 1.6em
+}
+.noti {
+	padding: 10px
+}
+.noti ul {
+	float: left;
+	margin: 5px;
+	font-size: 1.2em
+}
+.noti ul li {
+	float: left;
+	margin: 0 30px 5px 0;
+	color: #777
+}
+.noti ul:after {
+	content: " ";
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden
+}
+.table_list {
+	clear: both;
+	float: left;
+	width: 100%;
+	margin-bottom: 15px;
+	border-top: 2px solid #bbb;
+	border-left: 1px solid #bbb
+}
+.table_list:after {
+	content: " ";
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden
+}
+table {
+	font-size: 1.1em
+}
+table th {
+	padding: 6px 0 5px;
+	color: #cc3b09;
+	text-align: center;
+	background: #ddd;
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb
+}
+table td {
+	padding: 6px 0 5px;
+	text-indent: 6px;
+	text-align: left;
+	border-bottom: 1px solid #bbb;
+	border-right: 1px solid #bbb
+}
+table td:first-child {
+	text-align: center;
+	text-indent: 0
+}
+table tbody.a tr td {
+	background: #eee
+}
+table tbody.b tr td {
+	background: #f7f7f7
+}
+table td sup {
+	color: #f00;
+	font-size: .8em;
+	letter-spacing: -0.1em;
+	padding-left: 4px
+}
+.txtC {
+	text-align: center
+}
+.rules {
+	clear: both;
+	margin: 20px 0;
+	font-size: 1.1em
+}
+.rules li {
+	margin-bottom: 8px
+}
+.num {
+	text-align: left;
+	text-indent: 8px
+}
+</style>
+</head>
+<body>
+	<div id="wrap">
+		<div class="top_info">
+			<h1>CGN</h1>
+			<p class="sub"></p>
+		</div>
+		<div class="noti">
+			<ul>
+				<li>Charset : UTF-8</li>
+				<li>DTD : html5</li>
+				<li>Mobile</li>
+			</ul>
+		</div>
+		<div class="table_list">
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<colgroup>
+				<col width="5%" />
+				<col width="" />
+				<col width="10%" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>No.</th>
+						<th>File-name</th>
+						<th>Notification</th>
+					</tr>
+				</thead>
+				<tbody class="b">
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_main.html" target="_blank">클래스_메인</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_no_info.html" target="_blank">클래스_메인_정보 없을때</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_info.html" target="_blank">클래스_메인_정보입력</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_all.html" target="_blank">클래스_전체강의</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_list.html" target="_blank">클래스_커리큘럼_강의리스트</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_review.html" target="_blank">클래스_커리큘럼_수강후기</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="class_no_review.html" target="_blank">클래스_커리큘럼_수강후기없을때</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="review_write.html" target="_blank">클래스_후기작성</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="my_class.html" target="_blank">클래스_나의강의실</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="details.html" target="_blank">강의 상세 내용</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="details_dan_no1.html" target="_blank">강의 상세 내용_단과 수강 신청 전_자동승인강의</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="details_dan_no2.html" target="_blank">강의 상세 내용_단과 수강 신청 전_승인이 필요한 강의</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="details_cc_no.html" target="_blank">강의 상세 내용_커리큘럼 수강 신청 전</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="personal_information.html" target="_blank">개인정보처리방침</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="tos.html" target="_blank">이용약관</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="num">&nbsp;</td>
+						<td><a href="learning_evaluation.html" target="_blank">학습평가</a></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="rules"> </div>
+	</div>
+</body>
+</html>

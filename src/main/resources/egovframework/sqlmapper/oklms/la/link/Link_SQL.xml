@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ~ *******************************************************************************
+  ~  * COPYRIGHT(C) 2016 SMART INFORMATION TECHNOLOGY. ALL RIGHTS RESERVED.
+  ~  * This software is the proprietary information of SMART INFORMATION TECHNOLOGY..
+  ~  *
+  ~  * Revision History
+  ~  * Author   Date            Description
+  ~  * ======   =========      ====================================
+  ~  * 이진근    2017. 01. 09          First Draft.
+  ~  *
+  ~  ******************************************************************************* 
+  -->
+
+<mapper namespace="kr.co.gocle.oklms.la.link.service.impl.LinkMapper">
+	
+	<insert id="insertAunuriMember" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberVO">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriMember ====== */
+			INSERT 
+				  INTO COM_MEMBER 
+				       (
+				         MEM_SEQ,
+				         MEM_ID,
+				         MEM_TYPE,
+				         MEM_NAME,
+				         SEX,
+				         MEM_BIRTH,
+				         MEM_PASSWORD,
+				         EMAIL,
+				         PHOTO_FILE_PATH,
+				         AUTH_GROUP_ID,
+				         TEL_NO,
+				         HP_NO,
+				         DEPT_NO,
+				         DEPT_NM,
+				         INSERT_DATE
+				       ) 
+				       VALUES 
+				       (
+				         #{memSeq},
+				         #{memId},
+				         #{memType},
+				         #{memName},
+				         #{sex},
+				         #{memBirth},
+				         <!-- HEX(AES_ENCRYPT(#{memId},#{memId})), -->
+				         #{encryptShaPw},
+				         #{email},
+				         #{photoFilePath},
+				         #{authGroupId},
+				         #{telNo},
+				         #{hpNo},
+				         #{deptNo},
+				         #{deptNm},
+				         SYSDATE
+				       )
+	</insert>
+	
+	<insert id="insertAunuriStdMember" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberVO">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriStdMember ====== */
+			INSERT 
+				  INTO COM_MEMBER 
+				       (
+				         MEM_SEQ,
+				         MEM_ID,
+				         MEM_TYPE,
+				         MEM_NAME,
+				         SEX,
+				         MEM_BIRTH,
+				         MEM_PASSWORD,
+				         EMAIL,
+				         PHOTO_FILE_PATH,
+				         AUTH_GROUP_ID,
+				         TEL_NO,
+				         HP_NO,
+				         DEPT_NO,
+				         DEPT_NM,
+				         INSERT_DATE,
+				         LEC_TARGET_YEAR,
+				         STD_TRANSFER_YN
+				       ) 
+				       VALUES 
+				       (
+				         #{memSeq},
+				         #{memId},
+				         #{memType},
+				         #{memName},
+				         #{sex},
+				         #{memBirth},
+				         <!-- HEX(AES_ENCRYPT(#{memId},#{memId})), -->
+				         #{encryptShaPw},
+				         #{email},
+				         #{photoFilePath},
+				         #{authGroupId},
+				         #{telNo},
+				         #{hpNo},
+				         #{deptNo},
+				         #{deptNm},
+				         SYSDATE,
+				         #{lecTargetYear},
+				         #{stdTransferYn}
+				       )
+	</insert>
+	
+	<insert id="insertAunuriStdAuthMember" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberVO">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriStdAuthMember ====== */
+			INSERT 
+				  INTO COM_AUTH_MEMBER 
+				       (
+				         MEM_SEQ,AUTH_GROUP_ID,MEM_TYPE
+				       ) 
+				       VALUES 
+				       (
+				         #{memSeq},
+				         #{authGroupId},
+				         #{memType}
+				       )
+	</insert>
+	
+	
+	<update id="updateStdLecTargetYear">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateStdLecTarget ====== */
+			UPDATE COM_MEMBER A 
+			       SET LEC_TARGET_YEAR = LEC_TARGET_YEAR-1 
+			 WHERE MEM_SEQ IN 
+			       (SELECT MEM_SEQ 
+			         FROM LMS_LESSON 
+			        WHERE ( 
+			                  YYYY, 
+			                  TERM, 
+			                  SUBJECT_CODE, 
+			                  CLASS 
+			              ) 
+			              IN 
+			              (SELECT YYYY, 
+			                     TERM, 
+			                     SUBJECT_CODE, 
+			                     CLASS 
+			                FROM LMS_SUBJECT 
+			               WHERE SUBJECT_TYPE = 'HSKILL' 
+			              ) 
+			       )
+	</update>
+	
+	<insert id="insertAunuriSubject" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriSubject ====== */
+			INSERT 
+				  INTO LMS_SUBJECT 
+				       ( 
+				         YYYY, 
+				         TERM, 
+				         SUBJECT_CODE, 
+				         CLASS, 
+				         SUBJECT_NAME, 
+				         DEPARTMENT_NO, 
+				         DEPARTMENT_NAME, 
+				         SUBJECT_TYPE, 
+				         POINT_USE_YN, 
+				         POINT, 
+				         TRANING_HOUR, 
+				         SUBJECT_TRANING_TYPE, 
+				         ONLINE_TYPE, 
+				         LCTRUM_CD, 
+				         LCTRUM_NM, 
+				         GRADE_RATIO 
+				       ) 
+				       VALUES 
+				       (  
+				         #{yyyy}, 
+				         #{term}, 
+				         #{subjectCode}, 
+				         #{subjectClass}, 
+				         #{subjectName}, 
+				         #{departmentNo}, 
+				         #{departmentName}, 
+				         #{subjectType}, 
+				         #{pointUseYn}, 
+				         #{point}, 
+				         #{traningHour}, 
+				         #{subjectTraningType}, 
+				         #{onlineType}, 
+				         #{lctrumCd}, 
+				         #{lctrumNm}, 
+				         #{gradeRatio} 
+				       )   
+	</insert>
+	
+	<insert id="insertAunuriSubjectWeek" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriSubjectWeek ====== */
+			INSERT 
+				  INTO LMS_SUBJ_WEEK 
+				       (
+				         WEEK_ID,
+				         YYYY,
+				         TERM,
+				         SUBJECT_CODE,
+				         CLASS,
+				         WEEK_CNT,
+				         LESSON_CN,
+				         LESSON_MTHD,
+				         INSERT_DATE,
+				         INSERT_USER
+				       )  
+				       VALUES
+				       (
+				         #{weekId},
+				         #{yyyy},
+				         #{term},
+				         #{subjectCode},
+				         #{subjectClass},
+				         #{weekCnt},
+				         #{lessonCn},
+				         #{lessonMthd},
+				         SYSDATE,
+				         #{insertUser}
+				       )  
+	</insert>
+	
+	<select id="getAunuriWeekTimeLeadTime" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO" resultType="String">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getAunuriWeekTimeLeadTime ====== */
+			SELECT 
+					(SUBJ.LCTRE_TIME+SUBJ.TEST_EXEC_TIME) * 15 / #{weekLen} 
+				FROM LMS_SUBJECT SUBJ
+					WHERE SUBJ.yyyy = #{yyyy}
+					AND SUBJ.TERM = #{term}
+					AND SUBJ.SUBJECT_CODE = #{subjectCode}
+					AND SUBJ.CLASS = #{subjectClass}
+	</select>
+	
+	<select id="getAunuriWeekOnlineFourTimeLeadTime" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO" resultType="String">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getAunuriWeekOnlineFourTimeLeadTime ====== */
+			SELECT 
+					(SUBJ.LCTRE_TIME+SUBJ.TEST_EXEC_TIME) * 15 -
+					( 
+						SELECT SUM(LEAD_TIME) FROM LMS_SUBJ_WEEK_TIME TIME
+						WHERE TIME.yyyy = #{yyyy}
+							AND TIME.TERM = #{term}
+							AND TIME.SUBJECT_CODE = #{subjectCode}
+							AND TIME.CLASS = #{subjectClass} 
+					)
+				FROM LMS_SUBJECT SUBJ
+					WHERE SUBJ.yyyy = #{yyyy}
+					AND SUBJ.TERM = #{term}
+					AND SUBJ.SUBJECT_CODE = #{subjectCode}
+					AND SUBJ.CLASS = #{subjectClass}
+	</select>
+	
+	<select id="getAunuriWeekOnlineTimeLeadTime" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO" resultType="String">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getAunuriWeekOnlineTimeLeadTime ====== */
+			SELECT 
+					ROUND((SUBJ.LCTRE_TIME+SUBJ.TEST_EXEC_TIME) * 15 / #{weekLen}) 
+				FROM LMS_SUBJECT SUBJ
+					WHERE SUBJ.yyyy = #{yyyy}
+					AND SUBJ.TERM = #{term}
+					AND SUBJ.SUBJECT_CODE = #{subjectCode}
+					AND SUBJ.CLASS = #{subjectClass}
+	</select>
+	
+	<insert id="insertAunuriWeekTime" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriWeekTime ====== */
+			INSERT 
+				  INTO LMS_SUBJ_WEEK_TIME 
+				       (
+				         WEEK_ID,
+				         TIME_ID,
+				         YYYY,
+				         TERM,
+				         SUBJECT_CODE,
+				         CLASS,
+				         TRANING_DATE,
+				         TRANING_ST_HOUR,
+				         TRANING_ST_MIN,
+				         TRANING_ED_HOUR,
+				         TRANING_ED_MIN,
+				         INSERT_DATE,
+				         INSERT_USER,
+				         WEEK_CNT,
+				         LEAD_TIME
+				       )  
+				       VALUES
+				       (
+				         #{weekId},
+				         #{timeId},
+				         #{yyyy},
+				         #{term},
+				         #{subjectCode},
+				         #{subjectClass},
+				         #{traningDate},
+				         #{traningStHour},
+				         #{traningStMin},
+				         #{traningEdHour},
+				         #{traningEdMin},
+				         SYSDATE,
+				         #{sessionMemSeq},
+				         #{weekCnt},
+				         #{leadTime}
+				      )  
+	</insert>
+	
+	<update id="updateAunuriWeekTime" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriWeekTime ====== */
+			UPDATE LMS_SUBJ_WEEK_TIME
+				 
+				   SET TRANING_ST_HOUR = #{traningStHour},
+				         TRANING_ST_MIN = #{traningStMin},
+				         TRANING_ED_HOUR = #{traningEdHour},
+				         TRANING_ED_MIN = #{traningEdMin}
+		WHERE DELETE_YN = 'N'
+		AND WEEK_ID = #{weekId}
+				  
+	</update>
+	
+	
+	<insert id="insertAunuriLesson" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkLessonVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriLesson ====== */
+			INSERT 
+				  INTO LMS_LESSON 
+				       ( 
+				         LESSON_ID, 
+				         YYYY, 
+				         TERM, 
+				         SUBJECT_CODE, 
+				         CLASS, 
+				         MEM_SEQ, 
+				         LEC_STATUS, 
+				         INSERT_DATE, 
+				         INSERT_USER 
+				       ) 
+				       VALUES 
+				       ( 
+				         #{lessonId}, 
+				         #{yyyy}, 
+				         #{term}, 
+				         #{subjectCode}, 
+				         #{subjectClass}, 
+				         #{memSeq}, 
+				         #{lecStatus}, 
+				         SYSDATE, 
+				         #{insertUser} 
+				       )  
+	</insert>
+	
+	<select id="getAunuriLessonCnt" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkLessonVO" resultType="Integer">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getAunuriLessonCnt ====== */
+			SELECT COUNT(1) FROM LMS_LESSON 
+				WHERE YYYY = #{yyyy}
+			 		AND TERM = #{term}
+			 		AND SUBJECT_CODE = #{subjectCode}
+			 		AND CLASS = #{subjectClass}
+			 		AND MEM_SEQ = #{memSeq}
+	</select>
+	
+	<select id="getAunuriInsCnt" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO" resultType="Integer">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getAunuriInsCnt ====== */
+			SELECT COUNT(1) FROM LMS_SUBJ_INS_MAPPING 
+				WHERE YYYY = #{yyyy}
+			 		AND TERM = #{term}
+			 		AND SUBJECT_CODE = #{subjectCode}
+			 		AND CLASS = #{subjectClass}
+			 		AND MEM_SEQ = #{memSeq}
+	</select>
+	
+	
+	
+	<insert id="insertAunuriIns" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriIns ====== */
+			INSERT 
+				  INTO LMS_SUBJ_INS_MAPPING 
+				       (
+				         SUBJ_INS_MAPPING_ID,
+				         YYYY,
+				         TERM,
+				         SUBJECT_CODE,
+				         CLASS,
+				         MEM_SEQ,
+				         INSERT_USER,
+				         INSERT_DATE
+				       ) 
+				       VALUES 
+				       (
+				         #{subjInsMappingId},
+				         #{yyyy},
+				         #{term},
+				         #{subjectCode},
+				         #{subjectClass},
+				         #{memSeq},
+				         #{insertUser},
+				         SYSDATE
+				       )
+				        
+	</insert>
+	
+	<select id="listSubjectCdp" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO" resultType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.listSubjectCdp ====== */
+			SELECT MEM.MEM_SEQ, 
+				       MEM.DEPT_NO, 
+				       YYYY AS YYYY, 
+				       TERM AS TERM, 
+				       SUBJECT_CODE AS SUBJECT_CODE, 
+				       CLASS AS SUBJECT_CLASS  
+				  FROM COM_MEMBER MEM 
+				     INNER JOIN LMS_SUBJECT SUB 
+				         ON MEM.DEPT_NO = SUB.DEPARTMENT_NO 
+				       AND SUB.DELETE_YN = 'N' 
+				 WHERE MEM.DELETE_YN = 'N' 
+				       AND MEM.MEM_TYPE = 'CDP'  
+	</select>
+	
+	
+	<insert id="insertAunuriCdp" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriCdp ====== */
+			INSERT 
+				  INTO LMS_SUBJ_CDP_MAPPING 
+				       (
+				         SUBJ_CDP_MAPPING_ID,
+				         YYYY,
+				         TERM,
+				         SUBJECT_CODE,
+				         CLASS,
+				         MEM_SEQ,
+				         INSERT_USER,
+				         INSERT_DATE
+				       ) 
+				       VALUES 
+				       (
+				         #{subjCdpMappingId},
+				         #{yyyy},
+				         #{term},
+				         #{subjectCode},
+				         #{subjectClass},
+				         #{memSeq},
+				         #{insertUser},
+				         SYSDATE
+				       )  
+	</insert>
+	
+	<insert id="insertAunuriSchedule" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkScheduleVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriSchedule ====== */
+			INSERT 
+				  INTO HAK_SCHEDULE 
+				       (
+				         YYYY,
+				         TERM,
+				         START_DATE,
+				         END_DATE
+				       ) 
+				       VALUES 
+				       (
+				         #{yyyy},
+				         #{term},
+				         #{startDate},
+				         #{endDate}
+				       )
+	</insert>
+	
+	<select id="listAunuriWeek" resultType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.listAunuriWeek ====== */
+			SELECT WEEK.WEEK_ID AS WEEK_ID, 
+		       WEEK.YYYY AS YYYY, 
+		       WEEK.TERM AS TERM, 
+		       WEEK.SUBJECT_CODE AS SUBJECT_CODE, 
+		       WEEK.CLASS AS SUBJECT_CLASS, 
+		       WEEK.WEEK_CNT AS WEEK_CNT 
+		  FROM LMS_SUBJ_WEEK WEEK 
+		     INNER JOIN LMS_SUBJECT LSUB 
+		         ON WEEK.YYYY = LSUB.YYYY 
+		       AND WEEK.TERM = LSUB.TERM 
+		       AND WEEK.SUBJECT_CODE = LSUB.SUBJECT_CODE 
+		       AND WEEK.CLASS = LSUB.CLASS 
+		       AND LSUB.DELETE_YN = 'N' 
+		       AND LSUB.SUBJECT_TRANING_TYPE = 'OFF'
+		 WHERE WEEK.YYYY = '2017' 
+		       AND WEEK.TERM = '1' 
+		       AND WEEK.DELETE_YN = 'N'
+		       
+	</select>
+	
+	
+	
+	<insert id="insertAunuriWeekNcsUnit" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriWeekNcsUnit ====== */
+			INSERT 
+			  INTO LMS_SUBJ_NCS_UNIT 
+			       (
+			         NCS_UNIT_ID,
+			         YYYY,
+			         TERM,
+			         SUBJECT_CODE,
+			         CLASS,
+			         WEEK_ID,
+			         NCS_UNIT_NAME,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES
+			       (
+			         #{ncsUnitId},
+			         #{yyyy},
+			         #{term},
+			         #{subjectCode},
+			         #{subjectClass},
+			         #{weekId},
+			         #{ncsUnitName},
+			         SYSDATE,
+			         #{insertUser}
+			       )
+			       
+	</insert>
+	
+	
+	<update id="updateAunuriWeekNcsUnit" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriWeekNcsUnit ====== */
+			UPDATE LMS_SUBJ_NCS_UNIT 
+		       SET NCS_UNIT_NAME = #{ncsUnitName}, 
+		       WEEK_ID = #{ncsUnitId}   
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	<insert id="insertAunuriWeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriWeekNcsElem ====== */
+			INSERT 
+			  INTO LMS_SUBJ_NCS_ELEM 
+			       (
+			         NCS_UNIT_ID,
+			         NCS_ELEM_ID,
+			         YYYY,
+			         TERM,
+			         SUBJECT_CODE,
+			         CLASS,
+			         WEEK_ID,
+			         NCS_ELEM_NAME,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES
+			       (
+			         #{ncsUnitId},
+			         #{ncsElemId},
+			         #{yyyy},
+			         #{term},
+			         #{subjectCode},
+			         #{subjectClass},
+			         #{weekId},
+			         #{ncsElemName},
+			         SYSDATE,
+			         #{insertUser}
+			       )
+			       
+	</insert>
+	
+	<update id="updateAunuriWeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriWeekNcsElem ====== */
+			UPDATE LMS_SUBJ_NCS_ELEM 
+		       SET NCS_UNIT_NAME = #{ncsUnitName}, 
+		       WEEK_ID = #{ncsUnitId}   
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	
+	<update id="comMemberTest" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.comMemberTest ====== */
+			UPDATE COM_MEMBER SET MEM_NAME = '테스트2' WHERE MEM_ID = 'hrd1'
+	</update>
+	
+	
+	<insert id="insertAunuriSubjectTerm" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAunuriSubjectTerm ====== */
+			INSERT 
+				  INTO LMS_SUBJECT 
+				       ( 
+				         YYYY, 
+				         TERM, 
+				         SUBJECT_CODE, 
+				         CLASS, 
+				         SUBJECT_NAME, 
+				         DEPARTMENT_NO, 
+				         DEPARTMENT_NAME, 
+				         SUBJECT_TYPE, 
+				         POINT_USE_YN, 
+				         POINT, 
+				         LCTRE_TIME, 
+				         TEST_EXEC_TIME, 
+				         TRANING_HOUR, 
+				         SUBJECT_TRANING_TYPE, 
+				         ONLINE_TYPE, 
+				         LCTRUM_CD, 
+				         LCTRUM_NM, 
+				         GRADE_RATIO,
+				         FIRST_STUDY_YN,
+				         HISTORY_ID, 
+				         HISTORY_DATE, 
+				         HISTORY_USER,
+				         GRADE_CD,
+				         NCS_YN
+				       ) 
+				       VALUES 
+				       (  
+				         #{yyyy}, 
+				         #{term}, 
+				         #{subjectCode}, 
+				         #{subjectClass}, 
+				         #{subjectName}, 
+				         #{departmentNo}, 
+				         #{departmentName}, 
+				         #{subjectType}, 
+				         #{pointUseYn}, 
+				         #{point}, 
+				         #{lctreTime}, 
+				         #{testExecTime}, 
+				         #{traningHour}, 
+				         #{subjectTraningType}, 
+				         #{onlineType}, 
+				         #{lctrumCd}, 
+				         #{lctrumNm}, 
+				         #{gradeRatio},
+				         #{firstStudyYn},
+				         #{historyId},
+				         SYSDATE,
+				         #{sessionMemSeq},
+				         #{gradeCd},
+				         #{ncsYn}
+				       )   
+	</insert>
+	
+	
+	<select id="listSubjectCdpTerm" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO" resultType="kr.co.gocle.aunuri.vo.AunuriLinkMemberMappingVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.listSubjectCdpTerm ====== */
+			
+			SELECT * FROM (
+				SELECT MEM.MEM_SEQ, 
+				       MEM.DEPT_NO, 
+				       YYYY AS YYYY, 
+				       TERM AS TERM, 
+				       SUBJECT_CODE AS SUBJECT_CODE, 
+				       CLASS AS SUBJECT_CLASS  
+				  FROM COM_MEMBER MEM 
+				     INNER JOIN LMS_SUBJECT SUB 
+				         ON MEM.DEPT_NO = SUB.DEPARTMENT_NO 
+				       AND SUB.DELETE_YN = 'N' 
+				 WHERE MEM.DELETE_YN = 'N' 
+				       AND MEM.MEM_TYPE = 'CDP'  
+			) AA   
+			WHERE YYYY = #{yyyy}
+		   AND TERM = #{term}
+		   AND SUBJECT_CODE = #{subjectCode}
+		   AND SUBJECT_CLASS = #{subjectClass}
+			
+				 
+	</select>
+	
+	
+	<update id="updateAunuriMemberOutYn" parameterType="String">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriMemberOutYn ====== */
+			UPDATE COM_MEMBER SET OUT_YN =  'Y' WHERE MEM_ID = #{memId}
+	</update>
+	
+	<update id="updateAunuriMemberPassYn" parameterType="String">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriMemberOutYn ====== */
+			UPDATE COM_MEMBER SET PASS_YN =  'Y' WHERE MEM_ID = #{memId}
+	</update>
+	
+	<update id="updateAunuriMemberMerge" parameterType="String">
+		/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateAunuriMemberMerge ====== */
+			UPDATE COM_MEMBER SET PASS_YN =  'Y' WHERE MEM_ID = #{memId}
+	</update>
+	
+	<select id="listSubjectWeek" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO" resultType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.listSubjectWeek ====== */
+			SELECT WEEK_ID,YYYY,TERM,SUBJECT_CODE,CLASS AS SUBJECT_CLASS,WEEK_CNT 
+					  FROM LMS_SUBJ_WEEK 
+					 WHERE DELETE_YN = 'N' 
+					       AND 
+					       (
+					         YYYY,
+					         TERM,
+					         SUBJECT_CODE,
+					         CLASS
+					       ) 
+					       IN 
+					       (SELECT YYYY,
+					              TERM,
+					              SUBJECT_CODE,
+					              CLASS 
+					         FROM LMS_SUBJECT 
+					        WHERE DELETE_YN = 'N' 
+					              AND SUBJECT_TRANING_TYPE = 'OFF' 
+					              AND YYYY = #{yyyy}
+					              AND TERM = #{term}
+					       )  
+					ORDER BY YYYY,
+					       TERM,
+					       SUBJECT_CODE,
+					       CLASS,
+					       TO_NUMBER(WEEK_CNT)
+	</select>
+	
+	<select id="listSubjectTerm" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectVO" resultType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.listSubjectTerm ====== */
+			SELECT YYYY,TERM,SUBJECT_CODE,CLASS AS SUBJECT_CLASS 
+					  FROM LMS_SUBJECT 
+					 WHERE DELETE_YN = 'N' 
+					 	AND YYYY = #{yyyy}
+					    AND TERM = #{term}
+					ORDER BY YYYY,
+					       TERM,
+					       SUBJECT_CODE,
+					       CLASS
+	</select>
+	
+	<select id="getWeekNcsUnitCnt" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO" resultType="Integer">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getWeekNcsUnitCnt ====== */
+			SELECT COUNT(1) FROM LMS_SUBJ_NCS_UNIT 
+				WHERE YYYY = #{yyyy}
+			 		AND TERM = #{term}
+			 		AND SUBJECT_CODE = #{subjectCode}
+			 		AND CLASS = #{subjectClass}
+			 		AND WEEK_ID = #{weekId}
+	</select>
+	
+	
+	
+	<select id="getWeekNcsElemCnt" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO" resultType="Integer">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.getWeekNcsElemCnt ====== */
+			SELECT COUNT(1) FROM LMS_SUBJ_NCS_ELEM 
+				WHERE YYYY = #{yyyy}
+			 		AND TERM = #{term}
+			 		AND SUBJECT_CODE = #{subjectCode}
+			 		AND CLASS = #{subjectClass}
+			 		AND WEEK_ID = #{weekId}
+			 		AND NCS_UNIT_ID = #{ncsUnitId}
+	</select>
+	
+	<update id="updateWeekNcsUnit" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateWeekNcsUnit ====== */
+			UPDATE LMS_SUBJ_NCS_UNIT 
+		       SET NCS_UNIT_ID = #{ncsUnitId},
+		       NCS_UNIT_NAME = #{ncsUnitName}
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code = #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	<insert id="insertWeekNcsUnit" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertWeekNcsUnit ====== */
+			INSERT 
+			  INTO LMS_SUBJ_NCS_UNIT 
+			       (
+			         NCS_UNIT_ID,
+			         YYYY,
+			         TERM,
+			         SUBJECT_CODE,
+			         CLASS,
+			         WEEK_ID,
+			         NCS_UNIT_NAME,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES
+			       (
+			         #{ncsUnitId},
+			         #{yyyy},
+			         #{term},
+			         #{subjectCode},
+			         #{subjectClass},
+			         #{weekId},
+			         #{ncsUnitName},
+			         SYSDATE,
+			         #{insertUser}
+			       )
+			       
+	</insert>
+	
+	<insert id="insertWeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertWeekNcsElem ====== */
+			INSERT 
+			  INTO LMS_SUBJ_NCS_ELEM 
+			       (
+			         NCS_UNIT_ID,
+			         NCS_ELEM_ID,
+			         YYYY,
+			         TERM,
+			         SUBJECT_CODE,
+			         CLASS,
+			         WEEK_ID,
+			         NCS_ELEM_NAME,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES
+			       (
+			         #{ncsUnitId},
+			         #{ncsElemId},
+			         #{yyyy},
+			         #{term},
+			         #{subjectCode},
+			         #{subjectClass},
+			         #{weekId},
+			         #{ncsElemName},
+			         SYSDATE,
+			         #{insertUser}
+			       )
+			       
+	</insert>
+	
+	<update id="updateWeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.updateWeekNcsElem ====== */
+			UPDATE LMS_SUBJ_NCS_ELEM 
+		       SET NCS_UNIT_ID = #{ncsUnitId},
+		       NCS_ELEM_ID = #{ncsElemId},
+		       NCS_ELEM_NAME = #{ncsElemName}
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code = #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	<update id="deleteWeekNcsUnit" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.deleteWeekNcsElem ====== */
+			UPDATE LMS_SUBJ_NCS_UNIT 
+		       SET DELETE_YN = 'Y'
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code = #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	<update id="deleteWeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.deleteWeekNcsElem ====== */
+			UPDATE LMS_SUBJ_NCS_ELEM 
+		       SET DELETE_YN = 'Y'
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code = #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</update>
+	
+	<delete id="delete_WeekNcsElem" parameterType="kr.co.gocle.aunuri.vo.AunuriLinkSubjectWeekNcsVO">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.deleteWeekNcsElem ====== */
+			DELETE FROM LMS_SUBJ_NCS_ELEM
+		 WHERE YYYY = #{yyyy} 
+		       AND term = #{term} 
+		       AND subject_code = #{subjectCode} 
+		       AND class = #{subjectClass} 
+		       AND week_id = #{weekId}
+	</delete>
+	
+	
+	<update id="excuteStdBatch">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.excuteStdBatch ====== */
+			MERGE INTO 
+				COM_MEMBER A USING 
+			    KUT_MOB2.VH_OKLMS_TH_SKNRGS_M B ON 
+			    (A.MEM_ID = B.STUDNO AND A.MEM_TYPE = 'STD' AND B.SKNRGS_STTUS_NM IN ('재학','휴학','제적')  AND B.MEM_TYPE = '학생' ) 
+			WHEN MATCHED THEN  
+			    UPDATE 
+			           SET A.STD_HAK_STATUS = DECODE(B.SKNRGS_STTUS_NM,'재학','1','휴학','4','5'),
+			           A.OUT_YN = DECODE(B.SKNRGS_STTUS_NM,'제적','Y','N'),
+			           A.SUBJECT_GRADE = B.SCH_YR
+	</update>
+	
+	<delete id="deleteAttend">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.deleteAttend ====== */
+			delete from VH_OKLMS_LCTRE_ATTEND
+	</delete>
+	
+	<insert id="insertAttend">
+	/* ====== kr.co.gocle.oklms.la.link.service.impl.LinkMapper.insertAttend ====== */
+			insert into VH_OKLMS_LCTRE_ATTEND select * from KUT_MOB2.VH_OKLMS_LCTRE_ATTEND
+	</insert>
+
+</mapper>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ~ *******************************************************************************
+  ~  * COPYRIGHT(C) 2016 SMART INFORMATION TECHNOLOGY. ALL RIGHTS RESERVED.
+  ~  * This software is the proprietary information of SMART INFORMATION TECHNOLOGY..
+  ~  *
+  ~  * Revision History
+  ~  * Author   Date            Description
+  ~  * ======   =========      ====================================
+  ~  * 이진근    2017. 05. 10.         First Draft
+  ~  *
+  ~  *******************************************************************************
+  -->
+
+<mapper namespace="kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper">
+
+<sql id="list-where">
+    <choose>
+          <when test="searchCondition != null and searchCondition != ''">
+              	<if test="searchCondition eq 'NAME'">
+              		<if test="searchKeyword != null and searchKeyword != ''">
+              			AND FN_GETUSERNAME(b.INSERT_USER) LIKE '%' || #{searchKeyword  } || '%' 
+              		</if>
+              	</if>
+              	<if test="searchCondition eq 'MEMO'">
+              		<if test="searchKeyword != null and searchKeyword != ''">
+              			AND b.QUSTNR_PURPS LIKE '%' || #{searchKeyword  } || '%' 
+              		</if>
+              	</if>
+          </when>
+     </choose>
+
+     <choose>
+          <when test="searchStatus != null and searchStatus != ''">
+              	<if test="searchStatus eq 'BEFOR'">
+              		<![CDATA[ AND (TO_CHAR(SYSDATE,'YYYY.MM.DD' ) < b.QUSTNR_START_DATE) = '1' ]]>
+              	</if>
+              	<if test="searchStatus eq 'START'">
+              		<![CDATA[ AND (TO_CHAR(SYSDATE,'YYYY.MM.DD' ) BETWEEN b.QUSTNR_START_DATE AND b.QUSTNR_END_DATE) = '1' ]]>
+              	</if>
+              	<if test="searchStatus eq 'END'">
+              		<![CDATA[ AND (TO_CHAR(SYSDATE,'YYYY.MM.DD' ) > b.QUSTNR_END_DATE) = '1' ]]>
+              	</if>
+          </when>
+     </choose>
+
+     <choose>
+          <when test="searchJoinAt != null and searchJoinAt != ''">
+              	<!-- <if test="searchJoinAt eq 'NO'">
+              		<![CDATA[
+              				 AND if( (select count(a.mem_seq) as cnt
+						           from lms_qestnr_answer_result a
+						          where a.QESTNR_ID = b.QESTNR_ID
+						            and a.YYYY = b.YYYY
+						            and a.TERM = b.TERM
+						            and a.SUBJECT_CODE = b.SUBJECT_CODE
+						            and a.CLASS = b.CLASS
+						            and a.DELETE_YN = 'N'
+						            and a.mem_seq = #{sessionMemSeq}
+						         ), 'Y', 'N'
+						       ) = 'N'
+              		 ]]>
+              	</if>
+              	<if test="searchJoinAt eq 'YES'">
+              		<![CDATA[
+              				 AND if( (select count(a.mem_seq) as cnt
+						           from lms_qestnr_answer_result a
+						          where a.QESTNR_ID = b.QESTNR_ID
+						            and a.YYYY = b.YYYY
+						            and a.TERM = b.TERM
+						            and a.SUBJECT_CODE = b.SUBJECT_CODE
+						            and a.CLASS = b.CLASS
+						            and a.DELETE_YN = 'N'
+						            and a.mem_seq = #{sessionMemSeq}
+						         ), 'Y', 'N'
+						       ) = 'Y'
+              		 ]]>
+              	</if> -->
+              	<if test="searchJoinAt eq 'NO'">
+              		<![CDATA[
+              				 AND deocde( (select count(a.mem_seq) as cnt
+						           from lms_qestnr_answer_result a
+						          where a.QESTNR_ID = b.QESTNR_ID
+						            and a.YYYY = b.YYYY
+						            and a.TERM = b.TERM
+						            and a.SUBJECT_CODE = b.SUBJECT_CODE
+						            and a.CLASS = b.CLASS
+						            and a.DELETE_YN = 'N'
+						            and a.mem_seq = #{sessionMemSeq}
+						         ), 0 , 'N' , 'Y'
+						       ) = 'N'
+              		 ]]>
+              	</if>
+              	<if test="searchJoinAt eq 'YES'">
+              		<![CDATA[
+              				 AND deocde( (select count(a.mem_seq) as cnt
+						           from lms_qestnr_answer_result a
+						          where a.QESTNR_ID = b.QESTNR_ID
+						            and a.YYYY = b.YYYY
+						            and a.TERM = b.TERM
+						            and a.SUBJECT_CODE = b.SUBJECT_CODE
+						            and a.CLASS = b.CLASS
+						            and a.DELETE_YN = 'N'
+						            and a.mem_seq = #{sessionMemSeq}
+						         ), 0 , 'N' , 'Y'
+						       ) = 'Y'
+              		 ]]>
+              	</if>
+          </when>
+     </choose>
+
+</sql>
+
+<select id="listQestnrInfo" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO" resultType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.listQestnrInfo ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+		<![CDATA[
+			select
+			     b.QESTNR_ID,
+			     b.YYYY,
+				 b.TERM,
+				 b.SUBJECT_CODE,
+				 b.CLASS,
+			     b.QUSTNR_SJ,
+			     b.QUSTNR_ANSWER,
+			     b.QUSTNR_START_DATE,
+			     b.QUSTNR_END_DATE,
+			     FN_GETUSERNAME(b.INSERT_USER) as memName, /* 작성자 */
+			     (select count(a.mem_seq) as cnt
+			       from lms_qestnr_answer_result a
+			      where a.QESTNR_ID = b.QESTNR_ID
+			        and a.YYYY = b.YYYY
+			        and a.TERM = b.TERM
+			        and a.SUBJECT_CODE = b.SUBJECT_CODE
+			        and a.CLASS = b.CLASS
+			        and a.DELETE_YN = 'N'
+			      ) as answerResultCnt, /* 설문 참여인원 */
+			     (select count(1) as cnt
+			       from lms_lesson a
+			      where a.YYYY = b.YYYY
+			        and a.TERM = b.TERM
+			        and a.SUBJECT_CODE = b.SUBJECT_CODE
+			        and a.CLASS = b.CLASS
+			        and a.DELETE_YN = 'N'
+			      ) as lessonStdCnt, /* 해당개설교과 학습근로자 총인원 */
+			     TO_CHAR (b.INSERT_DATE, 'YYYY.MM.DD') INSERT_DATE, /* 작성일 */
+			     CASE
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) BETWEEN b.QUSTNR_START_DATE AND b.QUSTNR_END_DATE THEN '진행'
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) > b.QUSTNR_END_DATE THEN '종료'
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) < b.QUSTNR_START_DATE THEN '예정'
+			        ELSE ''
+			    END PROGRRESS_STATUS /* 진행상태 */
+			  from lms_qestnr_info b
+			  where b.DELETE_YN = 'N'
+			  and b.YYYY = #{yyyy}
+			  and b.TERM = #{term}
+			  and b.SUBJECT_CODE = #{subjectCode}
+			  and b.CLASS = #{subClass}
+  		]]>
+  		
+  			<choose>
+		          <when test="sessionMemType != null and sessionMemType != ''">
+		         	 <if test="sessionMemType eq 'PRT'">
+              				 AND (b.yyyy,b.term,b.subject_code,b.class) IN
+              				 (
+              				 	SELECT YYYY,
+								       TERM,
+								       SUBJECT_CODE,
+								       CLASS 
+								  FROM LMS_SUBJ_INS_MAPPING 
+								 WHERE DELETE_YN = 'N' 
+								       AND MEM_SEQ = #{sessionMemSeq}
+              				 )
+		              	</if>
+		              	<if test="sessionMemType eq 'CDP'">
+		              		AND (b.yyyy,b.term,b.subject_code,b.class) IN
+              				 (
+              				 	SELECT A.YYYY, 
+							              A.TERM, 
+							              A.SUBJECT_CODE, 
+							              A.CLASS 
+							         FROM LMS_SUBJECT A 
+							          INNER JOIN LMS_DEPT_CDP_MAPPING B 
+							              ON A.DEPARTMENT_NO = B.DEPT_NO 
+							              AND B.MEM_SEQ = #{sessionMemSeq}
+							        WHERE A.DELETE_YN = 'N'
+              				 )
+		              	</if>
+		          </when>
+	         </choose> 
+		 	<include refid="list-where"/>
+		  order by b.INSERT_DATE desc
+		  <include refid="kr.co.gocle.include.paging-end"/>
+</select>
+
+<select id="listQestnrStdInfo" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO" resultType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.listQestnrStdInfo ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+		<![CDATA[
+			select
+			     b.QESTNR_ID,
+			     b.YYYY,
+				 b.TERM,
+				 b.SUBJECT_CODE,
+				 b.CLASS,
+			     b.QUSTNR_SJ,
+			     b.QUSTNR_ANSWER,
+			     b.QUSTNR_START_DATE,
+			     b.QUSTNR_END_DATE,			     
+			     TO_CHAR (SYSDATE, 'YYYYMMDDHH24MI') as currentDt, /* 현재시간 */
+			     FN_GETUSERNAME(b.INSERT_USER) as memName, /* 작성자 */
+			     TO_CHAR (b.INSERT_DATE, 'YYYY.MM.DD') INSERT_DATE, /* 작성일 */
+			     CASE
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) BETWEEN b.QUSTNR_START_DATE AND b.QUSTNR_END_DATE THEN '진행'
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) > b.QUSTNR_END_DATE THEN '종료'
+			        WHEN TO_CHAR(SYSDATE,'YYYY.MM.DD' ) < b.QUSTNR_START_DATE THEN '예정'
+			        ELSE ''
+			    END PROGRRESS_STATUS, /* 진행상태 */
+			    (select count(1) as cnt
+			       from lms_lesson a
+			      where a.YYYY = b.YYYY
+			        and a.TERM = b.TERM
+			        and a.SUBJECT_CODE = b.SUBJECT_CODE
+			        and a.CLASS = b.CLASS
+			        and a.DELETE_YN = 'N'
+			      ) as lessonStdCnt, /* 해당개설교과 학습근로자 총인원 */
+			    decode( (select count(a.mem_seq) as cnt
+			           from lms_qestnr_answer_result a
+			          where a.QESTNR_ID = b.QESTNR_ID
+			            and a.YYYY = b.YYYY
+			            and a.TERM = b.TERM
+			            and a.SUBJECT_CODE = b.SUBJECT_CODE
+			            and a.CLASS = b.CLASS
+			            and a.DELETE_YN = 'N'
+			            and a.mem_seq = #{sessionMemSeq}
+			         ), 1 ,'Y', 'N'
+			       ) as joinAt  /* 참여여부 */
+			  from lms_qestnr_info b
+			  where b.DELETE_YN = 'N'
+			  and b.YYYY = #{yyyy}
+			  and b.TERM = #{term}
+			  and b.SUBJECT_CODE = #{subjectCode}
+			  and b.CLASS = #{subClass}
+  		]]>
+	  	  <include refid="list-where"/>
+		  order by b.INSERT_DATE desc
+		  <include refid="kr.co.gocle.include.paging-end"/>
+</select>
+
+<select id="listQestnrEtcAnswerCn" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO" resultType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.listQestnrEtcAnswerCn ====== */
+		
+		SELECT   A.MEM_SEQ,
+			         FN_GETUSERNAME(A.MEM_SEQ) MEM_NAME,
+			         FN_GETUSERID(A.MEM_SEQ) MEM_ID,
+			         A.QESTN_ANSWER_SN,
+			         A.ETC_ANSWER_CN,
+			         '기타의견' AS QESTN_CN,
+			         TO_CHAR (A.INSERT_DATE, 'YYYY.MM.DD') INSERT_DATE
+			FROM     LMS_QESTNR_ANSWER_RESULT A
+			WHERE    A.QESTNR_ID               = #{qestnrId}
+			AND      A.QUSTNR_QESITM_ID        = #{qustnrQesitmId}
+			AND      A.ETC_ANSWER_CN IS NOT NULL
+			AND      LENGTH(A.ETC_ANSWER_CN)   > 0
+			AND      A.DELETE_YN               = 'N'
+			ORDER BY A.INSERT_DATE DESC
+		
+		<!-- select a.mem_seq,
+		      FN_GETUSERNAME(a.MEM_SEQ) mem_name,
+		      FN_GETUSERID(a.MEM_SEQ) mem_id,
+		      a.QESTN_ANSWER_SN,
+		      a.ETC_ANSWER_CN,
+				CASE 
+							WHEN a.QESTN_ANSWER_SN = '1'  THEN b.QESTN_CN1
+							WHEN a.QESTN_ANSWER_SN = '2'  THEN b.QESTN_CN2
+							WHEN a.QESTN_ANSWER_SN = '3'  THEN b.QESTN_CN3
+							WHEN a.QESTN_ANSWER_SN = '4'  THEN b.QESTN_CN4
+							WHEN a.QESTN_ANSWER_SN = '5'  THEN b.QESTN_CN5
+							WHEN a.QESTN_ANSWER_SN = '6'  THEN b.QESTN_CN6
+							WHEN a.QESTN_ANSWER_SN = '7'  THEN b.QESTN_CN7
+							WHEN a.QESTN_ANSWER_SN = '8'  THEN b.QESTN_CN8
+							WHEN a.QESTN_ANSWER_SN = '9'  THEN b.QESTN_CN9
+							WHEN a.QESTN_ANSWER_SN = '10'  THEN b.QESTN_CN10
+							ELSE '기타' 
+				END QESTN_CN,		      
+		      TO_CHAR (a.INSERT_DATE, 'YYYY.MM.DD') INSERT_DATE
+		  from lms_qestnr_answer_result a,lms_qestnr_item b
+		 where a.QESTNR_ID = #{qestnrId}
+		     and a.QUSTNR_QESITM_ID = #{qustnrQesitmId}
+		     and a.QESTNR_ID = b.QESTNR_ID		     
+		     and a.QUSTNR_QESITM_ID = b.QUSTNR_QESITM_ID
+		     and a.ETC_ANSWER_CN is not null
+		     <![CDATA[
+		     and a.ETC_ANSWER_CN <> ''
+		     ]]>
+		     and a.DELETE_YN = 'N'
+		order by a.INSERT_DATE desc -->
+</select>
+
+<select id="getQestnrInfo" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO" resultType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+
+    <![CDATA[
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.getQestnrInfo ====== */
+        select
+		      b.QESTNR_ID,
+		      b.YYYY,
+		      b.TERM,
+		      b.SUBJECT_CODE,
+		      b.CLASS,
+		      b.QUSTNR_SJ,
+		      b.QUSTNR_PURPS,
+		      b.QUSTNR_ANSWER,
+		      b.QUSTNR_START_DATE,
+		      b.QUSTNR_END_DATE,
+		      b.ETC_ANSWER_AT,
+		      
+		      TO_CHAR(TO_DATE(b.QUSTNR_START_DATE,'YYYY.MM.DD'), 'dy', 'NLS_DATE_LANGUAGE=korean') AS DAY_OF_WEEK_START,
+		      TO_CHAR(TO_DATE(b.QUSTNR_END_DATE,'YYYY.MM.DD'), 'dy', 'NLS_DATE_LANGUAGE=korean') AS DAY_OF_WEEK_END,
+		       (select count(a.mem_seq) as cnt
+			       from lms_qestnr_answer_result a
+			      where a.QESTNR_ID = b.QESTNR_ID
+			        and a.YYYY = b.YYYY
+			        and a.TERM = b.TERM
+			        and a.SUBJECT_CODE = b.SUBJECT_CODE
+			        and a.CLASS = b.CLASS
+			        and a.DELETE_YN = 'N'
+			      ) as answerResultCnt, /* 설문 참여인원 */
+			     (select count(1) as cnt
+			       from lms_lesson a
+			      where a.YYYY = b.YYYY
+			        and a.TERM = b.TERM
+			        and a.SUBJECT_CODE = b.SUBJECT_CODE
+			        and a.CLASS = b.CLASS
+			        and a.DELETE_YN = 'N'
+			      ) as lessonStdCnt /* 해당개설교과 학습근로자 총인원 */
+		  from lms_qestnr_info b
+		  where  b.DELETE_YN = 'N'
+		  and b.QESTNR_ID = #{qestnrId}
+    ]]>
+
+</select>
+
+<select id="getQestnrItem" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO" resultType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+	<![CDATA[
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.getQestnrItem ====== */
+			select
+		      QESTNR_ID,
+		      QUSTNR_QESITM_ID,
+		      YYYY,
+		      TERM,
+		      SUBJECT_CODE,
+		      CLASS,
+		      QESTN_CN1,
+		      QESTN_CN2,
+		      QESTN_CN3,
+		      QESTN_CN4,
+		      QESTN_CN5,
+		      QESTN_CN6,
+		      QESTN_CN7,
+		      QESTN_CN8,
+		      QESTN_CN9,
+		      QESTN_CN10,		      
+		      round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '1' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT1,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '2' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT2,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '3' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT3,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '4' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT4,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '5' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT5,
+
+		      round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '6' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT6,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '7' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT7,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '8' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT8,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '9' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT9,
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '10' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT10,              
+
+              round(((select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = 'etc' and a.DELETE_YN = 'N') / #{lessonStdCnt})*100) as QESTN_ANSWER_PERCENT11,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '1' and a.DELETE_YN = 'N') as qestnAnswerSn1,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '2' and a.DELETE_YN = 'N') as qestnAnswerSn2,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '3' and a.DELETE_YN = 'N') as qestnAnswerSn3,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '4' and a.DELETE_YN = 'N') as qestnAnswerSn4,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '5' and a.DELETE_YN = 'N') as qestnAnswerSn5,
+              
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '6' and a.DELETE_YN = 'N') as qestnAnswerSn6,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '7' and a.DELETE_YN = 'N') as qestnAnswerSn7,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '8' and a.DELETE_YN = 'N') as qestnAnswerSn8,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '9' and a.DELETE_YN = 'N') as qestnAnswerSn9,
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = '10' and a.DELETE_YN = 'N') as qestnAnswerSn10,
+                            
+              (select count(1) from lms_qestnr_answer_result a where a.QESTNR_ID = #{qestnrId} and a.QESTN_ANSWER_SN = 'etc' and a.DELETE_YN = 'N') as qestnAnswerSn11
+		  from lms_qestnr_item
+		  where  DELETE_YN = 'N'
+		  and QESTNR_ID = #{qestnrId}
+	]]>
+</select>
+
+<insert id="insertQestnrInfo" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.insertQestnrInfo ====== */
+			INSERT INTO LMS_QESTNR_INFO (
+			             QESTNR_ID
+						,YYYY
+						,TERM
+						,SUBJECT_CODE
+						,CLASS
+						,QUSTNR_SJ
+						,QUSTNR_PURPS
+						,QUSTNR_ANSWER
+						,QUSTNR_START_DATE
+						,QUSTNR_END_DATE
+						,ETC_ANSWER_AT
+						,INSERT_DATE
+						,INSERT_USER
+					)
+					VALUES
+					(
+						 #{qestnrId}
+						,#{yyyy}
+						,#{term}
+						,#{subjectCode}
+						,#{subClass}
+						,#{qustnrSj}
+						,#{qustnrPurps}
+						,#{qustnrAnswer}
+						,#{qustnrStartDate}
+						,#{qustnrEndDate}
+						,#{etcAnswerAt}
+						,SYSDATE
+						,#{sessionMemSeq}
+					)
+
+	</insert>
+
+	<insert id="insertQestnrItem" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.insertQestnrItem ====== */
+			INSERT INTO LMS_QESTNR_ITEM (
+						 QUSTNR_QESITM_ID
+						,QESTNR_ID
+						,YYYY
+						,TERM
+						,SUBJECT_CODE
+						,CLASS
+						,QESTN_CN1
+						,QESTN_CN2
+						,QESTN_CN3
+						,QESTN_CN4
+						,QESTN_CN5
+						,QESTN_CN6
+						,QESTN_CN7
+						,QESTN_CN8
+						,QESTN_CN9
+						,QESTN_CN10
+						
+						,INSERT_DATE
+						,INSERT_USER
+					)
+					VALUES
+					(
+						 #{qustnrQesitmId}
+						,#{qestnrId}
+						,#{yyyy}
+						,#{term}
+						,#{subjectCode}
+						,#{subClass}
+						,#{qestnCn1}
+						,#{qestnCn2}
+						,#{qestnCn3}
+						,#{qestnCn4}
+						,#{qestnCn5}
+						,#{qestnCn6}
+						,#{qestnCn7}
+						,#{qestnCn8}
+						,#{qestnCn9}
+						,#{qestnCn10}						
+						,SYSDATE
+						,#{sessionMemSeq}
+					)
+
+	</insert>
+
+	<insert id="insertQestnrAnswerResult" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO">
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.insertQestnrItem ====== */
+			INSERT INTO LMS_QESTNR_ANSWER_RESULT (
+						 QUSTNR_QESITM_ID
+						,QESTNR_ID
+						,YYYY
+						,TERM
+						,SUBJECT_CODE
+						,CLASS
+						,MEM_SEQ
+						,QESTN_ANSWER_SN
+						,ETC_ANSWER_CN
+						,INSERT_DATE
+						,INSERT_USER
+					)
+					VALUES
+					(
+						 #{qustnrQesitmId}
+						,#{qestnrId}
+						,#{yyyy}
+						,#{term}
+						,#{subjectCode}
+						,#{subClass}
+						,#{sessionMemSeq}
+						,#{qestnAnswerSn}
+						,#{etcAnswerCn}
+						,SYSDATE
+						,#{sessionMemSeq}
+					)
+
+	</insert>
+
+	<update id="updateQestnrInfo" parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO"  >
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.updateQestnrInfo ========= */
+			UPDATE LMS_QESTNR_INFO
+			SET QUSTNR_SJ = #{qustnrSj},
+			QUSTNR_ANSWER = #{qustnrAnswer},
+			QUSTNR_PURPS = #{qustnrPurps},
+			QUSTNR_START_DATE = #{qustnrStartDate},
+			QUSTNR_END_DATE = #{qustnrEndDate},
+			ETC_ANSWER_AT = #{etcAnswerAt},
+			UPDATE_DATE = SYSDATE,
+		    UPDATE_USER = #{sessionMemSeq}
+			WHERE QESTNR_ID = #{qestnrId}
+	</update>
+
+	<delete id="updateQestnrItem"  parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO"  >
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.updateQestnrItem ========= */
+		UPDATE LMS_QESTNR_ITEM
+		SET UPDATE_DATE = SYSDATE
+		  , UPDATE_USER = #{sessionMemSeq}
+		  , QESTN_CN1 = #{qestnCn1}
+		  , QESTN_CN2 = #{qestnCn2}
+		  , QESTN_CN3 = #{qestnCn3}
+		  , QESTN_CN4 = #{qestnCn4}
+		  , QESTN_CN5 = #{qestnCn5}
+		  , QESTN_CN6 = #{qestnCn6}
+		  , QESTN_CN7 = #{qestnCn7}
+		  , QESTN_CN8 = #{qestnCn8}
+		  , QESTN_CN9 = #{qestnCn9}
+		  , QESTN_CN10 = #{qestnCn10}		  
+		WHERE QESTNR_ID = #{qestnrId}
+ 	</delete>
+
+ 	<delete id="deleteQestnrInfo"  parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO"  >
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.deleteQestnrInfo ========= */
+		UPDATE LMS_QESTNR_INFO
+		SET UPDATE_DATE = SYSDATE
+		  , UPDATE_USER = #{sessionMemSeq}
+		  , DELETE_YN = 'Y'
+		WHERE QESTNR_ID = #{qestnrId}
+ 	</delete>
+
+ 	<delete id="deleteQestnrItem"  parameterType="kr.co.gocle.oklms.lu.qestnr.vo.QestnrVO"  >
+		/* ====== kr.co.gocle.oklms.lu.qestnr.service.impl.QestnrMapper.deleteQestnrItem ========= */
+		UPDATE LMS_QESTNR_ITEM
+		SET UPDATE_DATE = SYSDATE
+		  , UPDATE_USER = #{sessionMemSeq}
+		  , DELETE_YN = 'Y'
+		WHERE QESTNR_ID = #{qestnrId}
+ 	</delete>
+
+
+</mapper>

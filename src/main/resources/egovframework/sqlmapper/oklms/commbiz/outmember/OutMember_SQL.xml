@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper">
+
+	<select id="tempMemIdCheck" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO" resultType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.tempMemIdCheck ====== */
+			   SELECT CM.LOGIN_ID
+				 FROM TEMP_OUT_MEMBER_INFO CM
+			 	WHERE CM.LOGIN_ID = #{loginId}
+	</select>
+	
+	<select id="memIdCheck" parameterType="kr.co.gocle.oklms.la.member.vo.MemberVO" resultType="kr.co.gocle.oklms.la.member.vo.MemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.memIdCheck ====== */
+			   SELECT CM.MEM_ID
+				 FROM COM_MEMBER CM
+			 	WHERE CM.MEM_ID = #{memId}
+	</select>
+	
+	
+	<insert id="inesertTempOutMember" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.inesertTempOutMember ====== */
+			   INSERT INTO TEMP_OUT_MEMBER_INFO (
+										EMPL_NO
+										,MEM_TYPE
+										,AUTH_GROUP_ID
+										,COMPANY_ID
+										,LOGIN_ID
+										,LOGIN_PWD
+										,KOREAN_NM
+										,FRGNR_SE_CD
+										,IHIDNUM
+										,SEXDSTN_CD
+										,CPR_SE_CD
+										,HFFC_STTUS_CD
+										,MBTLNUM
+										,EMAIL
+										,REG_ID
+										,REG_DT
+										,REG_IP
+										,STATUS
+										,COMP_LICENCE_CD
+										,COMP_JOIN_DAY
+										,COMP_TEL_NO
+										,DUTY_NM
+										,LICENCE_FILE
+										,COMP_CAREER_YEAR
+										,COMP_EDU_LEVEL_CD
+										,COMP_LICENCE_NM
+										)
+								VALUES (
+										#{emplNo}
+										,#{memType}
+										,#{authGroupId}
+										,#{companyId}
+										,#{loginId}
+										,#{loginPwd}
+										,#{koreanNm}
+										,#{frgnrSeCd}
+										,#{ihidnum}
+										,#{sexdstnCd}
+										,#{cprSeCd}
+										,#{hffcSttusCd}
+										,#{mbtlnum}
+										,#{email}
+										,#{loginId}
+										,TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+										,#{regIp}
+										,'S'
+										,#{compLicenceCd}
+										,#{compJoinDay}
+										,#{compTelNo}
+										,#{dutyNm}
+										,#{licenceFile}
+										,#{compCareerYear}
+										,#{compEduLevelCd}
+										,#{compLicenceNm}
+									)	
+	</insert>
+	
+	<select id="listTempOutMember" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO" resultType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.listTempOutMember ====== */
+			   SELECT  A.*, FN_GETCOMPAYNAME(A.COMPANY_ID) AS COMPANY_NAME
+				 FROM TEMP_OUT_MEMBER_INFO A
+			 	WHERE A.COMPANY_ID IN (
+			 		SELECT COMPANY_ID 
+					  FROM LMS_COMP_CCN_MAPPING 
+					 WHERE DELETE_YN = 'N' 
+					       AND MEM_SEQ = #{sessionMemSeq} 
+			 	) 
+			 	AND A.STATUS = 'S'
+			 	ORDER BY A.REG_DT DESC
+	</select>
+	
+	<select id="getOutMember" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO" resultType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.getOutMember ====== */
+			   SELECT  *
+				 FROM TEMP_OUT_MEMBER_INFO 
+			 		WHERE EMPL_NO = #{emplNo}
+	</select>
+	
+	<update id="updateOutMemberStatus" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.updateOutMemberStatus ====== */
+			  UPDATE TEMP_OUT_MEMBER_INFO SET STATUS = 'A'
+			  WHERE EMPL_NO = #{emplNo}
+	</update>
+	
+	<update id="deleteOutMember" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.deleteOutMember ====== */
+			  DELETE FROM TEMP_OUT_MEMBER_INFO 
+			  WHERE EMPL_NO = #{emplNo}
+	</update>
+	
+	
+	<insert id="insertMember" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		<![CDATA[
+			/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.insertMember ====== */
+		]]>
+			INSERT INTO COM_MEMBER (
+								MEM_SEQ
+								, MEM_ID
+								, MEM_TYPE
+								, AUTH_GROUP_ID
+								, COMPANY_ID
+								, MEM_NAME
+								, SEX
+								, MEM_BIRTH
+                                , MEM_PASSWORD 
+								, EMAIL
+								, AGREE_YN
+								, INSERT_DATE
+								, INSERT_USER
+								, COMP_NM
+								, HP_NO
+								, COMP_LICENCE_CD
+								, COMP_JOIN_DAY
+								, COMP_TEL_NO
+								, DUTY_NM
+								, ATCH_FILE_ID
+								, COMP_CAREER_YEAR
+								, COMP_EDU_LEVEL_CD
+								, COMP_LICENCE_NM
+								) 
+					VALUES 
+					( 
+								#{memSeq}
+								, #{loginId}
+								, #{memType}
+								, #{authGroupId}
+								, #{companyId}
+								, #{koreanNm}
+								, #{sex}
+								, #{ihidnum}
+								<!-- , HEX(AES_ENCRYPT(#{loginPwd},#{loginPwd})) --> 
+								,#{loginPwd}
+								, #{email}
+								, 'Y'		
+								, SYSDATE
+								, #{sessionMemSeq}
+								, FN_GETCOMPAYNAME(#{companyId})
+								, #{mbtlnum}
+								, #{compLicenceCd}
+								, #{compJoinDay}
+								, #{compTelNo}
+								, #{dutyNm}
+								, #{licenceFile}
+								, #{compCareerYear}
+								, #{compEduLevelCd}
+								, #{compLicenceNm}
+								)
+						
+	</insert>
+	
+	<select id="tempMemInfoCheck" parameterType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO" resultType="kr.co.gocle.oklms.commbiz.outmember.vo.OutMemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.tempMemInfoCheck ====== */
+			   SELECT CM.LOGIN_ID
+				 FROM TEMP_OUT_MEMBER_INFO CM
+			 	WHERE ( CM.LOGIN_ID = #{loginId} OR  CM.EMAIL = #{email} )
+	</select>
+	
+	<select id="memInfoCheck" parameterType="kr.co.gocle.oklms.la.member.vo.MemberVO" resultType="kr.co.gocle.oklms.la.member.vo.MemberVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.memInfoCheck ====== */
+			   SELECT CM.MEM_ID
+				 FROM COM_MEMBER CM
+			 	WHERE ( CM.MEM_ID = #{memId} OR  CM.EMAIL = #{email} )
+	</select>
+	
+	<update id="changePassword" parameterType="egovframework.com.cmm.LoginVO">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.changePassword ====== */
+			  UPDATE COM_MEMBER
+			  SET 
+				UPDATE_DATE = SYSDATE 
+				, UPDATE_USER = NVL(#{memSeq} , '2009USER0000001')
+				, PW_ERR_NUMBER_TIMES = 0												/* ====== 비밀번호 초기화시 에러 횟수 제어 ====== */
+				, MEM_PASSWORD 	= #{newPasswordEncripted}
+				, LAST_PW_UPDT_YMD = SYSDATE + #{loginPWMaxUsedDays}	/* ====== 최종 비밀번호 변경 일자  ====== */
+			  WHERE MEM_ID 	= #{id} and MEM_SEQ = #{memSeq}
+	</update>
+	
+	<select id="selectPassword" parameterType="egovframework.com.cmm.LoginVO" resultType="String">
+		/* ====== kr.co.gocle.oklms.commbiz.outmember.service.impl.OutMemberMapper.selectPassword ====== */
+			   SELECT CM.MEM_PASSWORD
+				 FROM COM_MEMBER CM
+			 	WHERE MEM_ID = #{id} and MEM_SEQ = #{memSeq}
+	</select>
+</mapper>

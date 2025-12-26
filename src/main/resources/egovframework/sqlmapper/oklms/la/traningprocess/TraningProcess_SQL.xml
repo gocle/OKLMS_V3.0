@@ -1,0 +1,1432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  ~ *******************************************************************************
+  ~  * COPYRIGHT(C) 2016 SMART INFORMATION TECHNOLOGY. ALL RIGHTS RESERVED.
+  ~  * This software is the proprietary information of SMART INFORMATION TECHNOLOGY..
+  ~  *
+  ~  * Revision History
+  ~  * Author   Date            Description
+  ~  * ======   =========      ====================================
+  ~  * 이진근    2017. 01. 09          First Draft.
+  ~  *
+  ~  ******************************************************************************* 
+  -->
+
+<mapper namespace="kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper">
+	
+	<select id="listTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" resultType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.listTraningProcess ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			SELECT TRANING_PROCESS_ID,
+			       TRANING_PROCESS_NAME,
+			       TRANING_PROCESS_NO,
+			       TRANING_PROCESS_PERIOD,
+			       START_DATE,
+			       END_DATE,
+			       DELETE_YN,
+			       TO_CHAR(INSERT_DATE,'YYYY.MM.DD') AS INSERT_DATE,   
+			       INSERT_USER,
+			       UPDATE_DATE,
+			       UPDATE_USER,
+			       YEAR,
+			       TRANING_STATUS_CD,
+			       TRANING_TYPE_CD,
+			       NCS_LICENCE_NAME,
+			       NCS_LICENCE_LEVEL,
+			       NCS_LICENCE_VERSION,
+			       NCS_CODE,
+			       NCS_NAME,
+			       CENTER_GRADE,
+			       CENTER_BIGO  
+			  FROM LMS_TRANING_PROCESS_SEARCH
+			  WHERE DELETE_YN = 'N'
+			<!--   AND TRANING_STATUS_CD = '1' -->
+			  <if test="searchKeyword != null and searchKeyword != ''">
+			       AND
+			       (
+			         TRANING_PROCESS_NAME LIKE '%' || #{searchKeyword  } || '%' 
+			         OR TRANING_PROCESS_NO LIKE '%' || #{searchKeyword  } || '%' 
+			       )
+			  </if>
+			   ORDER BY TRANING_PROCESS_ID DESC
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+	
+	<select id="listSearchTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" resultType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.listSearchTraningProcess ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+			SELECT TRANING_PROCESS_ID,
+			       TRANING_PROCESS_NAME,
+			       TRANING_PROCESS_NO,
+			       TRANING_PROCESS_PERIOD,
+			       START_DATE,
+			       END_DATE,
+			       DELETE_YN,
+			       TO_CHAR(INSERT_DATE,'YYYY.MM.DD') AS INSERT_DATE,   
+			       INSERT_USER,
+			       UPDATE_DATE,
+			       UPDATE_USER,
+			       YEAR,
+			       TRANING_STATUS_CD,
+			       TRANING_TYPE_CD,
+			       NCS_LICENCE_NAME,
+			       NCS_LICENCE_LEVEL,
+			       NCS_LICENCE_VERSION,
+			       NCS_CODE,
+			       NCS_NAME,
+			       CENTER_GRADE,
+			       CENTER_BIGO  
+			  FROM LMS_TRANING_PROCESS_SEARCH
+			  WHERE DELETE_YN = 'N'
+			  AND TRANING_STATUS_CD = '1' 
+			  <if test="searchKeyword != null and searchKeyword != ''">
+			       AND
+			       (
+			         TRANING_PROCESS_NAME LIKE '%' || #{searchKeyword  } || '%' 
+			         OR TRANING_PROCESS_NO LIKE '%' || #{searchKeyword  } || '%' 
+			       )
+			  </if>
+			   ORDER BY TRANING_PROCESS_ID DESC
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+	
+	<select id="getTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" resultType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.getTraningProcess ====== */
+			SELECT TRANING_PROCESS_ID,
+			       TRANING_PROCESS_NAME,
+			       TRANING_PROCESS_NO,
+			       TRANING_PROCESS_PERIOD,
+			       START_DATE,
+			       END_DATE,
+			       DELETE_YN,
+			       INSERT_DATE,
+			       INSERT_USER,
+			       UPDATE_DATE,
+			       UPDATE_USER,
+			       YEAR,
+			       TRANING_STATUS_CD,
+			       TRANING_TYPE_CD,
+			       NCS_LICENCE_NAME,
+			       NCS_LICENCE_LEVEL,
+			       NCS_LICENCE_VERSION,
+			       NCS_CODE,
+			       NCS_NAME,
+			       CENTER_GRADE,
+			       CENTER_BIGO,
+			       OJT_TIME_HOUR,
+				   OFF_TIME_HOUR,
+				   LICENCE_ID,
+				   DEPT_NO
+			  FROM LMS_TRANING_PROCESS_SEARCH
+			WHERE 1=1
+			  AND TRANING_PROCESS_ID = #{traningProcessId}
+	</select>
+	
+	<select id="getTraningProcessUseCnt" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" resultType="Integer">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.getTraningProcessUseCnt ====== */
+			SELECT COUNT(1)
+			  FROM LMS_TRANING_PROCESS
+			WHERE 1=1
+			  AND DELETE_YN = 'N'
+			  AND TRANING_PROCESS_ID = #{traningProcessId}
+	</select>
+	
+	<insert id="insertTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" >
+	/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.insertTraningProcess ====== */
+		INSERT 
+			  INTO LMS_TRANING_PROCESS_SEARCH
+			       (
+			         TRANING_PROCESS_ID, 
+			         TRANING_PROCESS_NAME, 
+			         TRANING_PROCESS_NO, 
+			         TRANING_PROCESS_PERIOD, 
+			         START_DATE,
+			         END_DATE, 
+			         INSERT_DATE, 
+			         INSERT_USER,
+			         YEAR,
+				       TRANING_STATUS_CD,
+				       TRANING_TYPE_CD,
+				       NCS_LICENCE_NAME,
+				       NCS_LICENCE_LEVEL,
+				       NCS_LICENCE_VERSION,
+				       NCS_CODE,
+				       NCS_NAME,
+				       CENTER_GRADE,
+				       CENTER_BIGO,
+				       OJT_TIME_HOUR,
+				       OFF_TIME_HOUR,
+				       LICENCE_ID,
+				       DEPT_NO
+			       ) 
+			       VALUES 
+			       (
+			       	#{traningProcessId},
+			        #{traningProcessName},
+			        #{traningProcessNo},
+			        #{traningProcessPeriod},
+			        #{startDate},
+			        #{endDate},
+			        SYSDATE,
+			        #{sessionMemSeq},
+			         #{year},
+			       #{traningStatusCd},
+			       #{traningTypeCd},
+			       #{ncsLicenceName},
+			       #{ncsLicenceLevel},
+			       #{ncsLicenceVersion},
+			       #{ncsCode},
+			       #{ncsName},
+			       #{centerGrade},
+			       #{centerBigo},
+			       #{ojtTimeHour},
+			       #{offTimeHour},
+			       #{licenceId},
+			       #{deptNo} 
+			       )   
+	</insert>
+	
+	<update id="updateTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" >
+	/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.updateTraningProcess ====== */
+			UPDATE LMS_TRANING_PROCESS_SEARCH 
+			SET  TRANING_PROCESS_NAME = #{traningProcessName}
+			, TRANING_PROCESS_NO = #{traningProcessNo}
+			, TRANING_PROCESS_PERIOD = #{traningProcessPeriod} 
+			, START_DATE = #{startDate}
+			, END_DATE = #{endDate}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER = #{sessionMemSeq},
+			YEAR = #{year},
+	       TRANING_STATUS_CD = #{traningStatusCd},
+	       TRANING_TYPE_CD = #{traningTypeCd},
+	       NCS_LICENCE_NAME = #{ncsLicenceName},
+	       NCS_LICENCE_LEVEL = #{ncsLicenceLevel},
+	       NCS_LICENCE_VERSION = #{ncsLicenceVersion},
+	       NCS_CODE = #{ncsCode},
+	       NCS_NAME = #{ncsName},
+	       CENTER_GRADE = #{centerGrade},
+	       CENTER_BIGO = #{centerBigo},
+	       OJT_TIME_HOUR = #{ojtTimeHour},
+	       OFF_TIME_HOUR = #{offTimeHour},
+	       LICENCE_ID = #{licenceId},
+			DEPT_NO = #{deptNo}
+			WHERE TRANING_PROCESS_ID = #{traningProcessId}
+	</update>
+	
+	<update id="updateTraningProcessHrd" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" >
+	/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.updateTraningProcessHrd ====== */
+			UPDATE LMS_TRANING_PROCESS 
+			SET  HRD_TRANING_NAME = #{traningProcessName}
+			, HRD_TRANING_NO = #{traningProcessNo}
+			, UPDATE_DATE = SYSDATE
+			, UPDATE_USER = #{sessionMemSeq}
+			WHERE TRANING_PROCESS_ID = #{traningProcessId}
+	</update>
+	
+	<update id="deleteTraningProcess" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" >
+	/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.deleteTraningProcess ====== */
+			UPDATE LMS_TRANING_PROCESS_SEARCH 
+			SET  DELETE_YN = 'Y'
+			WHERE TRANING_PROCESS_ID = #{traningProcessId}
+	</update>
+	
+	
+	
+	 
+<select id="listTraningProcessStat" parameterType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO" resultType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.listTraningProcessStat ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+		<!-- SELECT 
+		 X.TRANING_PROCESS_NAME,
+				 X.TRANING_PROCESS_NO ,
+				 X.TRANING_PROCESS_ID,
+				 X.TRANING_TYPE_CD,
+				 X.TRANING_PROCESS_PERIOD,
+				 X.YEAR,
+				 X.OJTCLASS,
+				 X.START_DATE,
+				 X.END_DATE,
+				 (SELECT LISTAGG(FN_GETUSERNAME(LSIM.MEM_SEQ), ',') WITHIN GROUP( ORDER BY FN_GETUSERNAME(LSIM.MEM_SEQ))
+            FROM LMS_SUBJ_INS_MAPPING LSIM 
+            WHERE (LSIM.YYYY,LSIM.TERM,LSIM.SUBJECT_CODE,LSIM.CLASS)=
+            (SELECT 
+            LTPM.YYYY,
+            LTPM.TERM,
+            LTPM.SUBJECT_CODE,
+            LTPM.CLASS
+            FROM LMS_TRANING_PROCESS_MAPPING LTPM
+            INNER JOIN LMS_SUBJECT LS ON LTPM.YYYY =LS.YYYY AND LTPM.TERM=LS.TERM AND LTPM.SUBJECT_CODE= LS.SUBJECT_CODE AND LTPM.CLASS=LS.CLASS AND LS.DELETE_YN='N' AND LS.SUBJECT_TRANING_TYPE='OJT'
+            WHERE LTPM.TRANING_PROCESS_ID = X.TRANING_PROCESS_ID
+            AND ROWNUM=1
+            ) )    AS INS_NAMES 
+				                 , X.CCN_NAMES
+				                 , X.TRANING_STATUS_CD
+				                 ,X.COMPANY_NAME
+
+				                 ,X.NCS_LICENCE_NAME
+								 ,X.NCS_LICENCE_LEVEL
+								 ,X.NCS_LICENCE_VERSION
+								 ,X.NCS_CODE
+								,X.NCS_NAME
+								,X.CENTER_GRADE
+								,X.CENTER_BIGO
+								,X.OJT_TIME_HOUR
+								,X.OFF_TIME_HOUR
+								,X.NOTE_MONTH
+								,X.ACT_MONTH
+								,X.PROCESS_STATUS
+								
+								,X.OJT_MONTH_BIYONG
+								,X.OFF_MONTH_BIYONG
+								,X.CCN_MONTH
+								,X.CCN_GRADE
+								,X.CCN_BIGO
+								,X.PRT_GRADE
+								,X.PRT_BIGO
+								,X.TOTAL_TRANING
+								,X.RUN_TRANING
+								,X.FINISH_TRANING
+								,X.COMPLETE_TRANING
+								,X.FAIL_TRANING
+								,X.RECANT_TRANING
+					       		,(X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) TRAINING_ACTION_TOTAL 
+								,CASE WHEN X.TOTAL_TRANING>0 AND X.RECANT_TRANING>0 THEN  ( TO_CHAR((X.RECANT_TRANING / X.TOTAL_TRANING),'FM99.9999')*100) ELSE 0 END  AS RECANT_RATIO
+								,CASE WHEN X.TOTAL_TRANING>0 AND X.FAIL_TRANING>0 THEN  (TO_CHAR((X.FAIL_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING )),'FM99.9999')*100) ELSE 0 END FAIL_RATIO 
+								,CASE WHEN X.TOTAL_TRANING>0 AND X.FINISH_TRANING>0 THEN  (TO_CHAR((X.FINISH_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100) ELSE 0 END  FINISH_RATIO 	
+								,CASE WHEN X.TOTAL_TRANING>0 AND X.COMPLETE_TRANING>0 THEN  (TO_CHAR((X.COMPLETE_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100) ELSE 0 END  COMPLETE_RATIO
+								 ,(SELECT MAX(CM.STD_LEAVE_DATE)  FROM LMS_LESSON LL  ,COM_MEMBER CM
+				                      WHERE LL.MEM_SEQ = CM.MEM_SEQ AND CM.DELETE_YN='N' AND LL.DELETE_YN='N' AND CM.STD_STATUS = '4' AND  (LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS) 
+				                      IN (SELECT A.YYYY,A.TERM,A.SUBJECT_CODE,A.CLASS FROM LMS_TRANING_PROCESS_MAPPING A WHERE A.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID AND A.COMPANY_ID=X.COMPANY_ID AND A.DELETE_YN='N' ) 				                      
+				                      ) ALL_FAIL_DATE
+				                 ,( SELECT  FN_GETDEPARTMENT_NAME(A.YYYY,A.TERM,A.SUBJECT_CODE,A.CLASS) FROM LMS_TRANING_PROCESS_MAPPING A WHERE A.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID AND A.COMPANY_ID=X.COMPANY_ID AND A.DELETE_YN='N'  AND ROWNUM=1
+                       					)   DEPT_NAME
+                       			 ,NVL((SELECT CM.STD_TRANSFER_YN  FROM LMS_LESSON LL  ,COM_MEMBER CM
+				                      WHERE LL.MEM_SEQ = CM.MEM_SEQ AND CM.DELETE_YN='N' AND CM.STD_TRANSFER_YN ='Y' AND LL.DELETE_YN='N' AND  (LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS) 
+				                      IN (SELECT A.YYYY,A.TERM,A.SUBJECT_CODE,A.CLASS FROM LMS_TRANING_PROCESS_MAPPING A WHERE A.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID AND A.COMPANY_ID=X.COMPANY_ID AND A.DELETE_YN='N' ) 
+                              AND ROWNUM=1
+				                      ),'N') TRANSFER_YN
+								FROM
+		
+			( SELECT  LTP.COMPANY_ID,
+				 LTPS.TRANING_PROCESS_NAME,
+				 LTPS.TRANING_PROCESS_NO ,
+				 LTPS.TRANING_PROCESS_ID,
+				 LTPS.TRANING_TYPE_CD,
+				 LTPS.TRANING_PROCESS_PERIOD,
+				 LTPS.YEAR,
+				 LTP.OJT_CLASS as OJTCLASS,
+				 LTPS.START_DATE,
+				 LTPS.END_DATE,
+				  '' AS INS_NAMES
+							           
+				                 , (SELECT LISTAGG(FN_GETUSERNAME(CCM.MEM_SEQ), ',') WITHIN 
+										       GROUP( 
+										     ORDER BY FN_GETUSERNAME(CCM.MEM_SEQ))
+							              FROM LMS_COMP_CCN_MAPPING CCM
+							             WHERE CCM.COMPANY_ID = LTP.COMPANY_ID
+							                   AND CCM.DELETE_YN='N'
+							           ) AS CCN_NAMES
+				                 , LTPS.TRANING_STATUS_CD
+				                 ,LC.COMPANY_NAME
+
+				                 ,LTPS.NCS_LICENCE_NAME
+								 ,LTPS.NCS_LICENCE_LEVEL
+								 ,LTPS.NCS_LICENCE_VERSION
+								 ,LTPS.NCS_CODE
+								,LTPS.NCS_NAME
+								,LTPS.CENTER_GRADE
+								,LTPS.CENTER_BIGO
+								,LTPS.OJT_TIME_HOUR
+								,LTPS.OFF_TIME_HOUR
+								,LTP.NOTE_MONTH
+								,LTP.ACT_MONTH
+								,LTP.PROCESS_STATUS
+								
+								,LTP.OJT_MONTH_BIYONG
+								,LTP.OFF_MONTH_BIYONG
+								,LTP.CCN_MONTH
+								,LTP.CCN_GRADE
+								,LTP.CCN_BIGO
+								,LTP.PRT_GRADE
+								,LTP.PRT_BIGO
+                ,(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ  = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN='N'
+					AND     LL.DELETE_YN='N'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					TOTAL_TRANING ,
+					(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ    = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN  ='N'
+					AND     LL.DELETE_YN  ='N'
+					AND     CM.STD_STATUS = '1'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					RUN_TRANING ,
+					(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ    = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN  ='N'
+					AND     LL.DELETE_YN  ='N'
+					AND     CM.STD_STATUS = '2'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					FINISH_TRANING ,
+					(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ    = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN  ='N'
+					AND     LL.DELETE_YN  ='N'
+					AND     CM.STD_STATUS = '3'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					COMPLETE_TRANING ,
+					(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ    = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN  ='N'
+					AND     LL.DELETE_YN  ='N'
+					AND     CM.STD_STATUS = '4'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					FAIL_TRANING ,
+					(SELECT COUNT(DISTINCT LL.MEM_SEQ) TOTAL_CNT
+					FROM    LMS_LESSON LL ,
+					        COM_MEMBER CM,
+					        LMS_SUBJECT LS
+					WHERE   LL.MEM_SEQ    = CM.MEM_SEQ
+					
+					AND     LL.YYYY = LS.YYYY
+					AND     LL.TERM = LS.TERM
+					AND     LL.SUBJECT_CODE = LS.SUBJECT_CODE
+					AND     LL.CLASS = LS.CLASS
+					AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					
+					AND     CM.DELETE_YN  ='N'
+					AND     LL.DELETE_YN  ='N'
+					AND     CM.STD_STATUS = '5'
+					AND
+					        (
+					                LL.YYYY,LL.TERM,LL.SUBJECT_CODE,LL.CLASS
+					        )
+					        IN
+					        (SELECT A.YYYY,
+					                A.TERM,
+					                A.SUBJECT_CODE,
+					                A.CLASS
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=LTP.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =LTP.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        )
+					)
+					RECANT_TRANING 
+                        
+                     								
+				 FROM LMS_TRANING_PROCESS LTP
+		         INNER JOIN LMS_COMPANY LC ON LC.COMPANY_ID = LTP.COMPANY_ID AND LC.DELETE_YN='N'
+		         INNER JOIN LMS_TRANING_PROCESS_SEARCH LTPS ON LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID AND LTPS.DELETE_YN='N'
+				 WHERE 1=1 -->
+				 
+				 <!-- SELECT X.TRANING_PROCESS_NAME,
+					        X.TRANING_PROCESS_NO ,
+					        X.TRANING_PROCESS_ID,
+					        X.TRANING_TYPE_CD,
+					        X.TRANING_PROCESS_PERIOD,
+					        X.YEAR,
+					        X.OJTCLASS,
+					        X.START_DATE,
+					        X.END_DATE,
+					        (SELECT  LISTAGG(FN_GETUSERNAME(LSIM.MEM_SEQ), ',') WITHIN GROUP( ORDER BY FN_GETUSERNAME(LSIM.MEM_SEQ))
+					        FROM     LMS_SUBJ_INS_MAPPING LSIM
+					        WHERE    (
+					                          LSIM.YYYY,LSIM.TERM,LSIM.SUBJECT_CODE,LSIM.CLASS
+					                 )
+					                 =
+					                 (SELECT LTPM.YYYY,
+					                         LTPM.TERM,
+					                         LTPM.SUBJECT_CODE,
+					                         LTPM.CLASS
+					                 FROM    LMS_TRANING_PROCESS_MAPPING LTPM
+					                         INNER JOIN LMS_SUBJECT LS
+					                         ON      LTPM.YYYY              =LS.YYYY
+					                         AND     LTPM.TERM              =LS.TERM
+					                         AND     LTPM.SUBJECT_CODE      = LS.SUBJECT_CODE
+					                         AND     LTPM.CLASS             =LS.CLASS
+					                         AND     LS.DELETE_YN           ='N'
+					                         AND     LS.SUBJECT_TRANING_TYPE='OJT'
+					                 WHERE   LTPM.TRANING_PROCESS_ID        = X.TRANING_PROCESS_ID
+					                 AND     ROWNUM                         =1
+					                 )
+					        )
+					        AS INS_NAMES ,
+					        X.CCN_NAMES ,
+					        X.TRANING_STATUS_CD ,
+					        X.COMPANY_NAME ,
+					        X.NCS_LICENCE_NAME ,
+					        X.NCS_LICENCE_LEVEL ,
+					        X.NCS_LICENCE_VERSION ,
+					        X.NCS_CODE ,
+					        X.NCS_NAME ,
+					        X.CENTER_GRADE ,
+					        X.CENTER_BIGO ,
+					        X.OJT_TIME_HOUR ,
+					        X.OFF_TIME_HOUR ,
+					        X.NOTE_MONTH ,
+					        X.ACT_MONTH ,
+					        X.PROCESS_STATUS ,
+					        X.OJT_MONTH_BIYONG ,
+					        X.OFF_MONTH_BIYONG ,
+					        X.CCN_MONTH ,
+					        X.CCN_GRADE ,
+					        X.CCN_BIGO ,
+					        X.PRT_GRADE ,
+					        X.PRT_BIGO ,
+					        X.TOTAL_TRANING ,
+					        X.RUN_TRANING ,
+					        X.FINISH_TRANING ,
+					        X.COMPLETE_TRANING ,
+					        X.FAIL_TRANING ,
+					        X.RECANT_TRANING ,
+					        (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) TRAINING_ACTION_TOTAL ,
+					        CASE
+					               WHEN X.TOTAL_TRANING   >0
+					               AND    X.RECANT_TRANING>0
+					               THEN ( TO_CHAR((X.RECANT_TRANING / X.TOTAL_TRANING),'FM99.9999')*100)
+					               ELSE 0
+					        END AS RECANT_RATIO ,
+					        CASE
+					               WHEN X.TOTAL_TRANING >0
+					               AND    X.FAIL_TRANING>0
+					               THEN (TO_CHAR((X.FAIL_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING )),'FM99.9999')*100)
+					               ELSE 0
+					        END FAIL_RATIO ,
+					        CASE
+					               WHEN X.TOTAL_TRANING   >0
+					               AND    X.FINISH_TRANING>0
+					               THEN (TO_CHAR((X.FINISH_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100)
+					               ELSE 0
+					        END FINISH_RATIO ,
+					        CASE
+					               WHEN X.TOTAL_TRANING     >0
+					               AND    X.COMPLETE_TRANING>0
+					               THEN (TO_CHAR((X.COMPLETE_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100)
+					               ELSE 0
+					        END COMPLETE_RATIO ,
+					        (SELECT MAX(CM.STD_LEAVE_DATE)
+					        FROM    COM_MEMBER CM
+					        WHERE   CM.DELETE_YN         ='N'
+					        AND     CM.STD_STATUS        = '4'
+					        AND     CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID
+					        AND     CM.COMPANY_ID        =X.COMPANY_ID
+					        )
+					        ALL_FAIL_DATE ,
+					        ( SELECT FN_GETDEPARTMENT_NAME(A.YYYY,A.TERM,A.SUBJECT_CODE,A.CLASS)
+					        FROM    LMS_TRANING_PROCESS_MAPPING A
+					        WHERE   A.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID
+					        AND     A.COMPANY_ID        =X.COMPANY_ID
+					        AND     A.DELETE_YN         ='N'
+					        AND     ROWNUM              =1
+					        )
+					        DEPT_NAME ,
+					        NVL(
+					              (SELECT MAX(CM.STD_TRANSFER_YN)
+					              FROM    COM_MEMBER CM
+					              WHERE   CM.DELETE_YN         ='N'
+					              AND     CM.STD_TRANSFER_YN   ='Y'
+					              AND     CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID
+					              AND     CM.COMPANY_ID        =X.COMPANY_ID
+					              )
+					            ,'N') TRANSFER_YN
+					 FROM   ( SELECT  LTP.COMPANY_ID,
+					                 LTPS.TRANING_PROCESS_NAME,
+					                 LTPS.TRANING_PROCESS_NO ,
+					                 LTPS.TRANING_PROCESS_ID,
+					                 LTPS.TRANING_TYPE_CD,
+					                 LTPS.TRANING_PROCESS_PERIOD,
+					                 LTPS.YEAR,
+					                 LTP.OJT_CLASS AS OJTCLASS,
+					                 LTPS.START_DATE,
+					                 LTPS.END_DATE,
+					                 '' AS INS_NAMES ,
+					                 (SELECT  LISTAGG(FN_GETUSERNAME(CCM.MEM_SEQ), ',') WITHIN GROUP( ORDER BY FN_GETUSERNAME(CCM.MEM_SEQ))
+					                 FROM     LMS_COMP_CCN_MAPPING CCM
+					                 WHERE    CCM.COMPANY_ID = LTP.COMPANY_ID
+					                 AND      CCM.DELETE_YN  ='N'
+					                 )
+					                 AS CCN_NAMES ,
+					                 LTPS.TRANING_STATUS_CD ,
+					                 LC.COMPANY_NAME ,
+					                 LTPS.NCS_LICENCE_NAME ,
+					                 LTPS.NCS_LICENCE_LEVEL ,
+					                 LTPS.NCS_LICENCE_VERSION ,
+					                 LTPS.NCS_CODE ,
+					                 LTPS.NCS_NAME ,
+					                 LTPS.CENTER_GRADE ,
+					                 LTPS.CENTER_BIGO ,
+					                 LTPS.OJT_TIME_HOUR ,
+					                 LTPS.OFF_TIME_HOUR ,
+					                 LTP.NOTE_MONTH ,
+					                 LTP.ACT_MONTH ,
+					                 LTP.PROCESS_STATUS ,
+					                 LTP.OJT_MONTH_BIYONG ,
+					                 LTP.OFF_MONTH_BIYONG ,
+					                 LTP.CCN_MONTH ,
+					                 LTP.CCN_GRADE ,
+					                 LTP.CCN_BIGO ,
+					                 LTP.PRT_GRADE ,
+					                 LTP.PRT_BIGO ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 TOTAL_TRANING ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.STD_STATUS        = '1'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 RUN_TRANING ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.STD_STATUS        = '2'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 FINISH_TRANING ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.STD_STATUS        = '3'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 COMPLETE_TRANING ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.STD_STATUS        = '4'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 FAIL_TRANING ,
+					                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT
+					                 FROM    COM_MEMBER CM
+					                 WHERE   CM.DELETE_YN         ='N'
+					                 AND     CM.STD_STATUS        = '5'
+					                 AND     CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID
+					                 AND     CM.COMPANY_ID        =LTP.COMPANY_ID
+					                 )
+					                 RECANT_TRANING
+					        FROM     LMS_TRANING_PROCESS LTP
+					                 INNER JOIN LMS_COMPANY LC
+					                 ON       LC.COMPANY_ID = LTP.COMPANY_ID
+					                 AND      LC.DELETE_YN  ='N'
+					                 INNER JOIN LMS_TRANING_PROCESS_SEARCH LTPS
+					                 ON       LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID
+					                 AND      LTPS.DELETE_YN         ='N'
+					        WHERE    1                               =1
+					        AND LTP.DELETE_YN = 'N'
+				 
+			  <if test="searchKeyword != null and searchKeyword != ''">
+			      AND LTPS.YEAR =  #{searchKeyword  }  
+			  </if>
+			  <if test="searchTraningTypeCd != null and searchTraningTypeCd != ''">
+			      AND LTPS.TRANING_TYPE_CD =  #{searchTraningTypeCd  }  
+			  </if>
+			     
+			   <if test="searchCompanyName != null and searchCompanyName != ''">
+			      AND LC.COMPANY_NAME LIKE  '%'||#{searchCompanyName  }||'%'  
+			  </if>
+			   
+			   ORDER BY TRANING_PROCESS_ID DESC ) X -->
+			   
+			   <!-- 
+			   SELECT X.TRANING_PROCESS_NAME, 
+				       X.TRANING_PROCESS_NO , 
+				       X.TRANING_PROCESS_ID, 
+				       X.TRANING_TYPE_CD, 
+				       X.TRANING_PROCESS_PERIOD, 
+				       X.YEAR, 
+				       X.OJTCLASS, 
+				       X.START_DATE, 
+				       X.END_DATE, 
+				       (SELECT LISTAGG(FN_GETUSERNAME(LSIM.MEM_SEQ), ',') WITHIN 
+				       GROUP( 
+				     ORDER BY FN_GETUSERNAME(LSIM.MEM_SEQ)) 
+				         FROM LMS_SUBJ_INS_MAPPING LSIM 
+				        WHERE ( 
+				                  LSIM.YYYY,
+				                  LSIM.TERM,
+				                  LSIM.SUBJECT_CODE,
+				                  LSIM.CLASS 
+				              ) 
+				              = 
+				              (SELECT LTPM.YYYY, 
+				                     LTPM.TERM, 
+				                     LTPM.SUBJECT_CODE, 
+				                     LTPM.CLASS 
+				                FROM LMS_TRANING_PROCESS_MAPPING LTPM 
+				                 INNER JOIN LMS_SUBJECT LS 
+				                     ON LTPM.YYYY =LS.YYYY 
+				                     AND LTPM.TERM =LS.TERM 
+				                     AND LTPM.SUBJECT_CODE = LS.SUBJECT_CODE 
+				                     AND LTPM.CLASS =LS.CLASS 
+				                     AND LS.DELETE_YN ='N' 
+				                     AND LS.SUBJECT_TRANING_TYPE='OJT' 
+				               WHERE LTPM.TRANING_PROCESS_ID = X.TRANING_PROCESS_ID 
+				                     AND ROWNUM =1 
+				              ) 
+				       ) AS INS_NAMES , 
+				       (SELECT LISTAGG(FN_GETUSERNAME(CCM.MEM_SEQ), ',') WITHIN 
+				       GROUP( 
+				     ORDER BY FN_GETUSERNAME(CCM.MEM_SEQ)) 
+				         FROM LMS_COMP_CCN_MAPPING CCM 
+				        WHERE CCM.COMPANY_ID = X.COMPANY_ID 
+				              AND CCM.DELETE_YN ='N' 
+				       ) AS CCN_NAMES, 
+				       X.TRANING_STATUS_CD , 
+				       X.COMPANY_NAME , 
+				       X.NCS_LICENCE_NAME , 
+				       X.NCS_LICENCE_LEVEL , 
+				       X.NCS_LICENCE_VERSION , 
+				       X.NCS_CODE , 
+				       X.NCS_NAME , 
+				       X.CENTER_GRADE , 
+				       X.CENTER_BIGO , 
+				       X.OJT_TIME_HOUR , 
+				       X.OFF_TIME_HOUR , 
+				       X.NOTE_MONTH , 
+				       X.ACT_MONTH , 
+				       X.PROCESS_STATUS , 
+				       X.OJT_MONTH_BIYONG , 
+				       X.OFF_MONTH_BIYONG , 
+				       X.CCN_MONTH , 
+				       X.CCN_GRADE , 
+				       X.CCN_BIGO , 
+				       X.PRT_GRADE , 
+				       X.PRT_BIGO , 
+				       X.TOTAL_TRANING , 
+				       X.RUN_TRANING , 
+				       X.FINISH_TRANING , 
+				       X.COMPLETE_TRANING , 
+				       X.FAIL_TRANING , 
+				       X.RECANT_TRANING , 
+				       (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) TRAINING_ACTION_TOTAL , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.RECANT_TRANING>0 
+				           THEN ( TO_CHAR((X.RECANT_TRANING / X.TOTAL_TRANING),'FM99.9999')*100) 
+				           ELSE 0 
+				       END AS RECANT_RATIO , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.FAIL_TRANING>0 
+				           THEN (TO_CHAR((X.FAIL_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING )),'FM99.9999')*100) 
+				           ELSE 0 
+				       END FAIL_RATIO , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.FINISH_TRANING>0 
+				           THEN (TO_CHAR((X.FINISH_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100) 
+				           ELSE 0 
+				       END FINISH_RATIO , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.COMPLETE_TRANING>0 
+				           THEN (TO_CHAR((X.COMPLETE_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING ) ),'FM99.9999')*100) 
+				           ELSE 0 
+				       END COMPLETE_RATIO , 
+				       (SELECT MAX(CM.STD_LEAVE_DATE) 
+				         FROM COM_MEMBER CM 
+				        WHERE CM.DELETE_YN ='N' 
+				              AND CM.STD_STATUS = '4' 
+				              AND CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID 
+				              AND CM.COMPANY_ID =X.COMPANY_ID 
+				       ) ALL_FAIL_DATE , 
+				       (SELECT DEPT_NAME
+				         FROM COM_DEPT A 
+				        WHERE A.DEPT_CD=X.DEPT_NO 
+				       ) DEPT_NAME , 
+				       NVL
+				       ( 
+				              (SELECT MAX(CM.STD_TRANSFER_YN) 
+				                FROM COM_MEMBER CM 
+				               WHERE CM.DELETE_YN ='N' 
+				                     AND CM.STD_TRANSFER_YN ='Y' 
+				                     AND CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID 
+				                     AND CM.COMPANY_ID =X.COMPANY_ID 
+				              ) ,'N'
+				          ) 
+				          TRANSFER_YN 
+				     FROM 
+				          (SELECT MAX(LTP.COMPANY_ID) AS COMPANY_ID, 
+				                 LTPS.TRANING_PROCESS_NAME, 
+				                 LTPS.TRANING_PROCESS_NO , 
+				                 LTPS.TRANING_PROCESS_ID, 
+				                 LTPS.TRANING_TYPE_CD, 
+				                 LTPS.TRANING_PROCESS_PERIOD, 
+				                 LTPS.YEAR, 
+				                 MAX(LTP.OJT_CLASS) AS OJTCLASS, 
+				                 LTPS.START_DATE, 
+				                 LTPS.END_DATE, 
+				                 MAX(LC.COMPANY_NAME) AS COMPANY_NAME, 
+				                 LTPS.TRANING_STATUS_CD , 
+				     
+				                 
+				                 CL.LICENCE_NAME AS NCS_LICENCE_NAME, 
+				                 CL.LICENCE_LEVEL AS NCS_LICENCE_LEVEL, 
+				                 CL.LICENCE_VERSION AS NCS_LICENCE_VERSION, 
+				                 
+				                 LTPS.NCS_CODE , 
+				                 LTPS.NCS_NAME , 
+				                 LTPS.CENTER_GRADE , 
+				                 LTPS.CENTER_BIGO , 
+				                 LTPS.OJT_TIME_HOUR , 
+				                 LTPS.OFF_TIME_HOUR , 
+				                 LTPS.DEPT_NO ,
+				                 MAX(LTP.NOTE_MONTH) AS NOTE_MONTH, 
+				                 MAX(LTP.ACT_MONTH) AS ACT_MONTH , 
+				                 MAX(LTP.PROCESS_STATUS) AS PROCESS_STATUS, 
+				                 MAX(LTP.OJT_MONTH_BIYONG) AS OJT_MONTH_BIYONG, 
+				                 MAX(LTP.OFF_MONTH_BIYONG) AS OFF_MONTH_BIYONG, 
+				                 MAX(LTP.CCN_MONTH) AS CCN_MONTH , 
+				                 MAX(LTP.CCN_GRADE) AS CCN_GRADE, 
+				                 MAX(LTP.CCN_BIGO) AS CCN_BIGO, 
+				                 MAX(LTP.PRT_GRADE) AS PRT_GRADE, 
+				                 MAX(LTP.PRT_BIGO) AS PRT_BIGO, 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) TOTAL_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '1' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) RUN_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '2' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) FINISH_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '3' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) COMPLETE_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '4' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) FAIL_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '5' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) RECANT_TRANING 
+				            FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				             INNER JOIN COM_MEMBER MEM 
+				                 ON MEM.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID 
+				             LEFT OUTER JOIN LMS_TRANING_PROCESS LTP 
+				                 ON LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID 
+				                 AND LTP.DELETE_YN = 'N' 
+				             INNER JOIN LMS_COMPANY LC 
+				                 ON LC.COMPANY_ID = LTP.COMPANY_ID 
+				                 AND LC.DELETE_YN ='N' 
+				             LEFT OUTER JOIN COM_NCS_LICENCE CL
+				             	ON CL.LICENCE_ID = LTPS.LICENCE_ID 
+				                 AND CL.DELETE_YN ='N' 
+				           WHERE 1 =1 
+				                 AND LTPS.DELETE_YN = 'N' 
+				                 
+			                  <if test="searchKeyword != null and searchKeyword != ''">
+							      AND LTPS.YEAR =  #{searchKeyword  }  
+							  </if>
+							  <if test="searchTraningTypeCd != null and searchTraningTypeCd != ''">
+							      AND LTPS.TRANING_TYPE_CD =  #{searchTraningTypeCd  }  
+							  </if>
+							     
+							   <if test="searchCompanyName != null and searchCompanyName != ''">
+							      AND LC.COMPANY_NAME LIKE  '%'||#{searchCompanyName  }||'%'  
+							  </if>
+				                 
+				           GROUP BY LTPS.TRANING_PROCESS_NAME, 
+				                 LTPS.TRANING_PROCESS_NO , 
+				                 LTPS.TRANING_PROCESS_ID, 
+				                 LTPS.TRANING_TYPE_CD, 
+				                 LTPS.TRANING_PROCESS_PERIOD, 
+				                 LTPS.YEAR, 
+				                 LTPS.START_DATE, 
+				                 LTPS.END_DATE, 
+				                 LTPS.TRANING_STATUS_CD , 
+				                 CL.LICENCE_NAME , 
+				                 CL.LICENCE_LEVEL , 
+				                 CL.LICENCE_VERSION , 
+				                 LTPS.NCS_CODE , 
+				                 LTPS.NCS_NAME , 
+				                 LTPS.CENTER_GRADE , 
+				                 LTPS.CENTER_BIGO , 
+				                 LTPS.OJT_TIME_HOUR, 
+				                 LTPS.OFF_TIME_HOUR, 
+				                 LTPS.DEPT_NO     
+				        ORDER BY TRANING_PROCESS_ID DESC 
+				          ) X
+				          -->
+				          
+				          SELECT X.TRANING_PROCESS_NAME, 
+				       X.TRANING_PROCESS_NO , 
+				       X.TRANING_PROCESS_ID, 
+				       X.TRANING_PROCESS_MANAGE_ID,
+				       X.TRANING_TYPE_CD, 
+				       X.TRANING_PROCESS_PERIOD, 
+				       X.YEAR, 
+				       X.OJTCLASS, 
+				       X.START_DATE, 
+				       X.END_DATE, 
+				       (SELECT LISTAGG(FN_GETUSERNAME(LSIM.MEM_SEQ), ',') WITHIN 
+				       GROUP( 
+				     ORDER BY FN_GETUSERNAME(LSIM.MEM_SEQ)) 
+				         FROM LMS_SUBJ_INS_MAPPING LSIM 
+				        WHERE ( 
+				                  LSIM.YYYY,
+				                  LSIM.TERM,
+				                  LSIM.SUBJECT_CODE,
+				                  LSIM.CLASS 
+				              ) 
+				              = 
+				              (SELECT LTPM.YYYY, 
+				                     LTPM.TERM, 
+				                     LTPM.SUBJECT_CODE, 
+				                     LTPM.CLASS 
+				                FROM LMS_TRANING_PROCESS_MAPPING LTPM 
+				                 INNER JOIN LMS_SUBJECT LS 
+				                     ON LTPM.YYYY =LS.YYYY 
+				                     AND LTPM.TERM =LS.TERM 
+				                     AND LTPM.SUBJECT_CODE = LS.SUBJECT_CODE 
+				                     AND LTPM.CLASS =LS.CLASS 
+				                     AND LS.DELETE_YN ='N' 
+				                     AND LS.SUBJECT_TRANING_TYPE='OJT' 
+				               WHERE LTPM.TRANING_PROCESS_ID = X.TRANING_PROCESS_ID 
+				                     AND ROWNUM =1 
+				              ) 
+				       ) AS INS_NAMES , 
+				       (SELECT LISTAGG(FN_GETUSERNAME(CCM.MEM_SEQ), ',') WITHIN 
+				       GROUP( 
+				     ORDER BY FN_GETUSERNAME(CCM.MEM_SEQ)) 
+				         FROM LMS_COMP_CCN_MAPPING CCM 
+				        WHERE CCM.COMPANY_ID = X.COMPANY_ID 
+				              AND CCM.DELETE_YN ='N' 
+				       ) AS CCN_NAMES, 
+				       X.TRANING_STATUS_CD , 
+				       X.COMPANY_ID,
+				       X.COMPANY_NAME , 
+				       X.NCS_LICENCE_NAME , 
+				       X.NCS_LICENCE_LEVEL , 
+				       X.NCS_LICENCE_VERSION , 
+				       X.NCS_CODE , 
+				       X.NCS_NAME , 
+				       X.CENTER_GRADE , 
+				       X.CENTER_BIGO , 
+				       X.OJT_TIME_HOUR , 
+				       X.OFF_TIME_HOUR , 
+				       X.NOTE_MONTH , 
+				       X.ACT_MONTH , 
+				       X.PROCESS_STATUS , 
+				       X.OJT_MONTH_BIYONG , 
+				       X.OFF_MONTH_BIYONG , 
+				       X.CCN_MONTH , 
+				       X.CCN_GRADE , 
+				       X.CCN_BIGO , 
+				       X.PRT_GRADE , 
+				       X.PRT_BIGO , 
+				       X.TOTAL_TRANING , 
+				       X.RUN_TRANING , 
+				       X.FINISH_TRANING , 
+				       X.NOT_FINISH_TRANING , 
+				       X.COMPLETE_TRANING , 
+				       X.FAIL_TRANING , 
+				       X.RECANT_TRANING , 
+				       (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING+X.NOT_FINISH_TRANING ) TRAINING_ACTION_TOTAL , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.RECANT_TRANING>0 
+				           THEN ( TO_CHAR((X.RECANT_TRANING / X.TOTAL_TRANING),'FM99.9999')*100) 
+				           ELSE 0 
+				       END AS RECANT_RATIO , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.FAIL_TRANING>0 
+				           THEN (TO_CHAR((X.FAIL_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING+X.NOT_FINISH_TRANING  )),'FM99.9999')*100) 
+				           ELSE 0 
+				       END FAIL_RATIO , 
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.FINISH_TRANING>0 
+				           THEN (TO_CHAR((X.FINISH_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING+X.NOT_FINISH_TRANING  ) ),'FM99.9999')*100) 
+				           ELSE 0 
+				       END FINISH_RATIO , 
+				       
+				        CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.NOT_FINISH_TRANING>0 
+				           THEN (TO_CHAR((X.NOT_FINISH_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING+X.NOT_FINISH_TRANING  ) ),'FM99.9999')*100) 
+				           ELSE 0 
+				       END NOT_FINISH_RATIO , 
+				       
+				       
+				       CASE 
+				           WHEN X.TOTAL_TRANING >0 
+				               AND X.COMPLETE_TRANING>0 
+				           THEN (TO_CHAR((X.COMPLETE_TRANING / (X.RUN_TRANING+X.FINISH_TRANING+X.FAIL_TRANING+X.COMPLETE_TRANING+X.NOT_FINISH_TRANING  ) ),'FM99.9999')*100) 
+				           ELSE 0 
+				       END COMPLETE_RATIO , 
+				       (SELECT MAX(CM.STD_LEAVE_DATE) 
+				         FROM COM_MEMBER CM 
+				        WHERE CM.DELETE_YN ='N' 
+				              AND CM.STD_STATUS = '4' 
+				              AND CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID 
+				              AND CM.COMPANY_ID =X.COMPANY_ID 
+				       ) ALL_FAIL_DATE , 
+				       (SELECT DEPT_NAME
+				         FROM COM_DEPT A 
+				        WHERE A.DEPT_CD=X.DEPT_NO 
+				       ) DEPT_NAME , 
+				       NVL
+				       ( 
+				              (SELECT MAX(CM.STD_TRANSFER_YN) 
+				                FROM COM_MEMBER CM 
+				               WHERE CM.DELETE_YN ='N' 
+				                     AND CM.STD_TRANSFER_YN ='Y' 
+				                     AND CM.TRANING_PROCESS_ID=X.TRANING_PROCESS_ID 
+				                     AND CM.COMPANY_ID =X.COMPANY_ID 
+				              ) ,'N'
+				          ) 
+				          TRANSFER_YN 
+				     FROM 
+				          (SELECT LTP.COMPANY_ID AS COMPANY_ID, 
+				                 LTPS.TRANING_PROCESS_NAME, 
+				                 LTPS.TRANING_PROCESS_NO , 
+				                 LTPS.TRANING_PROCESS_ID, 
+				                 LTPS.TRANING_TYPE_CD, 
+				                 LTPS.TRANING_PROCESS_PERIOD, 
+				                 LTPS.YEAR, 
+				                 LTP.TRANING_PROCESS_MANAGE_ID,    
+				                 LTP.OJT_CLASS AS OJTCLASS, 
+				                 LTPS.START_DATE, 
+				                 LTPS.END_DATE, 
+				                 LC.COMPANY_NAME AS COMPANY_NAME, 
+				                 LTPS.TRANING_STATUS_CD , 
+				         
+				                 
+				                 CL.LICENCE_NAME AS NCS_LICENCE_NAME, 
+				                 CL.LICENCE_LEVEL AS NCS_LICENCE_LEVEL, 
+				                 CL.LICENCE_VERSION AS NCS_LICENCE_VERSION, 
+				                 
+				                 LTPS.NCS_CODE , 
+				                 LTPS.NCS_NAME , 
+				                 LTPS.CENTER_GRADE , 
+				                 LTPS.CENTER_BIGO , 
+				                 LTPS.OJT_TIME_HOUR , 
+				                 LTPS.OFF_TIME_HOUR , 
+				                 LTPS.DEPT_NO ,
+				                 LTP.NOTE_MONTH AS NOTE_MONTH, 
+				                 LTP.ACT_MONTH AS ACT_MONTH , 
+				                 LTP.PROCESS_STATUS AS PROCESS_STATUS, 
+				                 LTP.OJT_MONTH_BIYONG AS OJT_MONTH_BIYONG, 
+				                 LTP.OFF_MONTH_BIYONG AS OFF_MONTH_BIYONG, 
+				                 LTP.CCN_MONTH AS CCN_MONTH , 
+				                 LTP.CCN_GRADE AS CCN_GRADE, 
+				                 LTP.CCN_BIGO AS CCN_BIGO, 
+				                 LTP.PRT_GRADE AS PRT_GRADE, 
+				                 LTP.PRT_BIGO AS PRT_BIGO,
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) TOTAL_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '1' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) RUN_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '2' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) FINISH_TRANING ,
+				                 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '6' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) NOT_FINISH_TRANING , 
+				                  
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '3' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) COMPLETE_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '4' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) FAIL_TRANING , 
+				                 (SELECT COUNT(DISTINCT CM.MEM_SEQ) TOTAL_CNT 
+				                   FROM COM_MEMBER CM 
+				                  WHERE CM.DELETE_YN ='N' 
+				                        AND CM.STD_STATUS = '5' 
+				                        AND CM.TRANING_PROCESS_ID=LTPS.TRANING_PROCESS_ID 
+				                 ) RECANT_TRANING 
+				            FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				             INNER JOIN LMS_TRANING_PROCESS LTP 
+				                 ON LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID 
+				                 AND LTP.DELETE_YN = 'N' 
+				             INNER JOIN LMS_COMPANY LC 
+				                 ON LC.COMPANY_ID = LTP.COMPANY_ID 
+				                 AND LC.DELETE_YN ='N' 
+				             LEFT OUTER JOIN COM_NCS_LICENCE CL
+				             	ON CL.LICENCE_ID = LTPS.LICENCE_ID 
+				                 AND CL.DELETE_YN ='N' 
+				           WHERE 1 =1 
+				                 AND LTPS.DELETE_YN = 'N' 
+				                 
+			                  <if test="searchKeyword != null and searchKeyword != ''">
+							      AND LTPS.YEAR =  #{searchKeyword  }  
+							  </if>
+							  <if test="searchTraningTypeCd != null and searchTraningTypeCd != ''">
+							      AND LTPS.TRANING_TYPE_CD =  #{searchTraningTypeCd  }  
+							  </if>
+							     
+							   <if test="searchCompanyName != null and searchCompanyName != ''">
+							      AND LC.COMPANY_NAME LIKE  '%'||#{searchCompanyName  }||'%'  
+							  </if>
+				                 
+				            
+				        ORDER BY TRANING_PROCESS_ID DESC 
+				          ) X
+				          
+			   
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+	<select id="mainTraningProcessStat"  resultType="HashMap">
+				<!-- SELECT 
+				COUNT(1)  TRAINING_TOTAL 
+				FROM LMS_TRANING_PROCESS_SEARCH LTPS
+				WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') 
+				AND  TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				AND LTPS.DELETE_YN= 'N'
+				AND LTPS.TRANING_STATUS_CD='1' 
+				AND LTPS.TRANING_TYPE_CD = '3'
+				UNION ALL
+				SELECT 
+				COUNT(1)  TRAINING_TOTAL
+				FROM LMS_TRANING_PROCESS_SEARCH LTPS
+				WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') 
+				AND  TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				AND LTPS.DELETE_YN= 'N'
+				AND LTPS.TRANING_STATUS_CD='2' 
+				AND LTPS.TRANING_TYPE_CD = '3'
+				UNION ALL
+				SELECT 
+				COUNT(1)  TRAINING_TOTAL
+				FROM LMS_TRANING_PROCESS_SEARCH LTPS
+				WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') 
+				AND  TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				AND LTPS.DELETE_YN= 'N'
+				AND LTPS.TRANING_STATUS_CD='1' 
+				AND LTPS.TRANING_TYPE_CD = '1'
+				UNION ALL
+				SELECT 
+				COUNT(1)  TRAINING_TOTAL
+				FROM LMS_TRANING_PROCESS_SEARCH LTPS
+				WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') 
+				AND  TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				AND LTPS.DELETE_YN= 'N'
+				AND LTPS.TRANING_STATUS_CD='2' 
+				AND LTPS.TRANING_TYPE_CD = '1' -->
+				<!-- 
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'N' 
+				   INNER JOIN COM_MEMBER MEMB
+				       ON MEMB.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID
+				       AND MEMB.DEPT_NO = DEPT.DEPT_CD
+				   INNER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SKNS
+				       ON SKNS.STUDNO = MEMB.MEM_ID
+				       AND SKNS.SKNRGS_STTUS_NM = '재학'
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='1' 
+				       
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS  
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'N' 
+				    INNER JOIN COM_MEMBER MEMB
+				       ON MEMB.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID
+				       AND MEMB.DEPT_NO = DEPT.DEPT_CD
+				   INNER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SKNS
+				       ON SKNS.STUDNO = MEMB.MEM_ID
+				       AND SKNS.SKNRGS_STTUS_NM = '재학'    
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='2' 
+				       
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'Y' 
+				    INNER JOIN COM_MEMBER MEMB
+				       ON MEMB.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID
+				       AND MEMB.DEPT_NO = DEPT.DEPT_CD
+				   INNER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SKNS
+				       ON SKNS.STUDNO = MEMB.MEM_ID
+				       AND SKNS.SKNRGS_STTUS_NM = '재학'    
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='1'
+				        
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'Y' 
+				    INNER JOIN COM_MEMBER MEMB
+				       ON MEMB.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID
+				       AND MEMB.DEPT_NO = DEPT.DEPT_CD
+				   INNER JOIN KUT_MOB2.VH_OKLMS_TH_SKNRGS_M SKNS
+				       ON SKNS.STUDNO = MEMB.MEM_ID
+				       AND SKNS.SKNRGS_STTUS_NM = '재학'    
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='2'  
+				       
+				   -->     
+				       SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'N' 
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='1' 
+				       
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS  
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'N' 
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='2' 
+				       
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'Y' 
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='1'
+				        
+				    UNION ALL 
+				    
+				SELECT COUNT(1) TRAINING_TOTAL 
+				  FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+				   INNER JOIN COM_DEPT DEPT 
+				       ON DEPT.DEPT_CD = LTPS.DEPT_NO 
+				       AND DEPT.MST_YN = 'Y' 
+				 WHERE SYSDATE BETWEEN TO_DATE(LTPS.START_DATE,'YYYY.MM.DD') AND TO_DATE(LTPS.END_DATE,'YYYY.MM.DD') 
+				       AND LTPS.DELETE_YN= 'N' 
+				       AND LTPS.TRANING_STATUS_CD='2'  
+				
+	</select>
+	
+	
+	 
+	<select id="listTraningDeptStat" resultType="kr.co.gocle.oklms.la.traningprocess.vo.TraningProcessVO">
+		/* ====== kr.co.gocle.oklms.la.traningprocess.service.impl.TraningProcessMapper.listTraningDeptStat ====== */
+		
+		SELECT * 
+		  FROM 
+		       (SELECT COUNT(*) AS DEPT_TOTAL_CNT, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1891',1,0)) DEPT_1, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1931',1,0)) DEPT_2, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1932',1,0)) DEPT_3, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1917',1,0)) DEPT_4, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1916',1,0)) DEPT_5, 
+		              SUM(DECODE(LTPS.DEPT_NO,'2025',1,0)) DEPT_6,
+		              1 AS ORDERS 
+		         FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+		          INNER JOIN LMS_TRANING_PROCESS LTP 
+		              ON LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID 
+		              AND LTP.DELETE_YN = 'N' 
+		        WHERE 1 =1 
+		              AND LTPS.DELETE_YN = 'N' 
+		              AND LTPS.TRANING_STATUS_CD = '1' 
+		           UNION  
+		       SELECT COUNT(*) AS DEPT_TOTAL_CNT, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1891',1,0)) DEPT_1, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1931',1,0)) DEPT_2, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1932',1,0)) DEPT_3, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1917',1,0)) DEPT_4, 
+		              SUM(DECODE(LTPS.DEPT_NO,'1916',1,0)) DEPT_5, 
+		              SUM(DECODE(LTPS.DEPT_NO,'2025',1,0)) DEPT_6,
+		              2 AS ORDERS 
+		         FROM LMS_TRANING_PROCESS_SEARCH LTPS 
+		          INNER JOIN LMS_TRANING_PROCESS LTP 
+		              ON LTP.TRANING_PROCESS_ID = LTPS.TRANING_PROCESS_ID 
+		              AND LTP.DELETE_YN = 'N' 
+		        WHERE 1 =1 
+		              AND LTPS.DELETE_YN = 'N' 
+		              AND LTPS.TRANING_STATUS_CD = '2' 
+		       ) ORDER BY ORDERS
+				          
+	</select>
+	
+</mapper>

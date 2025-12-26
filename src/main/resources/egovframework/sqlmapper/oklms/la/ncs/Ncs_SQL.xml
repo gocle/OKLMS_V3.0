@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.la.ncs.service.impl.NcsMapper">
+ 	
+ 	<select id="listLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO" resultType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+			SELECT  
+			         LIC.LICENCE_ID,
+			         LIC.LICENCE_NAME,
+			         LIC.LICENCE_LEVEL,
+			         LIC.LICENCE_VERSION
+			FROM     COM_NCS_LICENCE LIC
+			WHERE    LIC.DELETE_YN           = 'N'
+			ORDER BY LIC.LICENCE_ID
+	</select>
+ 	
+ 	<select id="listNcsLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO" resultType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		SELECT   ROW_NUMBER() OVER (PARTITION BY LIC.LICENCE_ID ORDER BY LIC.LICENCE_ID , UNT.ORDERS ASC) AS RN,
+         COUNT (*) OVER (PARTITION BY LIC.LICENCE_ID)                                             AS ROWSPAN,
+			         LIC.LICENCE_ID,
+			         LIC.LICENCE_NAME,
+			         LIC.LICENCE_LEVEL,
+			         LIC.LICENCE_VERSION,
+			         UNT.UNIT_ID,
+			         UNT.UNIT_CD,
+			         UNT.UNIT_NAME,
+			         UNT.ORDERS
+			FROM     COM_NCS_LICENCE LIC
+			         LEFT OUTER JOIN COM_NCS_LICENCE_UNIT UNT
+			         ON       LIC.LICENCE_ID = UNT.LICENCE_ID
+			         AND      UNT.DELETE_YN  = 'N'
+			WHERE    LIC.DELETE_YN           = 'N'
+			ORDER BY LIC.LICENCE_ID,
+			         UNT.ORDERS
+	</select>
+	
+	<select id="getNcsLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO" resultType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		SELECT 
+			      	 LIC.LICENCE_ID,
+			         LIC.LICENCE_NAME,
+			         LIC.LICENCE_LEVEL,
+			         LIC.LICENCE_VERSION
+			FROM     COM_NCS_LICENCE LIC
+			WHERE    LIC.DELETE_YN  = 'N'
+				AND LICENCE_ID = {licenceId}
+			         
+	</select>
+	
+	<insert id="insertNcsLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		INSERT
+			INTO   COM_NCS_LICENCE
+			       (
+			              LICENCE_ID,
+			              LICENCE_NAME,
+			              LICENCE_LEVEL,
+			              LICENCE_VERSION,
+			              INSERT_DATE,
+			              INSERT_USER
+			       )
+			       VALUES
+			       (
+			              #{licenceId},
+			              #{licenceName},
+			              #{licenceLevel},
+			              #{licenceVersion},
+			              SYSDATE,
+			              #{sessionMemSeq}
+			       )
+	</insert>
+	
+	<update id="updateNcsLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		UPDATE COM_NCS_LICENCE
+			SET    LICENCE_NAME     =#{licenceName},
+			       LICENCE_LEVEL    =#{licenceLevel},
+			       LICENCE_VERSION =#{licenceVersion},
+			       UPDATE_DATE      =SYSDATE,
+			       UPDATE_USER      =#{sessionMemSeq}
+			WHERE  LICENCE_ID       = #{licenceId}
+	</update>
+	
+	<update id="deleteNcsLicence" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		UPDATE COM_NCS_LICENCE
+			SET    DELETE_YN = 'Y',
+			       UPDATE_DATE      = SYSDATE,
+			       UPDATE_USER      =#{sessionMemSeq}
+			WHERE  LICENCE_ID    = #{licenceId}
+	</update>
+	
+	<select id="listNcsLicenceUnit" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO" resultType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		SELECT   LICENCE_ID,
+		             UNIT_ID,
+			         UNIT_CD,
+			         UNIT_NAME,
+			         ORDERS
+			FROM     COM_NCS_LICENCE_UNIT
+			WHERE   LICENCE_ID = #{licenceId}
+			AND      DELETE_YN  = 'N'
+			ORDER BY ORDERS
+	</select>
+	
+	<select id="getNcsLicenceUnit" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO" resultType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		SELECT 
+			      	 LICENCE_ID,
+		             UNIT_ID,
+			         UNIT_CD,
+			         UNIT_NAME,
+			         ORDERS
+			FROM     COM_NCS_LICENCE_UNIT 
+			WHERE   DELETE_YN  = 'N'
+				AND UNIT_ID = {unitId}
+			         
+	</select>
+	
+	<insert id="insertNcsLicenceUnit" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		INSERT
+			INTO   COM_NCS_LICENCE_UNIT
+			       (
+			              UNIT_ID,
+			              LICENCE_ID,
+			              UNIT_CD,
+			              UNIT_NAME,
+			              ORDERS,
+			              INSERT_DATE,
+			              INSERT_USER
+			       )
+			       VALUES
+			       (
+			              #{unitId},
+			              #{licenceId},
+			              #{unitCd},
+			              #{unitName},
+			              (SELECT NVL(MAX(ORDERS),0)+1 FROM COM_NCS_LICENCE_UNIT WHERE LICENCE_ID = #{licenceId}),
+			              SYSDATE,
+			              #{sessionMemSeq}
+			       )
+	</insert>
+	
+	<update id="updateNcsLicenceUnit" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		UPDATE COM_NCS_LICENCE_UNIT
+				SET    UNIT_CD     = #{unitCd},
+				       UNIT_NAME   = #{unitName},
+				       ORDERS      = #{orders},
+				       INSERT_DATE = SYSDATE,
+				       INSERT_USER = #{sessionMemSeq}
+				WHERE  UNIT_ID     = #{unitId}
+	</update>
+	
+	<update id="deleteNcsLicenceUnit" parameterType="kr.co.gocle.oklms.la.ncs.vo.NcsLicenceVO">
+		UPDATE COM_NCS_LICENCE_UNIT
+			SET    DELETE_YN = 'Y',
+			       UPDATE_DATE      = SYSDATE,
+			       UPDATE_USER      =#{sessionMemSeq}
+			WHERE  UNIT_ID    = #{unitId}
+	</update>
+	
+</mapper>

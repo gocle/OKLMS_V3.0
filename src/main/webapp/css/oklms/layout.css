@@ -1,0 +1,233 @@
+@charset "utf-8";
+
+
+
+#wrapper																							{ position:relative; width:100%; min-height: 100vh; height: 100vh; /* overflow:auto; background: #282c3b; *//*background:url("/images/oklms/std/inc/wrapper_line.png") 250px 0 repeat-y; */ }
+#wrapper:after																					{ content:""; display:block; clear:both; }
+
+
+
+
+
+#header 	 																						{ position: fixed;  width:100%; width:250px;  left:0; top:0; background:#282c3b; z-index:110; }
+#header li.logo-area																			{display:block; width:100%; height:60px;}
+#header li.logo-area a																			{ display: inline-block; overflow:hidden; width:100%; height:60px; text-indent:-9999px; background:url("/images/oklms/std/inc/logo.png") center 5px no-repeat; }
+/* 
+#header li.gnb-area																			{display:block; text-align:center; line-height:0; padding:0; margin:0; }
+#header li.gnb-area a																			{ position:relative; display:inline-block; overflow:hidden; width:100%; height:60px; font-size:0; line-height:0; margin-top:0; }
+#header li.gnb-area a span																	{ position:absolute; width:100%; height:14px; right:0; top:12px; font:700 12px play; color:#FFF; line-height:12px; text-align:center; text-indent:0; border-radius:7px; background:#FE7A22; }
+#header li.gnb-area a.type-1																{ background:url("/images/oklms/std/inc/gnb_img.png") no-repeat; }
+#header li.gnb-area a.type-1-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") no-repeat; }
+#header li.gnb-area a.type-2																{ background:url("/images/oklms/std/inc/gnb_img.png") -50px 0 no-repeat; }
+#header li.gnb-area a.type-2-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -50px 0 no-repeat; }
+#header li.gnb-area a.type-3																{ background:url("/images/oklms/std/inc/gnb_img.png") -100px 0 no-repeat; }
+#header li.gnb-area a.type-3-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -100px 0 no-repeat; }
+#header li.gnb-area a.type-4																{ background:url("/images/oklms/std/inc/gnb_img.png") -150px 0 no-repeat; }
+#header li.gnb-area a.type-4-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -150px 0 no-repeat; }
+#header li.gnb-area a.type-5																{ background:url("/images/oklms/std/inc/gnb_img.png") -200px 0 no-repeat; }
+#header li.gnb-area a.type-5-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -200px 0 no-repeat; }
+#header li.gnb-area a.type-6																{ background:url("/images/oklms/std/inc/gnb_img.png") -250px 0 no-repeat; }
+#header li.gnb-area a.type-6-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -250px 0 no-repeat; }
+#header li.gnb-area a.type-7																{ background:url("/images/oklms/std/inc/gnb_img.png") -300px 0 no-repeat; }
+#header li.gnb-area a.type-7-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -300px 0 no-repeat; }
+#header li.gnb-area a.type-8																{ background:url("/images/oklms/std/inc/gnb_img.png") -350px 0 no-repeat; }
+#header li.gnb-area a.type-8-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -350px 0 no-repeat; }
+ */
+#header li.gnb-area	{display:block}
+#header li.gnb-area span select															{ display: block;  height: inherit !important; min-height:28px; width:80%;  padding: .2rem; margin:5px auto 10px auto; font-size: 14px; line-height: 1.5; color: #495057; background-color: #fff;background-clip: padding-box;border: 1px solid #ebedf2;border-radius: 0;transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;}
+
+
+#header li.gnb-area																			{ height:40px; line-height:0; margin:0; text-align:center; display:block;}
+#header li.gnb-area a																			{ position:relative; display:inline-block; overflow:hidden; width:50px; height:60px; font-size:0; line-height:0; margin-top:0; }
+#header li.gnb-area a span																	{ position:absolute; width:28px; height:14px; right:0; top:12px; font:700 12px play; color:#FFF; line-height:12px; text-align:center; text-indent:0; border-radius:7px; background:#FE7A22; }
+#header li.gnb-area a.type-1																{ background:url("/images/oklms/std/inc/gnb_img.png") no-repeat; }
+#header li.gnb-area a.type-1-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") no-repeat; }
+#header li.gnb-area a.type-2																{ background:url("/images/oklms/std/inc/gnb_img.png") -50px 0 no-repeat; }
+#header li.gnb-area a.type-2-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -50px 0 no-repeat; }
+#header li.gnb-area a.type-3																{ background:url("/images/oklms/std/inc/gnb_img.png") -100px 0 no-repeat; }
+#header li.gnb-area a.type-3-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -100px 0 no-repeat; }
+#header li.gnb-area a.type-4																{ background:url("/images/oklms/std/inc/gnb_img.png") -150px 0 no-repeat; }
+#header li.gnb-area a.type-4-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -150px 0 no-repeat; }
+#header li.gnb-area a.type-5																{ background:url("/images/oklms/std/inc/gnb_img.png") -200px 0 no-repeat; }
+#header li.gnb-area a.type-5-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -200px 0 no-repeat; }
+#header li.gnb-area a.type-6																{ background:url("/images/oklms/std/inc/gnb_img.png") -250px 0 no-repeat; }
+#header li.gnb-area a.type-6-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -250px 0 no-repeat; }
+#header li.gnb-area a.type-7																{ background:url("/images/oklms/std/inc/gnb_img.png") -300px 0 no-repeat; }
+#header li.gnb-area a.type-7-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -300px 0 no-repeat; }
+#header li.gnb-area a.type-8																{ background:url("/images/oklms/std/inc/gnb_img.png") -350px 0 no-repeat; }
+#header li.gnb-area a.type-8-on															{ background:url("/images/oklms/std/inc/gnb_img_on.png") -350px 0 no-repeat; }
+#header li.m_nav_btn{display:none;}
+
+
+
+#content-box 	 																					{min-height: 100vh;position: relative;top: 0;height: 100vh;}
+#container 	 																						{position: relative;display:block; width:100%; height:100%; background: #282c3b; }
+#content-area-layout 	 																				{ position:relative; width: calc(100% - 250px); height: 100vh; min-height: 100%; float: right; transition: all .3s; max-width: unset;}
+#content-area-layout 
+#content-area-layout h2 																				{ width:100%; font:25px nbgM; color:#222; line-height:28px; font-weight: 500;  /* text-indent:25px;background:url("/images/oklms/std/inc/sub_title.png") 0 3px no-repeat; */ margin-bottom:5px; }
+#content-area-layout h2:first-child																	{ /* margin-top:40px;  */}
+/* 
+#content-area-layout h4 																				{ width:100%; font:13px nbgM; color:#61656C; line-height:28px; text-align:center; border:1px solid #2468C6; background:#F6F9FD; padding:10px 0 8px; }
+#content-area-layout h4 span																		{ font:18px nbgM; color:#2F3846; }
+ */
+
+#content-area-layout h4 {position:relative; background:#f6f6f6; border:1px solid #ddd; padding:20px; margin:0 0 30px; display:block !important; width:100% !important;  min-height:25px; font:16px nbgM; text-align:left !important; line-height: 25px;  color:#61656C;}
+#content-area-layout h4 	span{ font-size:20px; color:#2F3846;  display:inline-block !important; padding-left:30px;}
+#content-area-layout h4:before{content: "\ea93";display: block;position: absolute;left:20px;top:17px; font-size:24px; font-family: 'xeicon'; line-height:28px;}
+
+
+#content-area-layout .group-area																	{ position:relative;  width:100%; z-index:0; overflow:hidden;}
+#content-area-layout h5 																				{ float:left; width:100%; font:15px nbgM; color:#333; line-height:28px; text-indent:18px; background:url("/images/oklms/std/inc/sub_title_small.png") 5px 9px no-repeat; margin-bottom:5px; }
+.content-area																						{position:relative; background: #fff !important; padding: 2rem; min-height: calc(100% - 28px); border-radius: 0.5rem !important;  margin: 1rem 1rem 1rem 0; overflow:hidden;}
+.content-area:befor{ content: ""; clear: both; display: block; overflow:hidden;}	 
+
+
+/* PC NVA */
+#lnb-area-wrap																					{position: fixed; top: 110px; bottom: 0;left: 0; background:#282c3b; width:250px; display:block; z-index: 1;overflow-x: hidden;}
+.sidebar-wrapper 																				{ overflow: auto; overflow-x: hidden;  position: relative;  z-index: 4; width: 100%; height: calc(100% - 10px); padding-bottom: 30px;}
+#lnb-area 	 																						{position: absolute; top:0; min-height:100%; width:100%; }
+#lnb-area li 																						{ }
+#info-area 	 																						{position:relative; display:block; width:100%; padding:0; margin-bottom:0px;}
+/* #info-area:after																					{ content:""; display:block; clear:both; } */
+#info-area dt 																						{ display:none; }
+#info-area dt 																						{ display:none; }
+#info-area dd.info-photo																		{display:block; width:120px; height:120px; margin:0 auto;}
+#info-area dd.info-photo img																{ border-radius: 50% !important; width: 100%; height: 100%; vertical-align:middle;}
+#info-area dd.info-text																		{width:100%; height:40px; font-size:16px; color:#fff; line-height:20px; text-align:center; display:block;}
+#info-area dd.info-text b																		{ display:inline; overflow:hidden; font-weight:normal; white-space:nowrap; margin-right:8px;/*  text-overflow:ellipsis; -o-text-overow: ellipsis; -moz-binding:url(js/ellipsis.xml#ellipsis)undefinedundefinedundefined; */}
+#info-area dd.info-btn																			{overflow:hidden; display:block; width:100%; line-height:22px; margin-top:10px; }
+#info-area dd.info-btn a																		{ display:block; overflow:hidden; width:100%; padding:8px 10px; color:#FFF; text-align:center; border:1px solid #484b58}
+#info-area dd.info-btn a:first-child														{ border-right:0; border-left:0;}
+#info-area dd.info-btn a:last-child														    { border-right:0;}
+#info-area dd.info-btn a.btn-mypage														{  background:url("/images/oklms/std/inc/icon_mypage.png") 30% 8px no-repeat #282c3b; border-bottom:0}
+#info-area dd.info-btn a.btn-logout														{ float:right; background:url("/images/oklms/std/inc/icon_logout.png") 15% center no-repeat #282c3b; }
+#info-area dd.timer																				{dispaly:block; width:80%;  font:400 16px play; color:#BF0101; line-height:25px; text-align:center; /* border:4px solid #DDD; */ background:url("/images/oklms/std/inc/watch.png") 45px 7px no-repeat; background-color:#fff;  border-radius: 50px; padding-left:21px; margin:0 auto; webkit-box-sizing:border-box; box-sizing:border-box; -moz-box-sizing:border-box; -o-box-sizing:border-box; }
+#info-area  a.btn-logout														{ background:url("/images/oklms/std/inc/icon_logout.png") 15% center no-repeat #282c3b; }
+
+
+#lnb 	 																								{ width:100%;  margin-top:0;  border-top:1px solid #484b58; }
+#lnb:after																							{ content:""; display:block; clear:both; }
+
+#lnb dl																								{position:relative; display:block; width:100%; }
+#lnb dt																								{position:relative;  display:block; width:100%;}
+#lnb dt a																							{ display: flex; width: 100%;  font:15px nsM; font-weight: 400; color:#f5f5f5; line-height:20px; text-indent:20px; background:url("/images/oklms/std/inc/edu_lnb.png") 219px 12px no-repeat ; padding:10px 0; border-bottom:1px solid #484b58;}
+#lnb dt a:hover																					{ text-decoration:none; color:#fff; background-color:#4d5368;}
+
+#lnb dt a.course-title																			{ display:block; overflow:hidden; width:100%; font:15px nsM; color:#FFF; line-height:20px; text-indent:20px; background:url("/images/oklms/std/inc/edu_lnb_on.png") 217px 20px no-repeat /* #4d536 */8; padding:10px 0; }
+#lnb dt a.course-title:hover																	{ text-decoration:none; } 
+
+#lnb dt a.current																					{ display:block; overflow:hidden; width:100%; font:15px nsM; color:#FFF; line-height:20px; text-indent:20px; background:url("/images/oklms/std/inc/edu_lnb_on.png") 217px 17px no-repeat #1B489D; padding:15px 0; }
+#lnb dt a.current:hover																			{ text-decoration:none; }
+
+
+#lnb dt a.today																					{ display:block; overflow:hidden; width:100%; font:15px nsM; color:#FFF; line-height:20px; text-indent:20px; background:url("/images/oklms/std/inc/edu_lnb.png") 219px 14px no-repeat ; padding:15px 0;}
+#lnb dt a.today:hover																			{ text-decoration:none; }
+
+
+#lnb dd																								{ display:none; width:250px; }
+#lnb dd a																							{ display:block; overflow:hidden; width:220px; font-size:12px; color:#333; line-height:22px; /* border-top:1px solid #484b58; */ background:url("/images/oklms/std/inc/bullet_01.png") 22px 16px no-repeat; padding:6px 0 6px 30px; }
+#lnb dd.on																							{ display:block; }
+#lnb dd.edu_list																					{ height:140px; overflow-x:hidden; overflow-y:scroll; }
+
+#lnb dd.depth-2-area{display:block; background:#5b6382; padding:5px 0}
+#lnb dd .depth-2																					{  width:100%; border-bottom:none;}
+#lnb dd .depth-2 dt																				{  width:100%; /* background:#1e212d; */}
+#lnb dd .depth-2 dt a																			{ position: relative; display:block; width:100%; border-bottom:0px solid #7780a3; font-size:13px; color: #e4e7f1 !important; font-weight: 400; /* background:url("/images/oklms/std/inc/bullet_01.png") 22px 16px no-repeat; */ padding:2px 0 2px 15px;}
+#lnb dd .depth-2 dt a:before {content: ''; height: 3px; width: 3px; background: #e4e7f1; position: absolute; left: 25px;  top:15px; /*  transform: translateY(-50%);  */border-radius: 100%;}
+#lnb dd .depth-2 dt.on{background-color:#4d5368;}
+#lnb dd .depth-2 dt.current a																{ font-weight:bold; color:#7E5A20; background:url("/images/oklms/std/inc/icon_check1.png") 12px 10px no-repeat #FDF2C7; }
+#lnb dd .depth-2 dd																				{ float:left; display:none; width:250px; border-top:1px solid #DEDEDE; background:#F6F9FD; }
+#lnb dd .depth-2 dd a																			{ display:block; overflow:hidden; width:220px; font:12px Dotum; color:#555; line-height:18px; border-top:1px solid #DEDEDE; background:none; padding:6px 0 3px 30px; }
+#lnb dd .depth-2 dd a:before																{ content:"- "; }
+#lnb dd .depth-2 dd a:first-child															{ border-top:none; }
+#lnb dd .depth-2 dd.on																		{ display:block; }
+#lnb dd.on-block{display:block;}
+#lnb dd .depth-3																					{ float:left; width:250px; border-bottom:none; color:#1b489d;font-weight:700; }
+
+#lnb dt .company																				{ width:100%; background:#F2F2F2; padding:10px; overflow:hidden;}
+#lnb dt .company input																			{width: -webkit-calc(100% - 60px); width: calc(100% - 60px); font:13px nbgM; color:#d0d0d0; vertical-align:middle; border:1px solid #CCC; padding:4px 5px; margin-left:5px; float:left;}
+#lnb dt .company a																				{ width:50px;  height:35px; float:right; line-height:35px; display:block; text-indent: 0; padding:0; text-align:center; font-size:13px; color:#FFF; border:0 none; background-color:#555; /* background:url("/images/oklms/std/inc/icon_search.png") 6px 6px no-repeat  #555;*/ }
+
+
+
+#lnb .course-list																					{ position:relative; width:100%; height:210px; background-color:#fff;}
+#lnb .course-list li.course-tab-1															{ position:absolute; width:50%; left:0; top:0; font:15px nbgM; color:#333; line-height:20px; text-align:center; }
+#lnb .course-list li.course-tab-2															{ position:absolute; width:50%; right:0; top:0; font:15px nbgM; color:#333; line-height:20px; text-align:center; }
+#lnb .course-list li a																			{ display:block; width:125px; color:#444; background:#DDD; padding:8px 0 7px; }
+#lnb .course-list li.on a																		{ color:#FFF; background:#2A91D4; }
+#lnb .course-list li.course-menu-1														{ display:none; float:left; overflow-x:hidden; overflow-y:scroll; width:100%; height:175px; padding-top:0; margin-top:35px; }
+#lnb .course-list li.course-menu-1 a														{ width:100%; font-size:12px; color:#333; line-height:22px; text-indent:30px; border-top:1px solid #DEDEDE; background:url("/images/oklms/std/inc/bullet_01.png") 22px 16px no-repeat #FFF; padding:7px 0 5px; }
+#lnb .course-list li.course-menu-1 a.current											{ font-size:13px; color:#2657AF; background:url("/images/oklms/std/inc/icon_check1.png") 12px 10px no-repeat #EAF2FD; }
+#lnb .course-list li.course-menu-1 a:hover											{ text-decoration:underline; }
+#lnb .course-list li.course-menu-1 a:first-child										{ border-top:1px solid #FFF; }
+#lnb .course-list li.course-menu-2														{ display:none; float:left; overflow-x:hidden; overflow-y:scroll; width:100%; height:175px; padding-top:0; margin-top:35px; }
+#lnb .course-list li.course-menu-2 a														{ width:100%; font-size:12px; color:#333; line-height:22px; text-indent:30px; border-top:1px solid #DEDEDE; background:url("/images/oklms/std/inc/bullet_01.png") 22px 16px no-repeat #FFF; padding:7px 0 5px; }
+#lnb .course-list li.course-menu-2 a.current											{ font-size:13px; color:#2657AF; background:url("/images/oklms/std/inc/icon_check1.png") 12px 10px no-repeat #EAF2FD; }
+#lnb .course-list li.course-menu-2 a:hover											{ text-decoration:underline; }
+#lnb .course-list li.course-menu-2 a:first-child										{ border-top:1px solid #FFF; }
+#lnb .course-list li.course-menu-3														{ float:left; overflow-x:hidden; overflow-y:scroll; width:100%; height:210px; padding-top:0; margin-top:0; }
+#lnb .course-list li.course-menu-3 a														{ width:100%; font-size:12px; color:#333; line-height:22px; text-indent:30px; border-top:1px solid #DEDEDE; background:url("/images/oklms/std/inc/bullet_01.png") 22px 16px no-repeat #FFF; padding:7px 0 5px; }
+#lnb .course-list li.course-menu-3 a.current											{ font-size:13px; color:#2657AF; background:url("/images/oklms/std/inc/icon_check1.png") 12px 10px no-repeat #EAF2FD; }
+#lnb .course-list li.course-menu-3 a:hover											{ text-decoration:underline; }
+#lnb .course-list li.course-menu-3 a:first-child										{ border-top:1px solid #FFF; }
+/* #m_lnb_wrap{display:none;} */
+#m_lnb_wrap{display:block;}
+
+#customer 	 																						{ width:220px; color:#555; line-height:20px; border-bottom:1px solid #DEDEDE; background:url("/images/oklms/std/inc/help_desk.png") 185px 15px no-repeat; padding:15px; }
+#customer p																						{ font:700 29px play; color:#F76000; line-height:35px; letter-spacing:-0.05em; padding-bottom:5px; }
+#customer a																						{ color:#555; }
+#customer span																					{ letter-spacing:0.45em; }
+
+
+#site-info 	 																						{ position:relative; width:220px; font:12px nbgM; color:#888; line-height:20px; padding:15px; margin-bottom:30px; }
+#site-info .dropdown																			{ position:relative; float:left; width:220px; margin:5px 0 10px; }
+#site-info .dropdown-toggle																	{ display:block; overflow:hidden; width:210px; height:20px; font:12px Dotum; color:#777; line-height:18px; border:1px solid #DDD; background:url("/images/oklms/std/inc/family_bullet_01.png") 200px 8px no-repeat; padding:5px 0 0 10px; }
+#site-info .dropdown-site																		{ position:absolute; display:none; width:185px; left:0; top:auto; bottom:100%; border:1px solid #DDD; background:#FFF; padding:15px 25px 10px 10px; margin-bottom:2px; z-index:1000; }
+#site-info .dropdown-site a																	{ display:block; overflow:hidden; width:188px; font:12px Dotum; color:#777; line-height:20px; }
+#site-info .dropdown-site a:hover															{ color:#F76000; }
+#site-info .dropdown-site a:before														{ content:"- "; color:#CCC; }
+
+#site-info .etc-link																				{ position:relative; float:left; width:220px; margin:5px 0 5px; }
+#site-info .etc-link a																			{ display:inline-block; width:220px; overflow:hidden; font:13px nbgM; color:#555; border-bottom:1px solid #E5E5E5; padding-bottom:6px; }
+#site-info .etc-link a:hover																	{ border-bottom:1px solid #BBB; }
+
+
+
+/* 접속오류 속성 */
+
+#wrap-error																						{ position:relative; float:left; width:100%; height:100%; background:url("/images/oklms/std/inc/error_bg_01.png") top #F2F2F2 repeat-x; }
+#wrap-error ul																					{ position:relative; width:270px; height:210px; background:url("/images/oklms/std/inc/error_bg_02.png") right no-repeat; padding-right:250px; margin:210px auto 0; }
+#wrap-error li																						{ float:left; display:block; width:270px; text-align:right; }
+#wrap-error .logo																				{ height:55px; text-indent:-9999px; background:url("/images/oklms/std/inc/error_bg_03.png") right 0 no-repeat; }
+#wrap-error .text																					{ height:120px; font:14px nbgM; color:#FFF; line-height:20px; }
+#wrap-error .number																			{ font:13px play; color:#333; line-height:18px; padding-top:7px; }
+#wrap-error .number span																	{ color:#999; background:url("/images/oklms/std/inc/error_bg_04.png") right no-repeat; padding-right:10px; margin-right:10px; }
+
+#wrap-error .type-11																			{ font-size:30px; line-height:40px; text-align:right; text-shadow:1px 1px 1px #004B7C; padding-top:18px; }
+#wrap-error .type-12																			{ text-align:right; opacity:0.5; }
+
+#wrap-error .type-21																			{ float:right; font-size:23px; line-height:30px; text-align:right; text-shadow:1px 1px 1px #004B7C; padding-top:22px; }
+#wrap-error .type-22																			{ float:left; display:inline-block; height:40px; text-align:right; opacity:0.5; padding-top:7px; }
+#wrap-error .type-23																			{ float:right; display:inline-block; width:90px; height:40px; padding-top:9px; }
+#wrap-error .type-23 a																			{ display:block; overflow:hidden; width:90px; height:26px; font-size:16px; color:#FFF; text-align:center; border-radius:4px; background:#FF7F00; box-shadow:1px 1px 1px #152A61; padding-top:9px; }
+
+
+
+
+
+
+
+
+/* 콘텐츠 대기 속성 */
+
+#wrap-wait																						{ position:relative; float:left; width:100%; height:100%; background:url("/images/oklms/std/inc/error_bg_01.png") top #F2F2F2 repeat-x; }
+#wrap-wait ul																						{ position:relative; width:500px; height:210px; margin:210px auto 0; }
+#wrap-wait li																						{ float:left; display:block; width:500px; text-align:center; }
+#wrap-wait .logo																				{ height:55px; text-indent:-9999px; background:url("/images/oklms/std/inc/error_bg_03.png") center 0 no-repeat; }
+#wrap-wait .text																					{ height:120px; font:16px nsM; color:#FFF; line-height:20px; }
+#wrap-wait .number																			{ font:13px play; color:#333; line-height:18px; padding-top:7px; }
+#wrap-wait .number span																	{ color:#999; background:url("/images/oklms/std/inc/error_bg_04.png") right no-repeat; padding-right:10px; margin-right:10px; }
+
+#wrap-wait .type-11																			{ font:700 35px play; line-height:45px; text-shadow:1px 1px 1px #004B7C; padding-top:22px; }
+#wrap-wait .type-12																			{ opacity:0.7; }
+

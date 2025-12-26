@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.commbiz.auth.service.impl.CommBizAuthMapper">
+
+	<select id="listAuth" parameterType="kr.co.gocle.oklms.commbiz.auth.vo.ComAuthVO" resultType="kr.co.gocle.oklms.commbiz.auth.vo.ComAuthVO">
+		/* ====== kr.co.gocle.oklms.commbiz.auth.service.impl.CommBizAuthMapper.listAuth ====== */
+		SELECT   CAM.AUTH_GROUP_ID AS AUTH_GROUP_SET,
+			         CAM.AUTH_GROUP_ID AS AUTH_GROUP_ID,
+			         CAG.AUTH_GROUP_NAME AS AUTH_GROUP_NAME
+			FROM     COM_AUTH_MEMBER CAM
+			         INNER JOIN COM_AUTH_GROUP CAG
+			         ON       CAG.AUTH_GROUP_ID = CAM.AUTH_GROUP_ID
+			         AND      CAG.DELETE_YN     = 'N'
+			         INNER JOIN COM_MEMBER COM
+			         ON       CAM.MEM_SEQ   = COM.MEM_SEQ
+			         AND      COM.DELETE_YN = 'N'
+			WHERE    CAM.MEM_SEQ            = #{sessionMemSeq}
+			ORDER BY CAM.AUTH_GROUP_ID
+	</select>
+	
+	
+	<select id="getAuth" parameterType="kr.co.gocle.oklms.commbiz.auth.vo.ComAuthVO" resultType="kr.co.gocle.oklms.commbiz.auth.vo.ComAuthVO">
+		/* ====== kr.co.gocle.oklms.commbiz.auth.service.impl.CommBizAuthMapper.getAuth ====== */
+		SELECT   
+			         CAG.AUTH_GROUP_ID AUTH_GROUP_ID,
+			         CAM.MEM_TYPE MEM_TYPE
+			FROM     COM_AUTH_MEMBER CAM
+			         INNER JOIN COM_AUTH_GROUP CAG
+			         ON       CAG.AUTH_GROUP_ID = CAM.AUTH_GROUP_ID
+			         AND      CAG.DELETE_YN     = 'N'
+			         INNER JOIN COM_MEMBER COM
+			         ON       CAM.MEM_SEQ   = COM.MEM_SEQ
+			         AND      COM.DELETE_YN = 'N'
+			WHERE    CAM.MEM_SEQ            = #{sessionMemSeq}
+				AND 	 CAM.AUTH_GROUP_ID   = #{authGroupId}
+				AND 	 ROWNUM = 1
+	</select>
+	
+	
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/batch     http://www.springframework.org/schema/batch/spring-batch.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+
+    <bean id="linkService" class="kr.co.gocle.oklms.la.link.service.impl.LinkServiceImpl"/> 
+    <bean id="mailService" class="kr.co.gocle.oklms.commbiz.mail.service.impl.MailServiceImpl"/> 
+    
+    <bean name="sendJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="kr.co.gocle.oklms.comm.job.SendJob"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="mailService" value-ref="mailService"/> 
+            </map>
+        </property> 
+    </bean>
+ 
+    <bean id="cronTriggerSend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="sendJob"
+          p:startDelay="1000"
+          p:cronExpression="0 0/01 * * * ?"/>
+	  
+    <bean name="aunuriLinkJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="kr.co.gocle.oklms.comm.job.AunuriLinkJob"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="linkService" value-ref="linkService"/> 
+            </map>
+        </property> 
+    </bean>
+    
+    <bean name="mailJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="kr.co.gocle.oklms.comm.job.MailJob"
+          p:durability="true">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="mailService" value-ref="mailService"/> 
+            </map>
+        </property> 
+    </bean>
+ 
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="aunuriLinkJob"
+          p:startDelay="1000"
+          p:cronExpression="0 00 06 * * ?"/>
+          
+     <bean id="cronTriggerMail" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+         p:jobDetail-ref="mailJob"
+         p:startDelay="1000"
+         p:cronExpression="0 00 10 * * ?"/>
+    
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"/>
+                <ref bean="cronTriggerMail"/>
+                <ref bean="cronTriggerSend"/>
+            </list>
+        </property>
+    </bean>  
+
+ 
+</beans>

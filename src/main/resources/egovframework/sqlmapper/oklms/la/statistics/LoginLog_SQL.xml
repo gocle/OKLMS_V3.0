@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.la.statistics.service.impl.LoginLogMapper">
+ <select id="listLoginLog" parameterType="kr.co.gocle.oklms.la.statistics.vo.LoginLogVO" resultType="kr.co.gocle.oklms.la.statistics.vo.LoginLogVO">
+ 	<include refid="kr.co.gocle.include.paging-start"/>
+	    <![CDATA[
+		 SELECT A.MEM_SEQ as memSeq,
+		       A.LOGIN_DATE as loginDate,
+		       A.CLIENT_IP as clientIp,
+		       A.MEM_ID as logMemId,
+		       A.MEM_TYPE as logMemType
+		 FROM COM_LOGIN_LOG A
+		]]>
+		WHERE 1=1
+		<if test="searchClientIp != null  and searchClientIp != ''">
+		AND A.CLIENT_IP = #{searchClientIp}
+		</if>
+		<if test="searchLogMemId != null  and searchLogMemId != ''">
+		AND A.MEM_ID = #{searchLogMemId}
+		</if>
+		<if test="startDate != null  and startDate != '' and finishDate != null  and finishDate != ''">
+		AND ( TO_CHAR( A.LOGIN_DATE ,'YYYYMMDDHH24MISS') <![CDATA[>=]]> #{startDate} AND TO_CHAR( A.LOGIN_DATE ,'YYYYMMDDHH24MISS') <![CDATA[<=]]> #{finishDate}  )
+		</if>
+		ORDER BY A.LOGIN_DATE DESC
+		
+		<include refid="kr.co.gocle.include.paging-end"/>
+	</select>
+</mapper>
