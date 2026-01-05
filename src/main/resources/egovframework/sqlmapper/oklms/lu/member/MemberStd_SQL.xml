@@ -612,7 +612,9 @@
 			         from lms_subj_tut_mapping tut 
 			        where tut.delete_yn = 'N' 
 			              and tut.mem_seq = mem.mem_seq 
-			       ) as subjectCnt
+			       ) as subjectCnt,
+			     atch_file_id,
+       			 atch_file_id2
 			from com_member mem
             inner join COM_AUTH_MEMBER aut
              on  aut.mem_seq = mem.mem_seq
@@ -708,7 +710,9 @@
 				       trp.TRANING_PROCESS_ID,
 				       trp.HRD_TRANING_NAME,
 				       (select count(1) cnt from LMS_SUBJ_CCM_MAPPING where SUBJ_CCM_MAPPING_ID = ccm.SUBJ_CCM_MAPPING_ID) memIdCount,
-				       FN_GETCOMPAYNAME(mem.company_id) as company_name
+				       FN_GETCOMPAYNAME(mem.company_id) as company_name,
+				       atch_file_id,
+				       atch_file_id2
 				  FROM com_member mem
 				  
 				  inner join COM_AUTH_MEMBER aut

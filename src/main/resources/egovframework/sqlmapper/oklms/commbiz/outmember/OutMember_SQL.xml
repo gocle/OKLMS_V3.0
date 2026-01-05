@@ -44,6 +44,7 @@
 										,COMP_TEL_NO
 										,DUTY_NM
 										,LICENCE_FILE
+										,LICENCE_FILE2
 										,COMP_CAREER_YEAR
 										,COMP_EDU_LEVEL_CD
 										,COMP_LICENCE_NM
@@ -72,6 +73,7 @@
 										,#{compTelNo}
 										,#{dutyNm}
 										,#{licenceFile}
+										,#{licenceFile2}
 										,#{compCareerYear}
 										,#{compEduLevelCd}
 										,#{compLicenceNm}
@@ -137,6 +139,7 @@
 								, COMP_TEL_NO
 								, DUTY_NM
 								, ATCH_FILE_ID
+								, ATCH_FILE_ID2
 								, COMP_CAREER_YEAR
 								, COMP_EDU_LEVEL_CD
 								, COMP_LICENCE_NM
@@ -164,6 +167,7 @@
 								, #{compTelNo}
 								, #{dutyNm}
 								, #{licenceFile}
+								, #{licenceFile2}
 								, #{compCareerYear}
 								, #{compEduLevelCd}
 								, #{compLicenceNm}

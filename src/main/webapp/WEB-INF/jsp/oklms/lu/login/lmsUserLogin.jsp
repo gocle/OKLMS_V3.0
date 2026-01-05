@@ -502,8 +502,14 @@ if( "Explorer" == browserType() && 10 > browserVer() ){
 		
 		
 		if(!$("#licenceFile").val()){
-			alert("첨부파일을 첨부하세요.");
+			alert("재직증명서를 첨부하세요.");
 			$("#licenceFile").focus();
+			return false;
+		}
+		
+		if(!$("#licenceFile2").val()){
+			alert("교육수료증을 첨부하세요.");
+			$("#licenceFile2").focus();
 			return false;
 		}
 		
@@ -1306,6 +1312,9 @@ if( "Explorer" == browserType() && 10 > browserVer() ){
 									<div>
 										<div class="form_control_wrap">
 											<input type="file" class="form_field jt_form_full_field" name="file-input" id="licenceFile" >
+											<span class="explain">재직증명서 첨부</span>
+											<input type="file" class="form_field jt_form_full_field" name="file-input2" id="licenceFile2" >
+											<span class="explain">교육수료증 첨부</span>
 										</div>
 									</div>
 								</li>
