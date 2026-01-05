@@ -55,7 +55,7 @@ function fn_list(){
 	
 </script>
 <p style="display:block;text-align:left;"><font color="red">*</font> 는 필수입력사항입니다.</p>
-<form:form commandName="frmConfig">
+<form:form modelAttribute="frmConfig">
 <input type="hidden" id="confId" name="confId"  value="${lmsConfigVO.confId}"/>
 <input type="hidden" id="optKey" name="optKey" value="${lmsConfigVO.optKey}"/>
 

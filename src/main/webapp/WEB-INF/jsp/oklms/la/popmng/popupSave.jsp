@@ -145,7 +145,7 @@ function fn_formValidate() {
 </script>
 <!--  상단타이틀 -->
 <img id="displayBox" src="/js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
-<form:form commandName="frmPopup" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="frmPopup" method="post" enctype="multipart/form-data">
 				<input type="hidden" id="content" name="content" value=""/>
 				<input type="hidden" id="popupId"   name="popupId"  value="${comcodeVO.codeId}" />
 				<input type="hidden" id="frm_searchCodeName"   name="searchCodeName"  value="${comcodeVO.searchCodeName}" />

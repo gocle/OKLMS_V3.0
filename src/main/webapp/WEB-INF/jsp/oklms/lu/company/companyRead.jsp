@@ -66,7 +66,7 @@
 </script>
 <div class="content">
 <h1 id="curMenuTitle">기업체 등록</h1>
-<form:form commandName="frmCompany">
+<form:form modelAttribute="frmCompany">
 <input type="hidden" name="companyId" id="companyId" value="${companyVO.companyId}"/>
 <!-- 검색조건유지 필드 시작 -->
 <input type="hidden" name="searchName" id="searchName" value="${companyVO.searchName}"/>

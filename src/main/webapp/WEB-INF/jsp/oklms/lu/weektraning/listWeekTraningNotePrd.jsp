@@ -112,7 +112,7 @@
 //-->
 </script>
 
-<form:form commandName="frmWeekExcel" name="frmWeekExcel" method="post" >		
+<form:form modelAttribute="frmWeekExcel" name="frmWeekExcel" method="post" >		
 <input type="hidden" id="excel_traningType" name="traningType"  />
 <input type="hidden" id="excel_traningProcessId" name="traningProcessId" />
 <input type="hidden" id="excel_yyyy" name="yyyy" />
@@ -123,7 +123,7 @@
 <input type="hidden" id="excel_subjectName" name="subjectName" />							
 </form:form>	
 
-<form:form commandName="frmWeekTraning" name="frmWeekTraning" method="post" >
+<form:form modelAttribute="frmWeekTraning" name="frmWeekTraning" method="post" >
 <input type="hidden" name="traningType" id="traningType" value="" />
 <input type="hidden" name="addyn" id="addyn"  value="" />
 <input type="hidden" id="addTraning" name="addTraning" />

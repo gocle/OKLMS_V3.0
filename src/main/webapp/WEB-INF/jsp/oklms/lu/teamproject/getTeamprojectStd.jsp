@@ -76,7 +76,7 @@ function fn_formSave(type){
 
 //--> 
 </script>
-<form:form commandName="frmTeamproject" name="frmTeamproject" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmTeamproject" name="frmTeamproject" method="post" enctype="multipart/form-data" >
 <input name="teamprojectId" type="hidden" value="${teamprojectVO.teamprojectId }" />
 <input name="teamprojectSubmitId" type="hidden" value="${teamprojectSubmitVO.teamprojectSubmitId }" />
 <input name="groupId" type="hidden" value="${teamprojectSubmitVO.groupId }" />

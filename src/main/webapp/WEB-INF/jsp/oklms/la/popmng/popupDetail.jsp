@@ -30,7 +30,7 @@ function fn_egov_delete_PopupManage(){
 <!--     model.addAttribute("result", result); -->
 <!--         model.addAttribute("atchFile", atchFileVO); -->
 <img id="displayBox" src="/js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
-<form:form commandName="frmPopup" method="post">
+<form:form modelAttribute="frmPopup" method="post">
 				<input type="hidden" id="popupId"   name="popupId"  value="${result.popupId}" />
 				<input type="hidden" id="imageFileId"   name="imageFileId"  value="${result.imageFileId}" />
 				<input type="hidden" id="contentType"   name="contentType"  value="${result.contentType}" />

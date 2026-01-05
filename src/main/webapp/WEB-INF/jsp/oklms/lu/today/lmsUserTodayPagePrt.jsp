@@ -475,7 +475,7 @@ function fn_searchQna(yyyy,term,subjectCode,classId,subjectTraningType,bbsId,ntt
 
 //-->
 </script>
-<form:form commandName="frmActivity" name="frmActivity" method="post">
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post">
 					  
 <input type="hidden" name="yyyy"  id="yyyy" >
 <input type="hidden" name="term"  id="term"  >

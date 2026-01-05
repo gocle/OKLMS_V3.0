@@ -115,7 +115,7 @@ String.prototype.replaceAll = function(src, repl){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!--  상단타이틀 -->
-<form:form commandName="popupManageVO" name="popupManageVO" action="${pageContext.request.contextPath}/uss/ion/pwm/updtPopup.do" method="post" >
+<form:form modelAttribute="popupManageVO" name="popupManageVO" action="${pageContext.request.contextPath}/uss/ion/pwm/updtPopup.do" method="post" >
 						<!-- S : 입력 폼 영역 -->
 						<!-- S : view-1 -->
 						<table border="0" cellpadding="0" cellspacing="0" class="view-1">

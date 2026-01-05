@@ -160,7 +160,7 @@ function fn_formSave(){
 
 //--> 
 </script>
-<form:form commandName="frmTeamproject" name="frmTeamproject" method="post"  >
+<form:form modelAttribute="frmTeamproject" name="frmTeamproject" method="post"  >
 <h2 style="margin-top: 25px;">팀프로젝트 제출 현황 및 채점</h2>
 						<table class="type-2"  id="tblGroup">
 								<colgroup>

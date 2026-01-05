@@ -76,7 +76,7 @@ function fn_egov_save_QustnrTmplatManage(){
 <div class="title-name-1">설문템플릿 수정</div>
 <!--  상단타이틀 End -->
 
-<form:form commandName="frm"  name="frm" method="post">
+<form:form modelAttribute="frm"  name="frm" method="post">
 <input name="qestnrTmplatId" type="hidden" value="${resultList[0].qestnrTmplatId} ">
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 

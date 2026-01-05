@@ -61,7 +61,7 @@ function fn_egov_regist_Restde(form){
 <body>
 <DIV id="content" style="width:712px">
 <!-- 상단타이틀 -->
-<form:form commandName="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post">
 <input name="cmd" type="hidden" value="Modify" title="<spring:message code="sym.log.atchFile" />">
 <form:hidden path="restdeNo"/>
 <form:hidden path="restdeDe"/>

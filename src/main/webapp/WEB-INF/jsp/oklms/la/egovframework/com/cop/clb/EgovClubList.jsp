@@ -64,7 +64,7 @@
 </head>
 <body>
 <div id="border" style="width:730px">
-<form:form commandName="frm" name="frm" method="post" >
+<form:form modelAttribute="frm" name="frm" method="post" >
 <input type="hidden" name="cmmntyId" />
 <input type="hidden" name="clbId" />
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>

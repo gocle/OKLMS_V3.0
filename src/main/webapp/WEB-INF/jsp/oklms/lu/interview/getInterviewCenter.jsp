@@ -129,7 +129,7 @@
 						<br/>
 						<br/>
 </c:forEach>
- <form:form commandName="frmInterview" name="frmInterview" method="post">
+ <form:form modelAttribute="frmInterview" name="frmInterview" method="post">
 	<input type="hidden" name="companyId"  value="${result.companyId }" />
 	<input type="hidden" name="traningProcessId" id="traningProcessId"  value="${result.traningProcessId }" />
      <input type="hidden" name="interviewNoteDateMmParam" id="interviewNoteDateMm" value="${interviewNoteDateMmTemp }"  /> 

@@ -62,7 +62,7 @@ function fn_egov_list_Restde(){
 <body>
 <DIV id="content" style="width:712px">
 <!-- 상단타이틀  -->
-<form:form commandName="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post">
 <!-- 상단 타이틀  영역 -->
 <table width="700" cellpadding="8" class="table-search" border="0">
  <tr>

@@ -169,7 +169,7 @@ function previewImages() {
 </script>
 
 						<h2>과제 출제</h2> 
-<form:form commandName="frmReport" name="frmReport" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmReport" name="frmReport" method="post" enctype="multipart/form-data" >
 
 <input type="hidden" name="reportId" value="${reportVO.reportId}" />
 <input type="hidden" name="yyyy" value="${currProcVO.yyyy}" />

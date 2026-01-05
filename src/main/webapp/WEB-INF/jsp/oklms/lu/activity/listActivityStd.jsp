@@ -12,7 +12,7 @@
 							<div class="group-area-title">
 								<h4 class="mb-010"><span>${currProcVO.subjectName } / ${currProcVO.subjectCode }</span> ㅣ ${currProcVO.yyyy}학년도 / ${currProcVO.termName}</h4>
 
-<form:form commandName="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
 <%-- <input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" > --%>
 
 <input type="hidden" name="yyyy"  value="${activityVO.yyyy}" >

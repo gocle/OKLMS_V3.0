@@ -154,7 +154,7 @@ function fn_formSave_file(){
 <c:set var="fileCnt" value="0"/>
 <h2 class="mt-040">과제 제출 현황 및 채점</h2>
 
-<form:form commandName="frmReport" name="frmReport" method="post"  >
+<form:form modelAttribute="frmReport" name="frmReport" method="post"  >
 <input type="hidden" name="reportId" value="${reportVO.reportId}"/>
 
 						<div class="table-responsive mt-010">

@@ -128,7 +128,7 @@
 
 </head>
 <body>
-<form:form commandName="club" name="club" method="post" >
+<form:form modelAttribute="club" name="club" method="post" >
 
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>

@@ -135,16 +135,12 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 	@Override
 	public String insertCompany(CompanyVO companyVO) throws Exception {
 		String returnStr = "";
-		System.out.println("1111111111111111111");
 		String pkCompanyId = companyIdGnrService.getNextStringId();
 		companyVO.setCompanyId(pkCompanyId);
 
-		System.out.println("222222222222222222");
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.putSessionToVo(companyVO);
 		
-		
-		System.out.println("333333333333333333");
 		//공백제거
 		companyVO.setCompanyId(StringUtils.delete(companyVO.getCompanyId(), " ").trim());
 		int sqlResultInt = companyMapper.insertCompany(companyVO);

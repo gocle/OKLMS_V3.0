@@ -235,7 +235,7 @@ function checkNumber(check_form){
   <input type="hidden" name="companyNoPop" id="companyNoPop"/>
 </form>
 <%-- 팝업폼 --%>
-<form:form commandName="frmCompany">
+<form:form modelAttribute="frmCompany">
 <!-- 디폴트 셋팅항목 필드 시작 -->
 <input type="hidden" name="status" id="status"/>
 <input type="hidden" name="companyId" id="companyId" value="${companyVO.companyId}"/>

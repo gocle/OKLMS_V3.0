@@ -279,7 +279,7 @@
 <!-- <ul class="code-box"> -->
 
 	<%-- <li class="code-area">
-		<form:form commandName="frmAuthGroupAJAX">
+		<form:form modelAttribute="frmAuthGroupAJAX">
 			<table id="myInputTable" border="0" cellpadding="0" cellspacing="0" class="view-1">
 				<tr><th>권한그룹아이디</th><td><input type="text" id="frm_authGroupId"       name="authGroupId"		value="${infoMap.authGroupId}" /></td></tr> 					
 				<tr><th>권한그룹명</th><td><input type="text" id="frm_authGroupName"       name="authGroupName"		value="${infoMap.authGroupName}" /></td></tr> 					

@@ -78,7 +78,7 @@
 </script>
 
 						<!-- S : 입력 폼 영역 -->
-<form:form commandName="templateInf" name="templateInf" method="post" >
+<form:form modelAttribute="templateInf" name="templateInf" method="post" >
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
 						<!-- S : view-1 -->
 						<table border="0" cellpadding="0" cellspacing="0" class="view-1">

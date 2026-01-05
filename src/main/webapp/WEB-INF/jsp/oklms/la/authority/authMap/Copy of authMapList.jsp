@@ -356,7 +356,7 @@
 	<div style="float:left;"></div>
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
 		<div align="left">
-			<form:form commandName="frmAuthMapAJAX">
+			<form:form modelAttribute="frmAuthMapAJAX">
 				<table id="myInputTable">
 									<tr><th>메뉴ID</th><td><input type="text" id="frm_menuId"       name="menuId"		value="${infoMap.menuId}" /></td></tr> 					
 									<tr><th>권한그룹아이디</th><td><input type="text" id="frm_authGroupId"       name="authGroupId"		value="${infoMap.authGroupId}" /></td></tr>

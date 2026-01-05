@@ -375,7 +375,7 @@
 	<div style="float:left;"></div>
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
 		<div align="left">
-			<form:form commandName="frmProtoBoardAJAX">
+			<form:form modelAttribute="frmProtoBoardAJAX">
 				<table id="myInputTable">
 					<tr><th>프로토타입id</th><td><input type="text" id="frm_prototypeId"  name="prototypeId"   value="${infoMap.prototypeId}" /></td>     </tr>
 					<tr><th>조회수</th><td><input type="text" id="frm_prototypeViewCnt"   name="prototypeViewCnt"  value="${infoMap.prototypeViewCnt}" /></td></tr>

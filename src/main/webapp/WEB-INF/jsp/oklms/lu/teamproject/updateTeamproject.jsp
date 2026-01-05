@@ -528,7 +528,7 @@ function layer_open(el){
 </script>
 
 						<h2>팀프로젝트 생성</h2> 
-<form:form commandName="frmTeamproject" name="frmTeamproject" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmTeamproject" name="frmTeamproject" method="post" enctype="multipart/form-data" >
 
 <input type="hidden" name="teamprojectId" value="${teamprojectVO.teamprojectId}" />
 <input type="hidden" id="stuSubmitCnt" name="stuSubmitCnt" value="${teamprojectVO.stuSubmitCnt}" />

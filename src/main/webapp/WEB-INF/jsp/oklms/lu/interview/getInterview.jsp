@@ -106,7 +106,7 @@
 
 						</div><!-- E : btn-area -->
 						
-<form:form commandName="frmInterview" name="frmInterview" method="post">
+<form:form modelAttribute="frmInterview" name="frmInterview" method="post">
 	<input type="hidden" name="InterviewId"  value="${result.interviewNoteId }" />
 	<input type="hidden" name="interviewNoteId"  value="${result.interviewNoteId }" />
 </form:form>						

@@ -207,7 +207,7 @@ function fn_company_add(baseCheckCompanyIds){
 						</div>
 
 
-<form:form commandName="frmWeekTraning" name="frmWeekTraning" method="post"  >
+<form:form modelAttribute="frmWeekTraning" name="frmWeekTraning" method="post"  >
 		<input type="hidden" name="companyId" id="companyId" value="${param.companyId }"  />
 		<input type="hidden" name="traningProcessId" id="traningProcessId"  value="${param.traningProcessId }" />
 		<input type="hidden" name="weekCnt" id="weekCnt"  />
