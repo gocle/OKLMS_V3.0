@@ -701,7 +701,7 @@
 							<td>${result.email1}**${result.email2}</td>
 							<%-- <td>${result.companyName}</td>
 							<td>${result.address}</td> --%>
-							<td>${result.subjectCnt} ${result.atchFileId}</td>
+							<td>${result.subjectCnt}</td>
 							<td>
 								<a href="#fn_addLectureSearchPopup" onclick="javascript:fn_addLectureSearchPopup('${result.memSeq}'); return false" class="btn-full-blue">변경</a>
 							</td>

@@ -393,6 +393,7 @@
 			        , CM.COMP_JOIN_DAY
 			        , CM.COMP_TEL_NO
 			        , CM.ATCH_FILE_ID
+			        , CM.ATCH_FILE_ID2
 			        , CM.HP_NO
 			        
 			        , CM.COMP_STATUS_CD

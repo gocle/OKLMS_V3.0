@@ -514,6 +514,7 @@ public class MemberVO extends BaseVO implements Serializable{
 	private String compJoinDay;
 	private String compTelNo;
 	private String atchFileId;
+	private String atchFileId2;
 	private String HpNo;
 	private String hrdNames;
 	
@@ -847,6 +848,13 @@ public class MemberVO extends BaseVO implements Serializable{
 	}
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	
+	public String getAtchFileId2() {
+		return atchFileId2;
+	}
+	public void setAtchFileId2(String atchFileId2) {
+		this.atchFileId2 = atchFileId2;
 	}
 	
 	public String getMemberType() {

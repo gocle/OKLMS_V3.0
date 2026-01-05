@@ -923,6 +923,11 @@ public class MemberController extends BaseController{
 			//첨부파일
 			AtchFileVO resultFile = atchFileService.getAtchFile(atchFileVO);
 		    model.addAttribute("resultFile", resultFile);     
+		    
+		    //첨부파일2
+		    atchFileVO.setAtchFileId(memberVO.getAtchFileId2());
+			AtchFileVO resultFile2 = atchFileService.getAtchFile(atchFileVO);
+		    model.addAttribute("resultFile2", resultFile2); 
 		}
 
 		return "oklms/lu/member/memberCompUpdate";
