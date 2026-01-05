@@ -96,7 +96,7 @@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 </script>
 						<div class="search-box-1">
 						
-<form:form commandName="frmWeekExcel" name="frmWeekExcel" method="post" >		
+<form:form modelAttribute="frmWeekExcel" name="frmWeekExcel" method="post" >		
 <input type="hidden" id="excel_traningType" name="traningType"  value="OJT" />
 <input type="hidden" id="excel_companyId" name="companyId"  value="" />
 <input type="hidden" id="excel_traningProcessId" name="traningProcessId" />
@@ -109,7 +109,7 @@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <input type="hidden" id="excel_companyName" name="companyName" />						
 </form:form>	
 						
-<form:form commandName="frmWeekTraning" name="frmWeekTraning" method="post" >		
+<form:form modelAttribute="frmWeekTraning" name="frmWeekTraning" method="post" >		
 <input type="hidden" name="traningType" id="traningType" value="OJT" />
 <input type="hidden" name="addyn" id="addyn"  value="" />
 <input type="hidden" id="addTraning" name="addTraning" />

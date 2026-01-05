@@ -213,7 +213,7 @@ table.htmlarea_30_table td {
 <!-- <body onLoad="HTMLArea.init(); HTMLArea.onload = initEditor; document.board.nttSj.focus(); makeFileAttachment();"> -->
 
 <div class="title-name-1"><c:out value='${bdMstr.bbsNm}'/> - 게시글수정</div>
-<form:form commandName="board" name="board" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="board" name="board" method="post" enctype="multipart/form-data" >
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="returnUrl" value="<c:url value='/la/cop/bbs/${pathBbsIdStr}/forUpdateBoardArticle.do'/>"/>
 

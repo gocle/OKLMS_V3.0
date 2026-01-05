@@ -102,7 +102,7 @@
 
 </head>
 <body>
-<form:form commandName="community" name="community" method="post" >
+<form:form modelAttribute="community" name="community" method="post" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="cmmntyId" type="hidden" value="<c:out value='${cmmntyVO.cmmntyId}'/>"/>
 

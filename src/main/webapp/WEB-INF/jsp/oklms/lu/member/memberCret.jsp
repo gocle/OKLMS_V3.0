@@ -298,7 +298,7 @@
 <form id="frmPop" method="post" name="frmPop">
   <input type="hidden" name="memIdPop" id="memIdPop"/>
 </form>
-<form:form commandName="frmMember">
+<form:form modelAttribute="frmMember">
 <input type="hidden" name="email" id="email"/>
 <input type="hidden" name="status" id="status"/>
 <input type="hidden" name="memType" id="memType" />

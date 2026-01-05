@@ -49,7 +49,7 @@
 //-->
 </script>
 			<div id="container">
-<form:form commandName="frmActivity" name="frmActivity" method="post"  >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post"  >
 <input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 
  

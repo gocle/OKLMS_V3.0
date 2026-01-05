@@ -90,7 +90,7 @@
 <img id="displayBox" src="${contextRoot}js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
 
 
-			<form:form commandName="frmComcode">
+			<form:form modelAttribute="frmComcode">
 				<double-submit:preventer tokenKey="frmComcodeToken"/>
 				<input type="hidden" id="frm_codeId"   name="codeId"  value="${comcodeVO.codeId}" />
 				<input type="hidden" id="frm_searchCodeName"   name="searchCodeName"  value="${comcodeVO.searchCodeName}" />
@@ -140,7 +140,7 @@
 <div align="center">
 		
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
-			<form:form commandName="frmComcode">
+			<form:form modelAttribute="frmComcode">
 				<double-submit:preventer tokenKey="frmComcodeToken"/>
 				<input type="hidden" id="prototypeId"   name="prototypeId"  value="${protoBoardVO.prototypeId}" />
 			<div align="left">

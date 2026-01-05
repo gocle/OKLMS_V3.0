@@ -180,9 +180,9 @@ public class WorkCertController {
 		insertCnt = workCertService.goInsertWorkCertPeriod(workCertVO);
 
 		if(insertCnt > 0){
-			retMsg = "정상적으로 처리되었습니다.!";
+			retMsg = "저장되었습니다.";
 		}else{
-			retMsg = "저장 처리된건이 없습니다.!";
+			retMsg = "저장할 수 없습니다.";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -609,9 +609,9 @@ public class WorkCertController {
 		insertCnt = workCertService.goInsertWorkCert(workCertVO,multiRequest);
 		
 		if(insertCnt > 0){
-			retMsg = "정상적으로 처리되었습니다.!";
+			retMsg = "저장되었습니다.";
 		}else{
-			retMsg = "저장 처리된건이 없습니다.!";
+			retMsg = "저장할 수 없습니다.";
 		}
 		
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);

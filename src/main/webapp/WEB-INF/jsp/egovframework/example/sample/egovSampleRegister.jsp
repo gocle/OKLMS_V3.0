@@ -63,7 +63,7 @@
 </head>
 <body style="text-align:center; margin:0 auto; display:inline; padding-top:100px;">
 
-<form:form commandName="sampleVO" id="detailForm" name="detailForm">
+<form:form modelAttribute="sampleVO" id="detailForm" name="detailForm">
     <div id="content_pop">
     	<!-- 타이틀 -->
     	<div id="title">

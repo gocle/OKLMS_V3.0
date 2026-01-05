@@ -54,7 +54,7 @@
 //-->
 </script>
 			<div id="container">
-<form:form commandName="frmActivity" name="frmActivity" method="post"  >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post"  >
 <input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 
  
@@ -103,7 +103,7 @@
 						<p>${currProcVO.subjectName }</p>
 						<span>${currProcVO.yyyy}학년도 ${currProcVO.termName}</span>
 					</h4>
-<form:form commandName="frmActivity1" name="frmActivity" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmActivity1" name="frmActivity" method="post" enctype="multipart/form-data" >
 <input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 
 <input type="hidden" name="yyyy"  value="${activityVO.yyyy}" >

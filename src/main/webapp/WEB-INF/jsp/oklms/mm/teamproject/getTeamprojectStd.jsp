@@ -28,7 +28,7 @@
 //-->
 </script>
 			<div id="container">
-<form:form commandName="frmTeamproject" name="frmTeamproject" method="post"   >		
+<form:form modelAttribute="frmTeamproject" name="frmTeamproject" method="post"   >		
 	<input type="hidden" name="yyyy" id="year" value="${teamprojectVO.yyyy}" />
 	<input type="hidden" name="term" id="term" value="${teamprojectVO.term}" />
 	<input type="hidden" name="subjectCode" id="subjectCode" value="${teamprojectVO.subjectCode}" />

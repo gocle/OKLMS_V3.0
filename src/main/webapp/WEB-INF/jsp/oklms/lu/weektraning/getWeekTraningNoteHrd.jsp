@@ -73,7 +73,7 @@ function fn_search(){
 							</tbody>
 						</table>
 <c:set var="allReview" value="" />
-<form:form commandName="frmWeekTraning" name="frmWeekTraning" method="post"  >
+<form:form modelAttribute="frmWeekTraning" name="frmWeekTraning" method="post"  >
 
 <input type="hidden" name="companyId" id="companyId" value="${result.companyId }"  />
 <input type="hidden" name="traningProcessId" id="traningProcessId"  value="${result.traningProcessId }" />

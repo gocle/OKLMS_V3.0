@@ -169,7 +169,7 @@ var hideTrainpop = function(){
 
 //--> 
 </script>
-<form:form commandName="frmInterview" name="frmInterview" method="post"    enctype="multipart/form-data" >
+<form:form modelAttribute="frmInterview" name="frmInterview" method="post"    enctype="multipart/form-data" >
 <input type="hidden" name="interviewMemberSeqs" id="interviewMemberSeqs"  value="${result.interviewMemberSeqs }" />
 <input type="hidden" name="companyId" value="${result.companyId }" />
 <input type="hidden" name="interviewMemSeq" value="${result.interviewMemSeq }" />

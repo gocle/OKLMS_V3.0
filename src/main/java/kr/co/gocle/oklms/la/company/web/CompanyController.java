@@ -257,7 +257,6 @@ public class CompanyController extends BaseController{
 		
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.putSessionToVo(companyVO);
-		
         
         if(companyVO.getSessionMemType().equals("PRT")){
         	 companyVO = companyService.getCompany(companyVO);

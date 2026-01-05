@@ -65,7 +65,7 @@
 
 			<div id="container"> 
 			
-<form:form commandName="frmQestnr" name="frmQestnr" method="post"   > 
+<form:form modelAttribute="frmQestnr" name="frmQestnr" method="post"   > 
 
  
 <input type="hidden" id="yyyy" name="yyyy" value="${qestnrVO.yyyy}" />

@@ -78,7 +78,7 @@ function fn_formSave(type){
 
 //--> 
 </script>
-<form:form commandName="frmReport" name="frmReport" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmReport" name="frmReport" method="post" enctype="multipart/form-data" >
 <input name="reportId" type="hidden" value="${reportVO.reportId }" />
 <input name="reportSubmitId" type="hidden" value="${reportVO1.reportSubmitId }" />
 <input name="submitCheckYn" id="submitCheckYn" type="hidden" value="" />

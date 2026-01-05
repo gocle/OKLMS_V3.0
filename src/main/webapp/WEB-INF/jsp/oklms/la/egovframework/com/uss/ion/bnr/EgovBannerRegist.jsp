@@ -90,7 +90,7 @@ function fncBannerDelete() {
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!--  상단타이틀 -->
 <img id="displayBox" src="/js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
-<form:form commandName="banner" method="post" action="${pageContext.request.contextPath}/la/banner/addBanner.do' />" enctype="multipart/form-data"> 
+<form:form modelAttribute="banner" method="post" action="${pageContext.request.contextPath}/la/banner/addBanner.do' />" enctype="multipart/form-data"> 
 <input type="hidden" name="posblAtchFileNumber" value="1" >
 <table width="100%" cellpadding="8" class="view-1" summary="배너정보를 입력하는 항목">
   <caption>배너 등록</caption>

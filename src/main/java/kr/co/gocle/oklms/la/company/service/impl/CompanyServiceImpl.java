@@ -141,8 +141,6 @@ public class CompanyServiceImpl extends EgovAbstractServiceImpl implements Compa
 		LoginInfo loginInfo = new LoginInfo();
 		loginInfo.putSessionToVo(companyVO);
 		
-		
-
 		//공백제거
 		companyVO.setCompanyId(StringUtils.delete(companyVO.getCompanyId(), " ").trim());
 		int sqlResultInt = companyMapper.insertCompany(companyVO);
