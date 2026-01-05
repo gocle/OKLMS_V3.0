@@ -22,8 +22,11 @@
 								<p style="border-top:1px solid #DDD; padding-top:20px; margin-top:20px;"><c:if test="${loginAuthGroupId eq '2016AUTH0000008'}">교직원번호 : <b style="font-size:18px; color:#f76000">${loginMemId}</b></p></c:if><a href="javascript:popCreateAccount();" class="btn-logout" style="float:left; width:205px;">계정생성</a>
 							</c:if> --%>
 						</dd>
+						
+						<c:if test="${loginAuthGroupId eq '2016AUTH0000008' or loginAuthGroupId eq '2016AUTH0000004'}">
 						<dd class="info-btn"><a href="#"  onclick="fn_change_password_pop();">비밀번호 변경</a>
 						</dd>
+						</c:if>
 					</c:if>
 					<!-- <dd><a href="#user-wrap" rel="modal:open" class="btn-user"><i class="xi-user-plus"></i> 사용자 권한 선택</a></dd> -->
 					
