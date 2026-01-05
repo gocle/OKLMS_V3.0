@@ -74,6 +74,7 @@
 	}
 
 	function fn_LoginLogManage() { 
+		document.getElementById("searchYn").value = "Y";
 		fn_search(pageIndex);
 	}
 	
@@ -97,6 +98,7 @@
 <form name="frmTraningProcess" id="frmTraningProcess" method="post">
 	<input type="hidden" id="pageSize" name="pageSize" value="${pageSize }" />
 	<input type="hidden" id="pageIndex" name="pageIndex" value="${pageIndex }" />  
+	<input type="hidden" id="searchYn" name="searchYn" value="${param.searchYn}" />
 	<!-- E : search-list-1 (검색조건 영역) -->
 	<ul class="search-list-1">
 		<li><span>실시연도</span>  
@@ -148,7 +150,7 @@
 			<th rowspan="3">센터<br />담당자</th>
 						
 			<th rowspan="3">훈련상태</th>
-			<th rowspan="3">HRD-Net<br />진행상태</th>
+			<!-- <th rowspan="3">HRD-Net<br />진행상태</th> -->
 			<!-- <th colspan="3">비용신청</th> -->
 			<th colspan="4">평가점수</th>
 			
@@ -169,7 +171,7 @@
 			<th rowspan="3">기업명</th>
 
 			<th rowspan="2" colspan="3">NCS기반자격</th>
-			<th rowspan="2" colspan="2">대표직무</th>
+			<!-- <th rowspan="2" colspan="2">대표직무</th> -->
 			<th rowspan="2" colspan="3">훈련시간</th>
 		</tr>
 		<tr>
@@ -201,8 +203,8 @@
 			<th>자격명</th>
 			<th>수준</th>
 			<th>버전</th>
-			<th>NCS코드</th>
-			<th class="min-w100">NCS명</th>
+			<!-- <th>NCS코드</th>
+			<th class="min-w100">NCS명</th> -->
 			<th>합계</th>
 			<th>OJT</th>
 			<th>Off-JT</th>
@@ -252,7 +254,7 @@
 			<td><c:out value="${resultList.noteMonth}" /> </td>
 			<td><c:out value="${resultList.actMonth}" /> </td>
 			 --%>
-			<td><c:choose>
+			<%-- <td><c:choose>
 				<c:when test="${resultList.processStatus eq '1'}">진행중</c:when>
 				<c:when test="${resultList.processStatus eq '2'}">전체중탈</c:when>
 				<c:when test="${resultList.processStatus eq '3'}">훈련중지</c:when>
@@ -260,7 +262,7 @@
 				<c:when test="${resultList.processStatus eq '5'}">수료보고</c:when>
 				<c:when test="${resultList.processStatus eq '6'}">최종정산</c:when>
 				<c:otherwise></c:otherwise>
-			</c:choose></td>
+			</c:choose></td> --%>
 			<%-- 
 			<td><c:out value="${resultList.ojtMonthBiyong}" /> </td>
 			<td><c:out value="${resultList.offMonthBiyong}" /> </td>
@@ -314,8 +316,8 @@
 			<td><c:out value="${resultList.ncsLicenceLevel }" /></td>
 			<td><c:out value="${resultList.ncsLicenceVersion }" /></td>
 			
-			<td><c:out value="${resultList.ncsCode }" /></td>
-			<td><c:out value="${resultList.ncsName }" /></td>
+			<%-- <td><c:out value="${resultList.ncsCode }" /></td>
+			<td><c:out value="${resultList.ncsName }" /></td> --%>
  
 			<td><c:out value="${resultList.offTimeHour+resultList.ojtTimeHour }" /></td>
 			<td><c:out value="${resultList.ojtTimeHour }" /></td>

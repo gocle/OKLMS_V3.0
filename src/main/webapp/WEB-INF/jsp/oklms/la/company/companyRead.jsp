@@ -127,23 +127,13 @@
 			</td>   
 		</tr>
 		<tr>
-				<th rowspan="6">담당자<br />연락처</th>
+				<th rowspan="4">담당자<br />연락처</th>
 				<th class="sub-name">직위</th>
 				<td colspan="2">${companyVO.position}</td>
 			</tr>
 			<tr>
 				<th class="border-left sub-name">성명</th>
 				<td colspan="2">${companyVO.name}</td>
-			</tr>
-			<tr>
-				<th class="border-left sub-name">연락처</th>
-				<td colspan="2">
-					${companyVO.telNo1}
-					-
-					${companyVO.telNo2}
-					-
-					${companyVO.telNo3}
-				</td>
 			</tr>
 			<tr>
 				<th class="border-left sub-name">휴대폰</th>
@@ -153,16 +143,6 @@
 					${companyVO.hpNo2}
 					-
 					${companyVO.hpNo3}
-				</td>
-			</tr>
-			<tr>
-				<th class="border-left sub-name">팩스</th>
-				<td colspan="2">
-					${ companyVO.faxNo1}
-					-
-					${companyVO.faxNo2}
-					-
-					${companyVO.faxNo3}
 				</td>
 			</tr>
 			<tr>

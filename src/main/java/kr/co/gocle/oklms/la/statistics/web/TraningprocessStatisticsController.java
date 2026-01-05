@@ -36,18 +36,21 @@ public class TraningprocessStatisticsController  extends BaseController{
 	 * @throws		Exception 
 	 */
 	@RequestMapping(value = "/la/statistics/traningprocess/listTraningProcessStat.do")
-	public String listTraningProcessStat( @ModelAttribute("frmTraningProcess") TraningProcessVO traningProcessVO,ModelMap model) throws Exception {
+	public String listTraningProcessStat( @ModelAttribute("frmTraningProcess") TraningProcessVO traningProcessVO,ModelMap model, HttpServletRequest request) throws Exception {
 		
 		Integer pageSize = traningProcessVO.getPageSize();
 		Integer page = traningProcessVO.getPageIndex();
 		int totalCnt = 0;
 		List<TraningProcessVO> resultList = null;
 		
+		boolean isSearched = "Y".equals(request.getParameter("searchYn"));
 		
-		resultList = traningProcessService.listTraningProcessStat(traningProcessVO);
-
-		if( 0 < resultList.size() ){
-			totalCnt = Integer.parseInt( resultList.get(0).getTotalCount() );
+		if (isSearched) {
+			resultList = traningProcessService.listTraningProcessStat(traningProcessVO);
+	
+			if( 0 < resultList.size() ){
+				totalCnt = Integer.parseInt( resultList.get(0).getTotalCount() );
+			}
 		}
 		
         model.addAttribute("pageSize", pageSize);
