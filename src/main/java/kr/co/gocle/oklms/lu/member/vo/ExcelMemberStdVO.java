@@ -439,6 +439,8 @@ public class ExcelMemberStdVO extends BaseVO implements Serializable{
 	
 	private String atchFileId;
 	private String atchFileId2;
+	private String atchFileNm;
+	private String atchFileNm2;
 
 	public String getSearchOutYear() {
 		return searchOutYear;
@@ -3422,6 +3424,19 @@ public class ExcelMemberStdVO extends BaseVO implements Serializable{
 	}
 	public void setAtchFileId2(String atchFileId2) {
 		this.atchFileId2 = atchFileId2;
+	}
+	
+	public String getAtchFileNm() {
+		return atchFileNm;
+	}
+	public void setAtchFileNm(String atchFileNm) {
+		this.atchFileNm = atchFileNm;
+	}
+	public String getAtchFileNm2() {
+		return atchFileNm2;
+	}
+	public void setAtchFileNm2(String atchFileNm2) {
+		this.atchFileNm2 = atchFileNm2;
 	}
 	
 	public String getEncryptShaPwDefault(){

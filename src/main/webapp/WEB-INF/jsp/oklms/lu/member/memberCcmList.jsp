@@ -649,12 +649,12 @@
 							</td>
 							<td>
 								<c:if test="${not empty result.atchFileId}">
-								<a href="javascript:com.downFile('${result.atchFileId}','1');" class="text-file">다운로드</a>
+								<a href="javascript:com.downFile('${result.atchFileId}','1');" class="text-file">${result.atchFileNm}</a>
 								</c:if>
 							</td>
 							<td>
 								<c:if test="${not empty result.atchFileId2}">
-								<a href="javascript:com.downFile('${result.atchFileId2}','1');" class="text-file">다운로드</a>
+								<a href="javascript:com.downFile('${result.atchFileId2}','1');" class="text-file">${result.atchFileNm2}</a>
 								</c:if>
 							</td>								
 						</tr>

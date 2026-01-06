@@ -162,8 +162,16 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 		}	
 		<c:if test="${empty resultFile}">				
 		if(!$("#licenceFile").val()){
-			alert("첨부파일을 첨부하세요.");
+			alert("재직증명서를 첨부하세요.");
 			$("#licenceFile").focus();
+			return false;
+		}
+		</c:if>
+		
+		<c:if test="${empty resultFile2}">				
+		if(!$("#licenceFile2").val()){
+			alert("교육수료증을 첨부하세요.");
+			$("#licenceFile2").focus();
 			return false;
 		}
 		</c:if>
@@ -373,7 +381,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				
 					<c:if test="${!empty resultFile}">
 							<a href="javascript:com.downFile('${resultFile.atchFileId}','1');" class="text-file">${resultFile.orgFileName}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<%-- <a href="javascript:com.deleteFile('${resultFile.atchFileId}|1', '/lu/member/updateCompMemberPage.do?memSeq=${ memberVO.memSeq}&companyId=${ memberVO.companyId}&memberType=${ memberVO.memType}');"  class="btn-del">[삭제]</a><br /> --%>
+							<a href="javascript:com.deleteFile('${resultFile.atchFileId}|1', '/lu/member/updateCompMemberPage.do?memSeq=${ memberVO.memSeq}&companyId=${ memberVO.companyId}&memberType=${ memberVO.memType}');"  class="btn-del">[삭제]</a><br />
 					</c:if>					
 					<c:if test="${empty resultFile}">				
 						<input type="file" class="form_field jt_form_full_field"  id="licenceFile" name="file-input" style="width:30%;">
@@ -387,10 +395,10 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				
 					<c:if test="${!empty resultFile2}">
 							<a href="javascript:com.downFile('${resultFile2.atchFileId}','1');" class="text-file">${resultFile2.orgFileName}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<%-- <a href="javascript:com.deleteFile('${resultFile2.atchFileId}|1', '/lu/member/updateCompMemberPage.do?memSeq=${ memberVO.memSeq}&companyId=${ memberVO.companyId}&memberType=${ memberVO.memType}');"  class="btn-del">[삭제]</a><br /> --%>
+							<a href="javascript:com.deleteFile('${resultFile2.atchFileId}|1', '/lu/member/updateCompMemberPage.do?memSeq=${ memberVO.memSeq}&companyId=${ memberVO.companyId}&memberType=${ memberVO.memType}');"  class="btn-del">[삭제]</a><br />
 					</c:if>					
 					<c:if test="${empty resultFile2}">				
-						<input type="file" class="form_field jt_form_full_field"  id="licenceFile" name="file-input" style="width:30%;">
+						<input type="file" class="form_field jt_form_full_field"  id="licenceFile2" name="file-input2" style="width:30%;">
 					</c:if>	
 				</td>
 			</tr>

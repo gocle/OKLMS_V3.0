@@ -1637,6 +1637,7 @@
 				<if test="compJoinDay != null and compJoinDay != ''">	, COMP_JOIN_DAY 	= #{compJoinDay}		 </if>
 				<if test="compTelNo != null and compTelNo != ''">	, COMP_TEL_NO 	= #{compTelNo}		 </if>
 				<if test="atchFileId != null and atchFileId != ''">	, ATCH_FILE_ID 	= #{atchFileId}		 </if>
+				<if test="atchFileId2 != null and atchFileId2 != ''">	, ATCH_FILE_ID2 	= #{atchFileId2}		 </if>
 				<if test="hpNo != null and hpNo != ''">	, HP_NO 	= #{hpNo}		 </if>
 				
 				 <if test="dutyNm != null and dutyNm != ''">	, DUTY_NM 	= #{dutyNm}		 </if>
