@@ -1311,9 +1311,9 @@ if( "Explorer" == browserType() && 10 > browserVer() ){
 									</div>
 									<div>
 										<div class="form_control_wrap">
-											<input type="file" class="form_field jt_form_full_field" name="file-input" id="licenceFile" >
+											<input type="file" class="form_field jt_form_full_field" name="file-input" id="licenceFile">
 											<span class="explain">재직증명서 첨부</span>
-											<input type="file" class="form_field jt_form_full_field" name="file-input2" id="licenceFile2" >
+											<input type="file" class="form_field jt_form_full_field" name="file-input2" id="licenceFile2">
 											<span class="explain">교육수료증 첨부</span>
 										</div>
 									</div>
@@ -1321,7 +1321,10 @@ if( "Explorer" == browserType() && 10 > browserVer() ){
 								
 							</ul>
 							<!-- //신고서 작성 폼 -->
-
+							<style>
+								.jt_form_full_field {height: auto; padding: 4px}
+								#licenceFile2 {margin-top: 10px;}
+							</style>
 							<div class="agree_check box07  mt-020">
 								<label class="check-1" for="check-1">
 									<input class="jt_icheck" type="checkbox" name="check-1" id="check-1" > <strong>이용약관, 개인정보 수집 및 이용에 모두 동의합니다.</strong>
