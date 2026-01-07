@@ -714,7 +714,7 @@
 	<div style="float:left;"></div>
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
 		<div align="left">
-			<form:form commandName="frmComcodeAJAX">
+			<form:form modelAttribute="frmComcodeAJAX">
 				<table id="myInputTable">
 					<tr><th>코드아이디</th><td><input type="text" id="frm_codeId"       name="codeId"		value="${infoMap.codeId}" /></td></tr> 
 					<tr><th>코드구분</th><td><input type="text" id="frm_codeGroup"       name="codeGroup"		value="${infoMap.codeGroup}" /></td></tr>

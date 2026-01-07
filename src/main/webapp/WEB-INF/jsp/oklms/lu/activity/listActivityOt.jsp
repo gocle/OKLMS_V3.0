@@ -73,7 +73,7 @@
 								
 								
 									<h4 class="mt-020"><span>${currProcVO.subjectName } / ${currProcVO.subjectCode } / ${currProcVO.subClass }반</span> ㅣ ${currProcVO.yyyy}학년도 / ${currProcVO.termName}</h4>
-<form:form commandName="frmActivity" name="frmActivity" method="post" >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post" >
 <input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 
 <input type="hidden" name="yyyy"  value="${activityVO.yyyy}" >

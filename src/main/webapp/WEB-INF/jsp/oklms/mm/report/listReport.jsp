@@ -48,7 +48,7 @@
 
 			<div id="container"> 
 			
-<form:form commandName="frmReport" name="frmReport" method="post"   > 
+<form:form modelAttribute="frmReport" name="frmReport" method="post"   > 
 
  
 <input type="hidden" name="yyyy" id="year" value="${reportVO.yyyy}" />

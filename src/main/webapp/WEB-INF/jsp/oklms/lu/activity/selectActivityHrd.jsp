@@ -148,7 +148,7 @@ function fn_detail(memSeq){
 };
 //-->
 </script>
-<form:form commandName="frmActivity" name="frmActivity" method="post"  >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post"  >
 		<input type="hidden" name="companyId" id="companyId" value="${activityVO.companyId }"  />
 		<input type="hidden" name="traningProcessId" id="traningProcessId"  value="${activityVO.traningProcessId }" />
 		<input type="hidden" name="weekCnt" id="weekCnt"  value="${activityVO.weekCnt}"  />

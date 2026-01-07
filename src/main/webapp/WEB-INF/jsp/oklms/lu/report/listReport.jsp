@@ -171,7 +171,7 @@ function fn_search(subjectClass,companyId,scrollNum,companyName){
 //--> 
 </script>
 
-<form:form commandName="frmReport" name="frmReport" method="post"   >
+<form:form modelAttribute="frmReport" name="frmReport" method="post"   >
 	<input type="hidden" name="scoreCnt" id="scoreCnt"  value="" />
     <input type="hidden" id="subClass" name="subClass" value="" />
     <input type="hidden" id="subjectClass" name="subjectClass" value="" />

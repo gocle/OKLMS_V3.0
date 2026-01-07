@@ -81,7 +81,7 @@
 	
 </script>
 
-<form:form commandName="frmMember">
+<form:form modelAttribute="frmMember">
 <input type="hidden" name="memSeq" id="memSeq" value="${memberVO.memSeq}"/>
 
 <!-- 검색조건유지 필드 시작 -->

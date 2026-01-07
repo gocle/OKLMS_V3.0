@@ -104,7 +104,7 @@
 
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 						<!-- S : 입력 폼 영역 -->
-<form:form commandName="boardMaster" name="boardMaster" method="post" action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterInfs.do">
+<form:form modelAttribute="boardMaster" name="boardMaster" method="post" action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterInfs.do">
 <input type="hidden" name="pageIndex"  value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="tmplatId" value="TMPLAT_0000000000001" />
 <input type="hidden" name="tmplatNm" value="전자정부 게시판 템플릿" />

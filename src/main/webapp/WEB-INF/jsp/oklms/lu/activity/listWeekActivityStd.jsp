@@ -61,7 +61,7 @@ function fn_print(){
 
 //-->
 </script>
-<form:form commandName="frmActivity" name="frmActivity" method="post"  >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post"  >
  
 		<input type="hidden" name="weekCnt" id="weekCnt"  />
 		<input type="hidden" name="traningType" id="traningType"  />	

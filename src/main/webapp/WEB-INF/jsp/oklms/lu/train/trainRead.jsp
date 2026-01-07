@@ -298,7 +298,7 @@ function press(event) {
 </script>
 <div class="content">
 <h1 id="curMenuTitle">훈련일지 상세</h1>
-<form:form commandName="frmTrain">
+<form:form modelAttribute="frmTrain">
 <input type="hidden" id="pageSize" name="pageSize" value="${pageSize }" />
 <input type="hidden" id="pageIndex" name="pageIndex" value="${pageIndex }" />
 <input type="hidden" id="id" name="id"/>

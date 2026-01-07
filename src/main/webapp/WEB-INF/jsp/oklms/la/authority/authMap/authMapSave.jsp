@@ -126,7 +126,7 @@
 <img id="displayBox" src="${contextRoot}js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
 
 
-			<form:form commandName="frmAuthMap">
+			<form:form modelAttribute="frmAuthMap">
 				<double-submit:preventer tokenKey="frmAuthMapToken"/>
 				<input type="hidden" id="frm_searchAuthGroupId"   name="searchAuthGroupId"  value="${authMapVO.searchAuthGroupId}" />
 				<input type="hidden" id="frm_searchMenuTitle"   name="searchMenuTitle"  value="${authMapVO.searchMenuTitle}" />

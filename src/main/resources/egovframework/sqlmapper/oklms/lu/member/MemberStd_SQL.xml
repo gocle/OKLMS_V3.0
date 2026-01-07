@@ -612,7 +612,12 @@
 			         from lms_subj_tut_mapping tut 
 			        where tut.delete_yn = 'N' 
 			              and tut.mem_seq = mem.mem_seq 
-			       ) as subjectCnt
+			       ) as subjectCnt,
+			    af1.atch_file_id   AS atch_file_id,
+			    af1.org_file_name  AS atch_file_nm,
+			
+			    af2.atch_file_id   AS atch_file_id2,
+			    af2.org_file_name  AS atch_file_nm2
 			from com_member mem
             inner join COM_AUTH_MEMBER aut
              on  aut.mem_seq = mem.mem_seq
@@ -620,6 +625,14 @@
                 
                 left outer join lms_company pa
                 on mem.company_id = pa.company_id
+                
+                LEFT OUTER JOIN atch_file af1
+				       ON af1.atch_file_id = mem.atch_file_id
+				      AND af1.file_sn = 1
+				
+				LEFT OUTER JOIN atch_file af2
+				       ON af2.atch_file_id = mem.atch_file_id2
+				      AND af2.file_sn = 1
                 
 			where 
 			  mem.delete_yn = 'N'
@@ -708,7 +721,12 @@
 				       trp.TRANING_PROCESS_ID,
 				       trp.HRD_TRANING_NAME,
 				       (select count(1) cnt from LMS_SUBJ_CCM_MAPPING where SUBJ_CCM_MAPPING_ID = ccm.SUBJ_CCM_MAPPING_ID) memIdCount,
-				       FN_GETCOMPAYNAME(mem.company_id) as company_name
+				       FN_GETCOMPAYNAME(mem.company_id) as company_name,
+					   af1.atch_file_id   AS atch_file_id,
+					   af1.org_file_name  AS atch_file_nm,
+					
+					   af2.atch_file_id   AS atch_file_id2,
+					   af2.org_file_name  AS atch_file_nm2
 				  FROM com_member mem
 				  
 				  inner join COM_AUTH_MEMBER aut
@@ -723,6 +741,14 @@
 				    ON trp.COMPANY_ID = ccm.COMPANY_ID
 				   AND trp.TRANING_PROCESS_ID = ccm.TRANING_PROCESS_ID
 				   AND trp.DELETE_YN = 'N'
+				   
+				  LEFT OUTER JOIN atch_file af1
+				       ON af1.atch_file_id = mem.atch_file_id
+				      AND af1.file_sn = 1
+				
+				  LEFT OUTER JOIN atch_file af2
+				       ON af2.atch_file_id = mem.atch_file_id2
+				      AND af2.file_sn = 1 
 				  
 				   WHERE mem.delete_yn = 'N'
 				   AND mem.company_id = #{companyId}

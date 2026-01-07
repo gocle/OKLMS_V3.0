@@ -67,7 +67,7 @@
 <div align="center">
 		
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
-			<form:form commandName="frmProtoBoard">
+			<form:form modelAttribute="frmProtoBoard">
 				<input type="hidden" id="prototypeId" name="prototypeId" value="<c:out value="${protoBoardVO.prototypeId}" />"/>
 			</form:form>
 			<div align="left">

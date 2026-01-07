@@ -465,6 +465,9 @@
 		$("#frmMember").submit();
 	}
 	
+	function fn_egov_downFile(atchFileId, fileSn){
+		window.open("/cmm/fms/FileDown.do?atchFileId="+atchFileId+"&fileSn="+fileSn+"");
+	}
 
 </script>
 
@@ -672,6 +675,8 @@
 							<th>소재지</th> -->
 							<th>교과목 배정현황</th>
 							<th>교과목 배정</th>
+							<th>재직증명서</th>
+							<th>교육수료증</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -700,11 +705,21 @@
 							<td>
 								<a href="#fn_addLectureSearchPopup" onclick="javascript:fn_addLectureSearchPopup('${result.memSeq}'); return false" class="btn-full-blue">변경</a>
 							</td>
+							<td>
+								<c:if test="${not empty result.atchFileId}">
+								<a href="javascript:com.downFile('${result.atchFileId}','1');" class="text-file">${result.atchFileNm}</a>
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${not empty result.atchFileId2}">
+								<a href="javascript:com.downFile('${result.atchFileId2}','1');" class="text-file">${result.atchFileNm2}</a>
+								</c:if>
+							</td>
 						</tr>
 						</c:forEach>
 						<c:if test="${fn:length(resultMemberCotList) == 0}">
 						<tr>
-							<td colspan="9">자료가 없습니다.</td>
+							<td colspan="11">자료가 없습니다.</td>
 						</tr>
 						</c:if>
 					</tbody>
@@ -741,7 +756,7 @@
 							<th>학기</th>
 							<th>분반</th>
 							<th>개설강좌명</th>
-							<th>훈련과정명</th>
+							<th>훈련과정명</th>						
 						</tr>
 					</thead>
 					<tbody>
@@ -764,7 +779,7 @@
 								<input type="hidden" id="subjectName-${status.count}" name="subjectName-${status.count}" value="${result.subjectName}" />
 								<input type="hidden" id="memSeq-${status.count}" name="memSeq-${status.count}" value="${result.memSeq}" />
 							</td>
-							<td>${result.hrdTraningName}</td>
+							<td>${result.hrdTraningName}</td>						
 						</tr>
 						</c:forEach>
 						<c:if test="${fn:length(resultList1) == 0}">

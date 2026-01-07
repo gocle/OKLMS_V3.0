@@ -436,6 +436,11 @@ public class ExcelMemberStdVO extends BaseVO implements Serializable{
 	private String cretGubun; //담장자변경신청건에 대해 신규, 변견인지 구분Flag (01:변경신청, 02:신규)
 	private String subjectCnt;
 	private String searchOutYear;
+	
+	private String atchFileId;
+	private String atchFileId2;
+	private String atchFileNm;
+	private String atchFileNm2;
 
 	public String getSearchOutYear() {
 		return searchOutYear;
@@ -3406,6 +3411,32 @@ public class ExcelMemberStdVO extends BaseVO implements Serializable{
 	}
 	public void setSubjectGrade(String subjectGrade) {
 		this.subjectGrade = subjectGrade;
+	}
+	
+	public String getAtchFileId() {
+		return atchFileId;
+	}
+	public void setAtchFileId(String atchFileId) {
+		this.atchFileId = atchFileId;
+	}
+	public String getAtchFileId2() {
+		return atchFileId2;
+	}
+	public void setAtchFileId2(String atchFileId2) {
+		this.atchFileId2 = atchFileId2;
+	}
+	
+	public String getAtchFileNm() {
+		return atchFileNm;
+	}
+	public void setAtchFileNm(String atchFileNm) {
+		this.atchFileNm = atchFileNm;
+	}
+	public String getAtchFileNm2() {
+		return atchFileNm2;
+	}
+	public void setAtchFileNm2(String atchFileNm2) {
+		this.atchFileNm2 = atchFileNm2;
 	}
 	
 	public String getEncryptShaPwDefault(){

@@ -163,6 +163,11 @@ public class OutMemberServiceImpl extends EgovAbstractServiceImpl implements Out
 		String atchFileId = atchFileService.saveAtchFile( fileObj, "COP", "", storePathString ,"licence");
 		outMemberVO.setLicenceFile(atchFileId);
 		
+		// 첨부파일 2번째
+		final List<MultipartFile> fileObj2 = multiRequest.getFiles("file-input2");
+		String atchFileId2 = atchFileService.saveAtchFile(fileObj2, "COP", "", storePathString, "licence2");
+		outMemberVO.setLicenceFile2(atchFileId2);
+		
 		outMemberVO.setLoginPwd(outMemberVO.getEncryptShaPw());
 		
 		int iResult = outMemberMapper.inesertTempOutMember(outMemberVO);

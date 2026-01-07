@@ -272,7 +272,7 @@ function setSelectQustnrIemCn2(param1, param2, param3, param4){
 <!--  상단타이틀 Start -->
 <div class="title-name-1">설문조사 등록</div>
 <!--  상단타이틀 End -->
-<form:form commandName="frm" name="frm" method="post">
+<form:form modelAttribute="frm" name="frm" method="post">
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 
 <!-- 등록  폼 영역  -->

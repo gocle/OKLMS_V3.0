@@ -8,6 +8,7 @@
 <c:set var="targetUrl" value="/la/company/"/>
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+
 <script type="text/javascript">
 
 var targetUrl = "${targetUrl}";
@@ -25,6 +26,37 @@ $(document).ready(function() {
 	화면 초기화 
 ====================================================================*/
 function loadPage() {
+	$('#companyNo').keypress(function (event) {
+	    if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+	      event.preventDefault();
+	    }
+	});
+	$('#employInsManageNo').keypress(function (event) {
+	    if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+	      event.preventDefault();
+	    }
+	});
+	$('#telNo2').keypress(function (event) {
+	    if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+	      event.preventDefault();
+	    }
+	});
+	$('#telNo3').keypress(function (event) {
+	    if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+	      event.preventDefault();
+	    }
+	});
+	$('#regularEmploymentCnt').keypress(function (event) {
+	    if (event.which && (event.which <= 47 || event.which >= 58) && event.which != 8) {
+	      event.preventDefault();
+	    }
+	});
+
+	$("#companyName").focus();
+	com.datepickerDateFormat('choiceDay');
+	com.datepickerDateFormat('makeDay');
+	com.datepickerDateFormat('evalDay');
+
 }
 
 /* 각종 버튼에 대한 액션 초기화 */
@@ -48,6 +80,10 @@ function fn_formSave(){
 		return false;
 	}
 	
+	var companyNo  = $("#companyNo").val();
+	var employInsManageNo = $("#employInsManageNo").val();
+	var employInsManageNoSubStr = "";
+	
 	if($("#companyNo").val() != $("#tempCompanyNo").val()){
 		if($("#companyNo").val() == ""){
 			alert("사업자등록번호을 넣어 주세요.");
@@ -59,6 +95,17 @@ function fn_formSave(){
 			return false;
 		}
 	}
+	
+	if(companyNo.length != 10){
+		alert("입력한 사업자등록번호가 10자리가 아닙니다.");
+		return false;
+	}
+	
+	if(employInsManageNo == ""){
+		alert("고용보험관리번호을 넣어 주세요.");
+		return false;
+	}
+	
 	/*
 	if($("#businessType").val() == ""){
 		alert("업명을 넣어 주세요.");
@@ -110,6 +157,12 @@ function fn_formSave(){
 		return false;
 	}
 	*/
+	
+	if($("#choiceDay").val() == ""){
+		alert("선정일를 선택해주세요.");
+		return false;
+	}
+	
 	var reqUrl = CONTEXT_ROOT + targetUrl + "updateCompany.do";
 
 	$("#frmCompany").attr("method", "post" );
@@ -235,7 +288,7 @@ function checkNumber(check_form){
   <input type="hidden" name="companyNoPop" id="companyNoPop"/>
 </form>
 <%-- 팝업폼 --%>
-<form:form commandName="frmCompany">
+<form id="frmCompany" name="frmCompany">
 <!-- 디폴트 셋팅항목 필드 시작 -->
 <input type="hidden" name="status" id="status" value="true"/>
 <input type="hidden" name="companyId" id="companyId" value="${companyVO.companyId}"/>
@@ -266,7 +319,7 @@ function checkNumber(check_form){
 		<tr>
 			<th>고용보험관리번호</th>
 			<td colspan="3">
-				<input type="text" id="employInsManageNo" name="employInsManageNo" maxlength="12" value="" style="width:30%;" />
+				<input type="text" id="employInsManageNo" name="employInsManageNo" maxlength="12" value="${companyVO.employInsManageNo}" style="width:30%;" />
   				※"-"빼고 넣어 주세요.
 			</td>
 		</tr>		
@@ -334,9 +387,158 @@ function checkNumber(check_form){
 				<input type="text" id="faxNo3" name="faxNo3"  value="${companyVO.faxNo3}"  style="width:25%" maxlength="4"/>
 			</td>   
 		</tr>
+		<tr>
+				<th rowspan="4">담당자<br />연락처</th>
+				<th>직위</th>
+				<td colspan="2"><input type="text" id="position" name="position"  maxlength="50" value="${companyVO.position}" style="width:99%;" /></td>
+			</tr>
+			<tr>
+				<th class="border-left">성명</th>
+				<td colspan="2"><input type="text" id="name" name="name"  maxlength="20" value="${companyVO.name}" style="width:99%;" /></td>
+			</tr>
+			<tr>
+				<th class="border-left">휴대폰</th>
+				<td colspan="2">
+					<select name="hpNo1" id="hpNo1" style="width:80px;">
+						<option selected value=''>::선택::</option>
+						<option value="010" <c:if test="${companyVO.hpNo1 eq '010'}">selected="selected"</c:if>>010</option>
+						<option value="011" <c:if test="${companyVO.hpNo1 eq '011'}">selected="selected"</c:if>>011</option>
+						<option value="016" <c:if test="${companyVO.hpNo1 eq '016'}">selected="selected"</c:if>>016</option>
+						<option value="017" <c:if test="${companyVO.hpNo1 eq '017'}">selected="selected"</c:if>>017</option>
+						<option value="018" <c:if test="${companyVO.hpNo1 eq '018'}">selected="selected"</c:if>>018</option>
+						<option value="019" <c:if test="${companyVO.hpNo1 eq '019'}">selected="selected"</c:if>>019</option>
+					</select>
+					-
+					<input type="text" id="hpNo2" name="hpNo2"  value="${companyVO.hpNo2}"  maxlength="4" style="width:20%" />
+					-
+					<input type="text" id="hpNo3" name="hpNo3"  value="${companyVO.hpNo3}"  maxlength="4" style="width:20%" />
+				</td>
+			</tr>
+			<tr>
+				<th class="border-left">E-mail</th>
+				<td colspan="2"><input type="text" id="email" name="email"  maxlength="100" value="${companyVO.email}" style="width:99%;" /></td>
+			</tr>
+			<tr>
+				<th>선정일<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
+				<td><input type="text" id="choiceDay" name="choiceDay"  readonly="readonly" value="${companyVO.choiceDay}" style="width:17%;" /></td>
+				<th>상시근로자수</th>
+				<td><input type="number" min="0" max="9999" id="regularEmploymentCnt" name="regularEmploymentCnt"  maxlength="20" value="${companyVO.regularEmploymentCnt}" style="width:20%;" /> 명</td>
+			</tr>
+			<tr>
+				<th>기업구분</th>
+				<td>
+					<select id="companyDivCd" name="companyDivCd" style="width:50%;" >
+						<option value="00" selected>::선택::</option>
+						<option value="01" <c:if test="${companyVO.companyDivCd eq '01'}">selected="selected"</c:if>>대기업</option>
+						<option value="02" <c:if test="${companyVO.companyDivCd eq '02'}">selected="selected"</c:if>>중견기업</option>
+						<option value="03" <c:if test="${companyVO.companyDivCd eq '03'}">selected="selected"</c:if>>중소기업</option>
+						<option value="04" <c:if test="${companyVO.companyDivCd eq '04'}">selected="selected"</c:if>>공기업</option>
+						<option value="05" <c:if test="${companyVO.companyDivCd eq '05'}">selected="selected"</c:if>>교육기관</option>
+						<option value="06" <c:if test="${companyVO.companyDivCd eq '06'}">selected="selected"</c:if>>기타</option>
+					</select>
+				</td>
+				<th>홈페이지 URL</th>
+				<td><input type="text" id="homepageUrl" name="homepageUrl"  maxlength="50" value="${companyVO.homepageUrl}" style="width:99%;" /></td>				
+			</tr>
+			<tr>
+				<th>훈련참여상태</th>
+				<td>
+					<select id="traningStatusCd" name="traningStatusCd" style="width:50%;" >
+						<option value="" selected>::선택::</option>
+						<option value="1" <c:if test="${companyVO.traningStatusCd eq '1'}">selected="selected"</c:if>>진행중</option>
+						<option value="2" <c:if test="${companyVO.traningStatusCd eq '2'}">selected="selected"</c:if>>참여대기</option>
+						<option value="3" <c:if test="${companyVO.traningStatusCd eq '3'}">selected="selected"</c:if>>참여포기</option>
+					</select>
+				</td>
+				<th>기업상태</th>
+				<td>
+					<select id="companyStatusCd" name="companyStatusCd" style="width:50%;" >
+						<option value="" selected>::선택::</option>
+						<option value="1" <c:if test="${companyVO.companyStatusCd eq '1'}">selected="selected"</c:if>>정상</option>
+						<option value="2" <c:if test="${companyVO.companyStatusCd eq '2'}">selected="selected"</c:if>>폐업</option>
+						<option value="3" <c:if test="${companyVO.companyStatusCd eq '3'}">selected="selected"</c:if>>합병</option>
+					</select>
+				</td>				
+			</tr>
+			<tr>
+				<th>관할 지부지사</th>
+				<td colspan="3"><input type="text" id="controlPlaceName" name="controlPlaceName"  maxlength="50" value="${companyVO.controlPlaceName}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th rowspan="3">재학생 단계</th>
+				<th>도제(참여기관명)</th>
+				<td colspan="2"><input type="text" id="stuLevelName1" name="stuLevelName1"  maxlength="50" value="${companyVO.stuLevelName1}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th class="border-left">Uni-Tech(참여기관명)</th>
+				<td colspan="2"><input type="text" id="stuLevelName2" name="stuLevelName2"  maxlength="50" value="${companyVO.stuLevelName2}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th class="border-left">IPP(참여기관명)</th>
+				<td colspan="2"><input type="text" id="stuLevelName3" name="stuLevelName3"  maxlength="50" value="${companyVO.stuLevelName3}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th rowspan="4">재직자 단계</th>
+				<th>단독기업형</th>
+				<td colspan="2"><input type="text" id="compLevelName1" name="compLevelName1"  maxlength="50" value="${companyVO.compLevelName1}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th class="border-left">대학연계형(참여기관명)</th>
+				<td colspan="2"><input type="text" id="compLevelName2" name="compLevelName2"  maxlength="50" value="${companyVO.compLevelName2}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th class="border-left">P-Tech(참여기관명)</th>
+				<td colspan="2"><input type="text" id="compLevelName3" name="compLevelName3"  maxlength="50" value="${companyVO.compLevelName3}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th class="border-left">고숙련마이스터(참여기관명)</th>
+				<td colspan="2"><input type="text" id="compLevelName4" name="compLevelName4"  maxlength="50" value="${companyVO.compLevelName4}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th>설립일자</th>
+				<td><input type="text" id="makeDay" name="makeDay"  maxlength="10"  readonly="readonly" value="${companyVO.makeDay}" style="width:50%;"  /></td>
+				<th>신용등급</th>
+				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="${companyVO.creditLevel}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th>자산총계</th>
+				<td><input type="text" id="assets" name="assets"  maxlength="25" value="${companyVO.assets}" style="width:99%;" /></td>
+				<th>부채총계</th>
+				<td><input type="text" id="liabilities" name="liabilities"  maxlength="25" value="${companyVO.liabilities}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th>자본총계</th>
+				<td><input type="text" id="equities" name="equities"  maxlength="25" value="${companyVO.equities}" style="width:99%;" /></td>
+				<th>매출액</th>
+				<td><input type="text" id="revenue" name="revenue"  maxlength="25" value="${companyVO.revenue}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th>영업이익</th>
+				<td><input type="text" id="operatingIncome" name="operatingIncome"  maxlength="25" value="${companyVO.operatingIncome}" style="width:99%;" /></td>
+				<th>당기순이익</th>
+				<td><input type="text" id="netIncome" name="netIncome"  maxlength="25" value="${companyVO.netIncome}" style="width:99%;" /></td>
+			</tr>
+			
+			<tr>
+				<th>평가일자</th>
+				<td><input type="text" id="evalDay" name="evalDay"  maxlength="25"  readonly="readonly" value="${companyVO.evalDay}" style="width:50%;"  /></td>
+				<th>조회기관</th>
+				<td><input type="text" id="searchPlaceName" name="searchPlaceName"  maxlength="25" value="${companyVO.searchPlaceName}" style="width:99%;" /></td>
+			</tr>
 	</tbody>
 </table><!-- E : view-1 -->
-</form:form>
+</form>
 
 <div class="page-btn">
 	<a href="#fn_formSave" onclick="javascript:fn_formSave();" onkeypress="this.onclick;">저장</a>

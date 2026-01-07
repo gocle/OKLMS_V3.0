@@ -96,7 +96,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 <p style="display:block;text-align:left;"><font color="red">*</font> 는 필수입력사항입니다.</p>
 <%-- 팝업폼 --%>
 <%-- 팝업폼 --%>
-<form:form commandName="frmProcess">
+<form:form modelAttribute="frmProcess">
 <!-- 디폴트 셋팅항목 필드 시작 -->
 <!-- 디폴트 셋팅항목 필드 끝 -->
 

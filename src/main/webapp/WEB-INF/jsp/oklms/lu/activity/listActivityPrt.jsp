@@ -70,7 +70,7 @@
 									</div>
 									
 									<!-- <span>기전공학기초설계2</span> (02분반_기업명_B) ㅣ 2016학년도 2학기 -->
-									<form:form commandName="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
+									<form:form modelAttribute="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
 									<input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 									
 									<input type="hidden" name="yyyy"  value="${activityVO.yyyy}" >
@@ -449,7 +449,7 @@
 									<p><a href="#learner-wrap_area" rel="modal:open" class="btn btn-black form-control mmd btn-radius50">개설교과 분반 검색 <i class="xi-search"></i></a></p>
 									</div>
 
-<form:form commandName="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmActivity" name="frmActivity" method="post" enctype="multipart/form-data" >
 									<input type="hidden" name="activityNoteId"  value="${result.activityNoteId}" >
 									  
 									<input type="hidden" name="yyyy"  value="${activityVO.yyyy}" >

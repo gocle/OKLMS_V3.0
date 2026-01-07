@@ -692,6 +692,11 @@ public class MemberServiceImpl extends EgovAbstractServiceImpl implements Member
 		String storePathString ="Globals.fileStorePath";
 		String atchFileId = atchFileService.saveAtchFile( fileObj, "COP", "", storePathString ,"licence");
 		memberVO.setAtchFileId(atchFileId);
+		
+		// 첨부파일 2번째
+		final List<MultipartFile> fileObj2 = multiRequest.getFiles("file-input2");
+		String atchFileId2 = atchFileService.saveAtchFile(fileObj2, "COP", "", storePathString, "licence2");
+		memberVO.setAtchFileId2(atchFileId2);
 
 		
 		if(StringUtils.hasText(memberVO.getDeptNo())){

@@ -83,7 +83,7 @@
 <div align="center">
 		
 	<div style="float:left; border: 5px double #48BAE4; height: auto; padding: 10px;">
-			<form:form commandName="frmProtoBoard">
+			<form:form modelAttribute="frmProtoBoard">
 				<double-submit:preventer tokenKey="frmProtoBoardToken"/>
 			<div align="left">
 				<h2>Validation Test Form</h2>

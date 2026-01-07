@@ -617,6 +617,8 @@
 							<th>이메일</th>
 							<th>훈련과정명</th>
 							<th>변경</th>
+							<th>재직증명서</th>
+							<th>교육수료증</th>								
 						</tr>
 					</thead>
 					<tbody>
@@ -645,11 +647,21 @@
 								<input type="hidden" id="traningProcessId-${result.memSeq}" name="traningProcessId-${result.memSeq}" />
 								<input type="hidden" id="oldTraningProcessId-${result.memSeq}" name="oldTraningProcessId-${result.memSeq}" value="${result.traningProcessId}" />
 							</td>
+							<td>
+								<c:if test="${not empty result.atchFileId}">
+								<a href="javascript:com.downFile('${result.atchFileId}','1');" class="text-file">${result.atchFileNm}</a>
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${not empty result.atchFileId2}">
+								<a href="javascript:com.downFile('${result.atchFileId2}','1');" class="text-file">${result.atchFileNm2}</a>
+								</c:if>
+							</td>								
 						</tr>
 						</c:forEach>
 						<c:if test="${fn:length(resultMemberCcmList) == 0}">
 						<tr>
-							<td colspan="9">자료가 없습니다.</td>
+							<td colspan="11">자료가 없습니다.</td>
 						</tr>
 						</c:if>
 					</tbody>

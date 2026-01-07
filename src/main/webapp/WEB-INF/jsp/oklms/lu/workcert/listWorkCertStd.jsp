@@ -114,7 +114,7 @@ function fn_insert(){
 										</tbody>
 									</table> 
 								</div>
-<form:form modelAttribute="frmWorkCert" id="frmWorkCert" name="frmWorkCert" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmWorkCert" name="frmWorkCert" method="post" enctype="multipart/form-data" >
 <input type="hidden" name="periodId" id="periodId"  value="${workCertVO.periodId}"/>
 <input type="hidden" name="workProofId" id="workProofId"  value="${workCertVO.workProofId}"/>
 

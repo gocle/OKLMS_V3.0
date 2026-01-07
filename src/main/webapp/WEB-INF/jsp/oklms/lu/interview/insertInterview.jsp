@@ -7,7 +7,7 @@
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
  
 						<h2>면담일지</h2>
-<form:form commandName="frmInterview" name="frmInterview" method="post"    enctype="multipart/form-data" >
+<form:form modelAttribute="frmInterview" name="frmInterview" method="post"    enctype="multipart/form-data" >
 <input type="hidden" name="interviewMemberSeqs" id="interviewMemberSeqs"  value="" />
 <input type="hidden" name="companyId" value="${interviewVO.companyId }" />
 <input type="hidden" name="interviewMemSeq" value="${interviewVO.interviewMemSeq }" />

@@ -98,7 +98,7 @@
 <img id="displayBox" src="${contextRoot}js/jquery/plugins/blockUI/busy.gif" width="190" height="60" style="display:none">
 
 
-<form:form commandName="frmAuthGroup">
+<form:form modelAttribute="frmAuthGroup">
 <double-submit:preventer tokenKey="frmAuthGroupToken"/>
 <input type="hidden" id="frm_authGroupId"   name="authGroupId"  value="${authGroupVO.authGroupId}" />
 <input type="hidden" id="frm_searchAuthGroupName"   name="searchAuthGroupName"  value="${authGroupVO.searchAuthGroupName}" />

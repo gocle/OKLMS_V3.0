@@ -104,7 +104,7 @@
 
 </head>
 <body>
-<form:form commandName="community" name="community" method="post" >
+<form:form modelAttribute="community" name="community" method="post" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 
 <div id="border" style="width:730px">

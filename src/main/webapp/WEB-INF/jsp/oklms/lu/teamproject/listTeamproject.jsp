@@ -181,7 +181,7 @@
 
 
 
-<form:form commandName="frmTeamproject" name="frmTeamproject" method="post"   >
+<form:form modelAttribute="frmTeamproject" name="frmTeamproject" method="post"   >
 	<input type="hidden" name="teamprojectId" id="teamprojectId"/>
 	<input type="hidden" name="scoreCnt" id="scoreCnt"/>
 	<input type="hidden" name="submitCnt" id="submitCnt"/>

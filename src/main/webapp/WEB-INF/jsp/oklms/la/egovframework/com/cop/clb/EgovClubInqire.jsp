@@ -48,7 +48,7 @@
 </head>
 <body>
 
-<form:form commandName="frm" name="frm" method="post" >
+<form:form modelAttribute="frm" name="frm" method="post" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="clbId"  value='<c:out value="${clubVO.clbId}" />'/>
 

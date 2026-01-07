@@ -353,7 +353,7 @@ jqGrid 및 화면 초기화
 
 
 <!-- S : 입력 폼 영역 -->
-<form:form commandName="board" name="board" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="board" name="board" method="post" enctype="multipart/form-data" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="bbsId" value="<c:out value='${bdMstr.bbsId}'/>" />
 <input type="hidden" name="nttId" value="<c:out value='${result.nttId}'/>" />

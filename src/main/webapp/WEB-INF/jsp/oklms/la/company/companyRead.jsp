@@ -36,7 +36,7 @@
 	/* 수정 페이지로 이동 */
 	function fn_updt(){
 		
-		var reqUrl = CONTEXT_ROOT + targetUrl + "goUpdateCompany.do";
+		var reqUrl = targetUrl + "goUpdateCompany.do";
 
 		$("#frmCompany").attr("method", "post" );
 		$("#frmCompany").attr("action", reqUrl);
@@ -66,11 +66,11 @@
 	
 </script>
 
-<form:form commandName="frmCompany">
+<form id="frmCompany" name="frmCompany">
 <input type="hidden" name="companyId" id="companyId" value="${companyVO.companyId}"/>
 <!-- 검색조건유지 필드 시작 --> 
 <input type="hidden" name="searchCompanyName" id="searchCompanyName" value="${companyVO.searchCompanyName}"/>
-</form:form>
+</form>
 <table border="0" cellpadding="0" cellspacing="0" class="view-1" style="margin:0;">
 	<tbody>
 		<tr>
@@ -126,6 +126,146 @@
 				${companyVO.faxNo1}-${companyVO.faxNo2}-${companyVO.faxNo3}
 			</td>   
 		</tr>
+		<tr>
+				<th rowspan="4">담당자<br />연락처</th>
+				<th class="sub-name">직위</th>
+				<td colspan="2">${companyVO.position}</td>
+			</tr>
+			<tr>
+				<th class="border-left sub-name">성명</th>
+				<td colspan="2">${companyVO.name}</td>
+			</tr>
+			<tr>
+				<th class="border-left sub-name">휴대폰</th>
+				<td colspan="2">
+					${companyVO.hpNo1}
+					-
+					${companyVO.hpNo2}
+					-
+					${companyVO.hpNo3}
+				</td>
+			</tr>
+			<tr>
+				<th class="border-left sub-name">E-mail</th>
+				<td colspan="2">${companyVO.email}</td>
+			</tr>
+			<tr>
+				<th>선정일</th>
+				<td>${companyVO.choiceDay}</td>
+				<th>상시근로자수</th>
+				<td>${companyVO.regularEmploymentCnt}명</td>
+			</tr>
+			<tr>
+				<th>기업구분</th>
+				<td>
+					<c:choose>
+						<c:when test="${companyVO.companyDivCd == '01'}">대기업</c:when>
+						<c:when test="${companyVO.companyDivCd == '02'}">중견기업</c:when>
+						<c:when test="${companyVO.companyDivCd == '03'}">중소기업</c:when>
+						<c:when test="${companyVO.companyDivCd == '04'}">공기업</c:when>
+						<c:when test="${companyVO.companyDivCd == '05'}">교육기관</c:when>
+						<c:when test="${companyVO.companyDivCd == '06'}"></</c:when>
+					</c:choose>
+				</td>
+				<th>홈페이지 URL</th>
+				<td>${companyVO.homepageUrl}</td>
+			</tr>
+			
+			<tr>
+				<th>훈련참여상태</th>
+				<td>
+					<c:choose>
+						<c:when test="${companyVO.traningStatusCd == '1'}">진행중</c:when>
+						<c:when test="${companyVO.traningStatusCd == '2'}">참여대기</c:when>
+						<c:when test="${companyVO.traningStatusCd == '3'}">참여포기</c:when>
+					</c:choose>
+				</td>
+				<th>기업상태</th>
+				<td>
+					<c:choose>
+						<c:when test="${companyVO.companyStatusCd == '1'}">정상</c:when>
+						<c:when test="${companyVO.companyStatusCd == '2'}">폐업</c:when>
+						<c:when test="${companyVO.companyStatusCd == '3'}">합병</c:when>
+					</c:choose>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>관할 지부지사</th>
+				<td colspan="3">${companyVO.controlPlaceName}</td>
+			</tr>
+			
+			<tr>
+				<th rowspan="3">재학생<br />단계</th>
+				<th class="sub-name">도제(참여기관명)</th>
+				<td colspan="2">${companyVO.stuLevelName1}</td>
+			</tr>
+			
+			<tr>
+				<th class="border-left sub-name">Uni-Tech(참여기관명)</th>
+				<td colspan="2">${companyVO.stuLevelName2}</td>
+			</tr>
+			
+			<tr>
+				<th class="border-left sub-name">IPP(참여기관명)</th>
+				<td colspan="2">${companyVO.stuLevelName3}</td>
+			</tr>
+			
+			<tr>
+				<th rowspan="4">재직자<br />단계</th>
+				<th class="sub-name">단독기업형</th>
+				<td colspan="2">${companyVO.compLevelName1}</td>
+			</tr>
+			
+			<tr>
+				<th class="border-left sub-name">대학연계형(참여기관명)</th>
+				<td colspan="2">${companyVO.compLevelName2}</td>
+			</tr>
+			
+			<tr>
+				<th class="border-left sub-name">P-Tech(참여기관명)</th>
+				<td colspan="2">${companyVO.compLevelName3}</td>
+			</tr>
+			
+			<tr>
+				<th class="border-left sub-name">고숙련마이스터(참여기관명)</th>
+				<td colspan="2">${companyVO.compLevelName4}</td>
+			</tr>
+			
+			<tr>
+				<th>설립일자</th>
+				<td>${companyVO.makeDay}</td>
+				<th>신용등급</th>
+				<td>${companyVO.creditLevel}</td>
+			</tr>
+			
+			<tr>
+				<th>자산총계</th>
+				<td>${companyVO.assets}</td>
+				<th>부채총계</th>
+				<td>${companyVO.liabilities}</td>
+			</tr>
+			
+			<tr>
+				<th>자본총계</th>
+				<td>${companyVO.equities}</td>
+				<th>매출액</th>
+				<td>${companyVO.revenue}</td>
+			</tr>
+			
+			<tr>
+				<th>영업이익</th>
+				<td>${companyVO.operatingIncome}</td>
+				<th>당기순이익</th>
+				<td>${companyVO.netIncome}</td>
+			</tr>
+			
+			<tr>
+				<th>평가일자</th>
+				<td>${companyVO.evalDay}</td>
+				<th>조회기관</th>
+				<td>${companyVO.searchPlaceName}</td>				
+			</tr>
 	</tbody>
 </table><!-- E : view-1 -->
 <div class="page-btn">

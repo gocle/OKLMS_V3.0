@@ -139,7 +139,7 @@
 </script>
  
 			<div id="container"> 
-	<form:form commandName="frmQestnr" name="frmQestnr" method="post"   > 
+	<form:form modelAttribute="frmQestnr" name="frmQestnr" method="post"   > 
 <input type="hidden" id="qestnrId" name="qestnrId" value="${qestnrVO.qestnrId}" />
 <input type="hidden" id="yyyy" name="yyyy" value="${qestnrVO.yyyy}" />
 <input type="hidden" id="term" name="term" value="${qestnrVO.term}" />

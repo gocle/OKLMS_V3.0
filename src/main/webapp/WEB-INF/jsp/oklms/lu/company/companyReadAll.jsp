@@ -65,7 +65,7 @@
 	
 </script>
 
-<form:form commandName="frmCompany">
+<form:form modelAttribute="frmCompany">
 <!-- 검색조건유지 필드 시작 -->
 <input type="hidden" name="searchName" id="searchName" value="${companyVO.searchName}"/>
 <input type="hidden" name="searchWord" id="searchWord" value="${companyVO.searchWord}"/>

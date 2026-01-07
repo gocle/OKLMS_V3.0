@@ -102,7 +102,7 @@
 
 </head>
 <body >
-<form:form commandName="boardMaster" name="boardMaster" method="post">
+<form:form modelAttribute="boardMaster" name="boardMaster" method="post">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="trgetId" type="hidden" value="<c:out value='${searchVO.trgetId}'/>" />
 

@@ -68,7 +68,7 @@ function fn_search(param1){
 }
 //--> 
 </script>
-<form:form commandName="frmInterview" name="frmInterview" method="post">
+<form:form modelAttribute="frmInterview" name="frmInterview" method="post">
 						<ul class="page-sum mb-007">
 							<li class="float-left">총 ${paginationInfo.totalRecordCount} 건 ( ${interviewVO.pageIndex}  /  ${paginationInfo.totalPageCount}   Page)</li>
 							<li class="float-right">

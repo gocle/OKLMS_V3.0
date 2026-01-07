@@ -82,6 +82,7 @@ public class OutMemberVO extends BaseVO implements Serializable {
 	private String compTelNo;
 	private String dutyNm;
 	private String licenceFile;
+	private String licenceFile2;
 	private String compStatusCd;
 	private String compCareerYear;
 	private String compEduLevelCd;
@@ -141,6 +142,13 @@ public class OutMemberVO extends BaseVO implements Serializable {
 	}
 	public void setLicenceFile(String licenceFile) {
 		this.licenceFile = licenceFile;
+	}
+	
+	public String getLicenceFile2() {
+		return licenceFile2;
+	}
+	public void setLicenceFile2(String licenceFile2) {
+		this.licenceFile2 = licenceFile2;
 	}
 	
 	public String[] getAuthGroupIds() {

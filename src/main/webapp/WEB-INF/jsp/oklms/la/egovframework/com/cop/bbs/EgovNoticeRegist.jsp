@@ -184,7 +184,7 @@ jqGrid 및 화면 초기화
 
 <!-- S : 입력 폼 영역 -->
 <div class="title-name-1"><c:out value='${bdMstr.bbsNm}'/> - 게시글쓰기</div>
-<form:form commandName="board" name="board" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="board" name="board" method="post" enctype="multipart/form-data" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="bbsId" value="<c:out value='${bdMstr.bbsId}'/>" />
 <input type="hidden" name="bbsAttrbCode" value="<c:out value='${bdMstr.bbsAttrbCode}'/>" />

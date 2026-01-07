@@ -82,7 +82,7 @@
 
 </head>
 <body>
-<form:form commandName="board" name="board"  method="post">
+<form:form modelAttribute="board" name="board"  method="post">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="bbsId" type="hidden" value="<c:out value='${brdMstrVO.bbsId}'/>"/>
 <input name="nttId" type="hidden" value='<c:out value="${boardVO.nttId}" />' />

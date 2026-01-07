@@ -113,7 +113,7 @@
 </script>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 						<!-- S : 입력 폼 영역 -->
-<form:form commandName="boardMaster" name="boardMaster" action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterInfs.do" method="post" >
+<form:form modelAttribute="boardMaster" name="boardMaster" action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterInfs.do" method="post" >
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="bbsId" type="hidden" value="<c:out value='${result.bbsId}'/>" />
 <input name="bbsTyCode" type="hidden" value="<c:out value='${result.bbsTyCode}'/>" />

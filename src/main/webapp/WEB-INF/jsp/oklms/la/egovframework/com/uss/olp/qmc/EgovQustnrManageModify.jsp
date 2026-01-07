@@ -142,7 +142,7 @@ String.prototype.replaceAll = function(src, repl){
 <!--  상단타이틀 Start -->
 <div class="title-name-1">설문관리 수정</div>
 <!--  상단타이틀 End -->
-<form:form commandName="frm" name="frm" method="post">
+<form:form modelAttribute="frm" name="frm" method="post">
 <input name="qestnrTmplatIdTemp" id="qestnrTmplatIdTemp" type="hidden" value="${resultList[0].qestnrTmplatId}">
 <input name="qestnrId" type="hidden" value="${resultList[0].qestnrId}">
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
