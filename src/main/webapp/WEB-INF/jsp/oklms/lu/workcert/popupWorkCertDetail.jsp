@@ -78,6 +78,7 @@ function fn_excel(){
 						<th>4대보험<br />가입증명서</th>			
 						<th>재직<br />증며서</th>					
 						<th>보완서류</th>
+						<th>승인여부</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -162,6 +163,43 @@ function fn_excel(){
 														</c:if>
 													</c:if>
 												</td>
+												<td>
+													<c:choose>
+														<c:when test="${workCertDetailList.sendYn eq 'N'}" >미제출</c:when>
+														<c:when test="${workCertDetailList.sendYn eq 'Y'}" >
+															 <c:choose>
+													            <c:when test="${workCertDetailList.state eq '00'
+													                          || workCertDetailList.stateRec eq '00'
+													                          || workCertDetailList.stateInc eq '00'
+													                          || workCertDetailList.stateWok eq '00'
+													                          || workCertDetailList.stateDoc eq '00'}">
+													                미승인
+													            </c:when>
+													
+													            <c:when test="${workCertDetailList.state eq '02'
+													                          || workCertDetailList.stateRec eq '02'
+													                          || workCertDetailList.stateInc eq '02'
+													                          || workCertDetailList.stateWok eq '02'
+													                          || workCertDetailList.stateDoc eq '02'}">
+													
+													                <a href="#companion-wrap"
+													                   name="modalReturnWorkComment"
+													                   data-comment="${workCertDetailList.returnReasons}"
+													                   rel="modal:open">반려</a>
+													                <br/>
+													                <b>${workCertDetailList.returnReason}</b>
+													            </c:when>
+													
+													            <c:when test="${workCertDetailList.state eq '01'}">
+													                <c:set var="total" value="${total + 1}" />
+													                승인
+													            </c:when>
+													
+													        </c:choose>
+															
+														</c:when>
+													</c:choose>
+												</td>
 											</tr>										
 										
 										
@@ -175,6 +213,7 @@ function fn_excel(){
 												<td>${ins} 명</td>
 												<td>${wok} 명</td>
 												<td>${doc} 명</td>
+												<td>${total} 명</td>
 											</tr>
 										</c:if>
 										<c:if test="${empty resultList}" >
