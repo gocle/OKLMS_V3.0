@@ -68,6 +68,14 @@
 				,LWP.DEPT_NO
 				,LWP.STATE
 				,LWP.RETURN_REASON
+				,LWP.STATE_REC
+				,LWP.RETURN_REASON_REC
+				,LWP.STATE_INC
+				,LWP.RETURN_REASON_INC
+				,LWP.STATE_WOK
+				,LWP.RETURN_REASON_WOK
+				,LWP.STATE_DOC
+				,LWP.RETURN_REASON_DOC
 				,LWP.OFF_INS_YN
 				,LWP.OFF_REC_YN
 				,LWP.OFF_DOC_YN
@@ -206,6 +214,10 @@
 ]]>
 		PRO.SEND_YN,
 		PRO.STATE, 
+		PRO.STATE_REC,
+		PRO.STATE_INC,
+		PRO.STATE_WOK,
+		PRO.STATE_DOC,
 (SELECT AF.ATCH_FILE_ID FROM ATCH_FILE AF WHERE AF.ATCH_FILE_ID = PRO.ATCH_FILE_ID_INC ) AS ATCH_FILE_ID_INC,
 (SELECT AF.ATCH_FILE_ID FROM ATCH_FILE AF WHERE AF.ATCH_FILE_ID = PRO.ATCH_FILE_ID_REC ) AS ATCH_FILE_ID_REC,
 (SELECT AF.ATCH_FILE_ID FROM ATCH_FILE AF WHERE AF.ATCH_FILE_ID = PRO.ATCH_FILE_ID_DOC ) AS ATCH_FILE_ID_DOC,
@@ -307,19 +319,72 @@
 				,LWP.DEPT_NO
 				,LWP.STATE
 				,LWP.RETURN_REASON
-				
-				,(SELECT LISTAGG(RETURN_REASON, ',') WITHIN 
-						       GROUP( 
-						     ORDER BY INSERT_DATE DESC) 
-				          FROM LMS_WORK_RETURN_REASON RET
-				         WHERE RET.PERIOD_ID = LWP.PERIOD_ID
-				               AND RET.MEM_ID = LWP.MEM_ID
+				,(
+				    SELECT LISTAGG(
+				               TO_CHAR(RET.INSERT_DATE, 'yyyy.mm.dd HH24:MI')
+				               || ' : ' || RET.RETURN_REASON,
+				               CHR(10)
+				           ) WITHIN GROUP (ORDER BY RET.INSERT_DATE DESC)
+				      FROM LMS_WORK_RETURN_REASON RET
+				     WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				       AND RET.MEM_ID    = LWP.MEM_ID
 				) AS RETURN_REASONS
-				
+				,(
+				 SELECT LISTAGG(
+				        TO_CHAR(RET.INSERT_DATE, 'yyyy.mm.dd HH24:MI')
+				        || ' : ' || RET.RETURN_REASON,
+				        CHR(10)
+				      ) WITHIN GROUP (ORDER BY RET.INSERT_DATE DESC)
+				 FROM LMS_WORK_RETURN_REASON RET
+				 WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				   AND RET.MEM_ID    = LWP.MEM_ID
+				   AND RET.RETURN_TYPE = 'Rec'
+				) AS RETURN_REASONS_REC
+				,(
+				 SELECT LISTAGG(
+				        TO_CHAR(RET.INSERT_DATE, 'yyyy.mm.dd HH24:MI')
+				        || ' : ' || RET.RETURN_REASON,
+				        CHR(10)
+				      ) WITHIN GROUP (ORDER BY RET.INSERT_DATE DESC)
+				 FROM LMS_WORK_RETURN_REASON RET
+				 WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				   AND RET.MEM_ID    = LWP.MEM_ID
+				   AND RET.RETURN_TYPE = 'Inc'
+				) AS RETURN_REASONS_INC
+				,(
+				 SELECT LISTAGG(
+				        TO_CHAR(RET.INSERT_DATE, 'yyyy.mm.dd HH24:MI')
+				        || ' : ' || RET.RETURN_REASON,
+				        CHR(10)
+				      ) WITHIN GROUP (ORDER BY RET.INSERT_DATE DESC)
+				 FROM LMS_WORK_RETURN_REASON RET
+				 WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				   AND RET.MEM_ID    = LWP.MEM_ID
+				   AND RET.RETURN_TYPE = 'Wok'
+				) AS RETURN_REASONS_WOK
+				,(
+				 SELECT LISTAGG(
+				        TO_CHAR(RET.INSERT_DATE, 'yyyy.mm.dd HH24:MI')
+				        || ' : ' || RET.RETURN_REASON,
+				        CHR(10)
+				      ) WITHIN GROUP (ORDER BY RET.INSERT_DATE DESC)
+				 FROM LMS_WORK_RETURN_REASON RET
+				 WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				   AND RET.MEM_ID    = LWP.MEM_ID
+				   AND RET.RETURN_TYPE = 'Doc'
+				) AS RETURN_REASONS_DOC
 				,LWP.OFF_INS_YN
 				,LWP.OFF_REC_YN
 				,LWP.OFF_DOC_YN
 				,LWP.OFF_WOK_YN
+				,LWP.STATE_REC
+				,LWP.RETURN_REASON_REC
+				,LWP.STATE_INC
+				,LWP.RETURN_REASON_INC
+				,LWP.STATE_WOK
+				,LWP.RETURN_REASON_WOK
+				,LWP.STATE_DOC
+				,LWP.RETURN_REASON_DOC
 				FROM LMS_WORK_PROOF_PERIOD WPP
 				INNER JOIN COM_MEMBER CM ON CM.DEPT_NO = WPP.DEPT_NO AND CM.DELETE_YN='N' AND CM.OUT_YN='N'
 				INNER JOIN LMS_WORK_PROOF LWP   ON WPP.PERIOD_ID=LWP.PERIOD_ID AND CM.MEM_ID = LWP.MEM_ID AND LWP.DELETE_YN='N' 
@@ -544,9 +609,18 @@
 		/* ====== kr.co.gocle.oklms.lu.workcert.service.impl.WorkCertMapper.updateWorkCertMember ====== */
 		UPDATE LMS_WORK_PROOF
 			SET
-			       STATE         = #{state},
-			       SEND_YN='Y',
-			       RETURN_REASON = #{returnReason}
+			        STATE         		= #{state},
+			        SEND_YN		  		= 'Y',
+			        RETURN_REASON 		= #{returnReason},
+			        STATE_REC 			= #{stateRec} ,
+					RETURN_REASON_REC	= #{returnReasonRec} ,
+					STATE_INC 			= #{stateInc},
+					RETURN_REASON_INC	= #{returnReasonInc} ,
+					STATE_WOK			= #{stateWok} ,
+					RETURN_REASON_WOK	= #{returnReasonWok} ,
+					STATE_DOC			= #{stateDoc} ,
+					RETURN_REASON_DOC	= #{returnReasonDoc}
+			       
 			WHERE    MEM_ID = #{memId}
 			  AND    PERIOD_ID = #{periodId}
 
@@ -561,7 +635,8 @@
 		           MEM_ID,
 		           RETURN_REASON,
 		           INSERT_USER,
-		           INSERT_DATE
+		           INSERT_DATE,
+		           RETURN_TYPE
 		       ) 
 		       VALUES
 		       ( 
@@ -569,7 +644,8 @@
 		           #{memId}, 
 		           #{returnReason}, 
 		           #{sessionMemSeq}, 
-		           SYSDATE
+		           SYSDATE,
+		           #{returnType}
 		       )  
 	</insert>
 	
@@ -591,15 +667,19 @@
         SET     
         <if test="atchFileIdInc != null  and atchFileIdInc != ''">
 	        ATCH_FILE_ID_INC = #{atchFileIdInc},
+	        STATE_INC = #{stateInc},
 	    </if>
 	    <if test="atchFileIdRec != null  and atchFileIdRec != ''">
 			ATCH_FILE_ID_REC = #{atchFileIdRec},
+			STATE_REC = #{stateRec},
 		</if>
 		<if test="atchFileIdDoc != null  and atchFileIdDoc != ''">
 			ATCH_FILE_ID_DOC = #{atchFileIdDoc},
+			STATE_DOC = #{stateDoc},
 		</if>
 		<if test="atchFileIdWok != null  and atchFileIdWok != ''">
 			ATCH_FILE_ID_WOK = #{atchFileIdWok},
+			 STATE_WOK = #{stateWok},
 		</if>
 			MODIFIER_ID = #{sessionMemSeq},
 			MODIFY_DATE =  SYSDATE,

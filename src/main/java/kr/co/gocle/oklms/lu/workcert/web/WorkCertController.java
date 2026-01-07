@@ -1,10 +1,16 @@
 package kr.co.gocle.oklms.lu.workcert.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Validator;
 
@@ -18,6 +24,7 @@ import kr.co.gocle.oklms.la.company.service.CompanyService;
 import kr.co.gocle.oklms.lu.workcert.service.WorkCertService;
 import kr.co.gocle.oklms.lu.workcert.vo.WorkCertVO;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -180,9 +188,9 @@ public class WorkCertController {
 		insertCnt = workCertService.goInsertWorkCertPeriod(workCertVO);
 
 		if(insertCnt > 0){
-			retMsg = "저장되었습니다.";
+			retMsg = "처리되었습니다.";
 		}else{
-			retMsg = "저장할 수 없습니다.";
+			retMsg = "처리할 수 없습니다.";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -209,9 +217,9 @@ public class WorkCertController {
 		String retMsg = "입력값을 확인해주세요";
 		int delectCnt = workCertService.deleteWorkCertPeriod(workCertVO);
 		if(delectCnt > 0){
-			retMsg = "삭제 처리되었습니다.!";
+			retMsg = "처리되었습니다!";
 		}else{
-			retMsg = "처리된건이 없습니다.!";
+			retMsg = "처리할 수 없습니다.!";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -348,9 +356,9 @@ public class WorkCertController {
 		int delectCnt = workCertService.updateWorkCertMember(workCertVO);
 		
 		if(delectCnt > 0){
-			retMsg = "정상처리 되었습니다.!";
+			retMsg = "처리되었습니다.";
 		}else{
-			retMsg = "처리된건이 없습니다.!";
+			retMsg = "처리할 수 없습니다.";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -381,9 +389,9 @@ public class WorkCertController {
 		int delectCnt = workCertService.updateOffWorkCertMember(workCertVO);
 		
 		if(delectCnt > 0){
-			retMsg = "정상처리 되었습니다.!";
+			retMsg = "처리되었습니다.";
 		}else{
-			retMsg = "처리된건이 없습니다.!";
+			retMsg = "처리할 수 없습니다.";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -412,9 +420,9 @@ public class WorkCertController {
 		int delectCnt = workCertService.updateOffWorkCertClearMember(workCertVO);
 		
 		if(delectCnt > 0){
-			retMsg = "정상처리 되었습니다.!";
+			retMsg = "처리되었습니다.";
 		}else{
-			retMsg = "처리된건이 없습니다.!";
+			retMsg = "처리할 수 없습니다.";
 		}
 
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -609,9 +617,9 @@ public class WorkCertController {
 		insertCnt = workCertService.goInsertWorkCert(workCertVO,multiRequest);
 		
 		if(insertCnt > 0){
-			retMsg = "저장되었습니다.";
+			retMsg = "처리되었습니다.";
 		}else{
-			retMsg = "저장할 수 없습니다.";
+			retMsg = "처리할 수 없습니다.";
 		}
 		
 		redirectAttributes.addFlashAttribute("retMsg", retMsg);
@@ -619,7 +627,53 @@ public class WorkCertController {
 		return "redirect:/lu/workcert/listWorkCertStd.do?periodId="+workCertVO.getPeriodId()+"&workProofId="+workCertVO.getWorkProofId();
 	}
 	
-	 
+	/**
+	 * 제출자료 미리보기 
+	 * @param atchFileId
+	 * @param fileSn
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/lu/workcert/previewFile.do")
+	public void previewAtchFile(@RequestParam String atchFileId, @RequestParam int fileSn, HttpServletResponse response) throws Exception {
+	
+		AtchFileVO vo = new AtchFileVO();
+		vo.setAtchFileId(atchFileId);
+		vo.setFileSn(fileSn);
+		
+		AtchFileVO file = atchFileService.getAtchFile(vo);
+		
+		File realFile = new File(file.getFileSavePath(), file.getSaveFileName());
+		
+		String ext = file.getFileExtn().toLowerCase();
+
+		String contentType;
+		switch(ext){
+		    case "pdf":
+		        contentType = "application/pdf";
+		        break;
+		    case "jpg":
+		    case "jpeg":
+		        contentType = "image/jpeg";
+		        break;
+		    case "png":
+		        contentType = "image/png";
+		        break;
+		    case "gif":
+		        contentType = "image/gif";
+		        break;
+		    default:
+		        contentType = "application/octet-stream";
+		}
+		
+		response.setContentType(contentType);
+		response.setHeader("Content-Disposition","inline; filename=\"" + file.getOrgFileName() + "\"");
+		
+		try(InputStream in = new FileInputStream(realFile);
+				OutputStream out = response.getOutputStream()) {
+			IOUtils.copy(in, out);
+		}
+	}
 
 
 }

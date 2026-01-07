@@ -14,7 +14,6 @@
 						<h2>제출서류 등록</h2>
 
 <script type="text/javascript">
-<!--
 $(document).ready(function() {
  
 }); 
@@ -39,7 +38,6 @@ function fn_insert(){
 	return;
 }
 
-//--> 
 </script>
  								<div class="table-responsive mt-020">
 	 								<table class="type-2">
@@ -80,14 +78,30 @@ function fn_insert(){
 													<td>${workCertList.startTime}-${workCertList.endTime}</td>
 													<td>${workCertList.relativeRegulation}</td>
 													<td>
-														<c:if test="${workCertList.sendYn eq 'N'}" >
-															<span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미제출</span>
-														</c:if>
-														<c:if test="${workCertList.sendYn eq 'Y'}" >
-															<c:if test="${ workCertList.state eq '00'}" ><span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미승인</span></c:if>
-															<c:if test="${ workCertList.state eq '01'}" ><span class="btn-line-blue" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">승인</span></c:if>
-															<c:if test="${ workCertList.state eq '02'}" ><span class="btn-line-orange" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">반려</span></c:if>
-														</c:if>
+														<c:choose>
+															<c:when test="${workCertList.sendYn eq 'N'}" >
+																<span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미제출</span>
+															</c:when>
+															<c:when test="${workCertList.sendYn eq 'Y'}" >
+																<c:choose>
+																	<c:when test="${ workCertList.state eq '00'
+																			  || workCertList.stateRec eq '00'
+																	          || workCertList.stateInc eq '00'
+																	          || workCertList.stateWok eq '00'
+																	          || workCertList.stateDoc eq '00'}" >
+																		<span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미승인</span>
+																	</c:when>
+																	<c:when test="${workCertList.state eq '02'
+																		      || workCertList.stateRec eq '02'
+																	          || workCertList.stateInc eq '02'
+																	          || workCertList.stateWok eq '02'
+																	          || workCertList.stateDoc eq '02'}" >
+																		<span class="btn-line-orange" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">반려</span>
+																	</c:when>
+																	<c:when test="${ workCertList.state eq '01'}" ><span class="btn-line-blue" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">승인</span></c:when>
+																</c:choose>
+															</c:when>
+														</c:choose>
 													</td>										
 											</tr>
 											</c:forEach>
@@ -100,7 +114,7 @@ function fn_insert(){
 										</tbody>
 									</table> 
 								</div>
-<form:form commandName="frmWorkCert" name="frmWorkCert" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="frmWorkCert" id="frmWorkCert" name="frmWorkCert" method="post" enctype="multipart/form-data" >
 <input type="hidden" name="periodId" id="periodId"  value="${workCertVO.periodId}"/>
 <input type="hidden" name="workProofId" id="workProofId"  value="${workCertVO.workProofId}"/>
 
@@ -262,20 +276,71 @@ function fn_insert(){
 	
 											<tr>
 												<th>제출상태</th>
-											<c:if test="${ empty workCertVO.state}" ><td class="left">미제출</td></c:if>
+											<%-- <c:if test="${ empty workCertVO.state}" ><td class="left">미제출</td></c:if>
 											<c:if test="${ workCertVO.state eq '00'}" ><td class="left">미승인</td></c:if>
 											<c:if test="${ workCertVO.state eq '01'}" ><td class="left">승인</td></c:if>
-											<c:if test="${ workCertVO.state eq '02'}" ><td class="left">반려</td></c:if>											
-								 
+											<c:if test="${ workCertVO.state eq '02'}" ><td class="left">반려</td></c:if>	 --%>										
+								 				<c:if test="${workCertVO.sendYn eq 'N'}" >
+													<td class="left">미제출</td>
+												</c:if>
+												<c:if test="${workCertVO.sendYn eq 'Y'}" >
+													<c:if test="${ workCertVO.state eq '00'
+															  || workCertVO.stateRec eq '00'
+													          || workCertVO.stateInc eq '00'
+													          || workCertVO.stateWok eq '00'
+													          || workCertVO.stateDoc eq '00'}" >
+														<td class="left">미승인</td>
+													</c:if>
+													<c:if test="${workCertVO.state eq '02'
+														      || workCertVO.stateRec eq '02'
+													          || workCertVO.stateInc eq '02'
+													          || workCertVO.stateWok eq '02'
+													          || workCertVO.stateDoc eq '02'}" >
+														<td class="left">반려</td>
+													</c:if>
+													<c:if test="${ workCertVO.state eq '01'}" >
+														<td class="left">승인</td>
+													</c:if>
+												</c:if>
 											</tr>
 											
-											<c:if test="${ workCertVO.state eq '02'}" >
-											<tr>
-												<th>반려사유</th>
-												<td class="left">${workCertVO.returnReason}</td>
-											</tr>
-											</c:if>
+											<c:choose>
+											    <c:when test="${workCertVO.state eq '02'}">
+											        <tr>
+											            <th>반려사유</th>
+											            <td class="left">${workCertVO.returnReason}</td>
+											        </tr>
+											    </c:when>
+											    
+											    <c:when test="${workCertVO.stateRec eq '02'}">
+											        <tr>
+											            <th>반려사유 (원천징수)</th>
+											            <td class="left">${workCertVO.returnReasonRec}</td>
+											        </tr>
+											    </c:when>
 											
+											    <c:when test="${workCertVO.stateInc eq '02'}">
+											        <tr>
+											            <th>반려사유 (4대보험)</th>
+											            <td class="left">${workCertVO.returnReasonInc}</td>
+											        </tr>
+											    </c:when>
+											
+											    <c:when test="${workCertVO.stateWok eq '02'}">
+											        <tr>
+											            <th>반려사유 (재직증명서)</th>
+											            <td class="left">${workCertVO.returnReasonWok}</td>
+											        </tr>
+											    </c:when>
+											
+											    <c:when test="${workCertVO.stateDoc eq '02'}">
+											        <tr>
+											            <th>반려사유 (보완서류)</th>
+											            <td class="left">${workCertVO.returnReasonDoc}</td>
+											        </tr>
+											    </c:when>
+											
+											</c:choose>
 										</tbody>
 									</table>
 								</div>

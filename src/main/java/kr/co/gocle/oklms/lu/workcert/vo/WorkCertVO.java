@@ -107,6 +107,21 @@ public class WorkCertVO extends BaseVO implements Serializable{
 	private String subjectGrade;
 	private String nowTermYn;
 	
+	//서류별 승인상태 및 반려사유
+	private String returnType;
+	private String stateRec;
+	private String returnReasonRec;
+	private String returnReasonsRec;
+	private String stateInc;
+	private String returnReasonInc;
+	private String returnReasonsInc;
+	private String stateWok;
+	private String returnReasonWok;
+	private String returnReasonsWok;
+	private String stateDoc;
+	private String returnReasonDoc;
+	private String returnReasonsDoc;
+	
 	public String getNowTermYn() {
 		return nowTermYn;
 	}
@@ -596,6 +611,84 @@ public class WorkCertVO extends BaseVO implements Serializable{
 				+ removeDate + ", creatorId=" + creatorId + ", createDate="
 				+ createDate + ", modifierId=" + modifierId + ", modifyDate="
 				+ modifyDate + ", bizCompanyId=" + bizCompanyId + "]";
+	}
+	public String getStateRec() {
+		return stateRec;
+	}
+	public void setStateRec(String stateRec) {
+		this.stateRec = stateRec;
+	}
+	public String getReturnReasonRec() {
+		return returnReasonRec;
+	}
+	public void setReturnReasonRec(String returnReasonRec) {
+		this.returnReasonRec = returnReasonRec;
+	}
+	public String getStateInc() {
+		return stateInc;
+	}
+	public void setStateInc(String stateInc) {
+		this.stateInc = stateInc;
+	}
+	public String getReturnReasonInc() {
+		return returnReasonInc;
+	}
+	public void setReturnReasonInc(String returnReasonInc) {
+		this.returnReasonInc = returnReasonInc;
+	}
+	public String getStateWok() {
+		return stateWok;
+	}
+	public void setStateWok(String stateWok) {
+		this.stateWok = stateWok;
+	}
+	public String getReturnReasonWok() {
+		return returnReasonWok;
+	}
+	public void setReturnReasonWok(String returnReasonWok) {
+		this.returnReasonWok = returnReasonWok;
+	}
+	public String getStateDoc() {
+		return stateDoc;
+	}
+	public void setStateDoc(String stateDoc) {
+		this.stateDoc = stateDoc;
+	}
+	public String getReturnReasonDoc() {
+		return returnReasonDoc;
+	}
+	public void setReturnReasonDoc(String returnReasonDoc) {
+		this.returnReasonDoc = returnReasonDoc;
+	}
+	public String getReturnType() {
+		return returnType;
+	}
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
+	}
+	public String getReturnReasonsRec() {
+		return returnReasonsRec;
+	}
+	public void setReturnReasonsRec(String returnReasonsRec) {
+		this.returnReasonsRec = returnReasonsRec;
+	}
+	public String getReturnReasonsInc() {
+		return returnReasonsInc;
+	}
+	public void setReturnReasonsInc(String returnReasonsInc) {
+		this.returnReasonsInc = returnReasonsInc;
+	}
+	public String getReturnReasonsWok() {
+		return returnReasonsWok;
+	}
+	public void setReturnReasonsWok(String returnReasonsWok) {
+		this.returnReasonsWok = returnReasonsWok;
+	}
+	public String getReturnReasonsDoc() {
+		return returnReasonsDoc;
+	}
+	public void setReturnReasonsDoc(String returnReasonsDoc) {
+		this.returnReasonsDoc = returnReasonsDoc;
 	}
 
 

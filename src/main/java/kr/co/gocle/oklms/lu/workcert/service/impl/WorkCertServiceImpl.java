@@ -202,19 +202,23 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
 		
 		if(fileObj1!=null && fileObj1.size()>0){			
 			atchFileId = atchFileService.saveAtchFile( fileObj1, "", "", storePathString  ,"workcert");		
-			workCertVO.setAtchFileIdRec(atchFileId);	
+			workCertVO.setAtchFileIdRec(atchFileId);
+			workCertVO.setStateRec("00");
 		}
 		if(fileObj2!=null && fileObj2.size()>0){			
 			atchFileId = atchFileService.saveAtchFile( fileObj2, "", "", storePathString  ,"workcert");		
-			workCertVO.setAtchFileIdInc(atchFileId);	
+			workCertVO.setAtchFileIdInc(atchFileId);
+			workCertVO.setStateInc("00");
 		}
 		if(fileObj3!=null && fileObj3.size()>0){			
 			atchFileId = atchFileService.saveAtchFile( fileObj3, "", "", storePathString  ,"workcert");		
-			workCertVO.setAtchFileIdDoc(atchFileId);	
+			workCertVO.setAtchFileIdDoc(atchFileId);
+			workCertVO.setStateDoc("00");
 		}
 		if(fileObj4!=null && fileObj4.size()>0){			
 			atchFileId = atchFileService.saveAtchFile( fileObj4, "", "", storePathString  ,"workcert");		
-			workCertVO.setAtchFileIdWok(atchFileId);	
+			workCertVO.setAtchFileIdWok(atchFileId);
+			workCertVO.setStateWok("00");
 		}
 		
 		int sqlResultInt = 0;		
@@ -243,6 +247,23 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
 		for(int i= 0 ; i <memIdArr.length; i ++  ){
 
 			workCertVO.setMemId(memIdArr[i]);
+			if(workCertVO.getReturnType() != null) {
+				switch (workCertVO.getReturnType()) {
+					case "Rec":
+						workCertVO.setReturnReasonRec(workCertVO.getReturnReason());
+						break;
+					case "Inc":
+						workCertVO.setReturnReasonInc(workCertVO.getReturnReason());
+						break;
+					case "Wok":
+						workCertVO.setReturnReasonWok(workCertVO.getReturnReason());
+						break;
+					case "Doc":
+						workCertVO.setReturnReasonDoc(workCertVO.getReturnReason());
+						break;
+					default:
+				}
+			}
 			sqlResultInt = workCertMapper.updateWorkCertMember(workCertVO);
 			workCertMapper.insertWorkCertReturnReason(workCertVO);
 		}

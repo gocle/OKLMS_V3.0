@@ -160,6 +160,7 @@ function fn_updateDetail(type){
 
 	var memIdArr = $('input:checkbox[name="memIdArr"]').is(":checked");
 	$( "#state").val(type);
+	setReturnReason();
 	
 	if(!memIdArr){
 		if(type=="01"){
@@ -279,6 +280,73 @@ function mail(){
 	$('html').scrollTop(0);
 }
 //--> 
+
+function fn_previewFile(atchFileId, fileSn){
+    var url = "/lu/workcert/previewFile.do"
+            + "?atchFileId=" + atchFileId
+            + "&fileSn=" + fileSn;
+    window.open(url, "preview", "width=900,height=700");
+}
+
+function fn_updateCol(btn, memId, type, state){
+	
+	var $row = $(btn).closest("tr");
+	var reasonVal = $row.find("input.returnReason." + type).val();
+
+    if(state === '02' && (!reasonVal || reasonVal.trim() === '')){
+        alert("반려 사유를 입력하세요.");
+        return;
+    }
+    
+    $("input[name^='returnReason']").remove();
+	$("input[name='state" + type + "']").remove();
+	$("input[name='memId']").remove();
+	$("input[name='returnType']").remove();
+
+    $("<input>", {
+        type: "hidden",
+        name: "returnReason",
+        value: reasonVal
+    }).appendTo("#frmWorkCertListDetail");
+    
+	$("<input>", {
+        type: "hidden",
+        name: "state"+type,
+        value: state,
+    }).appendTo("#frmWorkCertListDetail");
+	
+	$("<input>", {
+        type: "hidden",
+        name: "memIdArr",
+        value: memId
+    }).appendTo("#frmWorkCertListDetail");
+	
+	 $("<input>", {
+        type: "hidden",
+        name: "returnType",
+        value: type
+   	 }).appendTo("#frmWorkCertListDetail");
+	
+	var reqUrl = "/lu/workcert/updateWorkCertMember.do";
+	$("#frmWorkCertListDetail").attr("action", reqUrl);
+ 	$("#frmWorkCertListDetail").submit();
+}
+
+
+function setReturnReason() {
+    var topVal = $.trim($("#returnReasonTop").val());
+    var bottomVal = $.trim($("#returnReasonBottom").val());
+
+    var finalReason = "";
+
+    if (topVal !== "") {
+        finalReason = topVal;
+    } else if (bottomVal !== "") {
+        finalReason = bottomVal;
+    }
+
+    $("#returnReason").val(finalReason);
+}
 </script>
  
 
@@ -446,10 +514,10 @@ function mail(){
 <form name="frmWorkCertListDetail" id="frmWorkCertListDetail" method="post" >
 <input type="hidden" name="search" value="top">
 <input type="hidden" name="seach" value="detail" />
-<input type="hidden" name="state" id="state" value="00" />
+<input type="hidden" name="state" id="state" />
 <input type="hidden" name="periodId" value="${workCertVO.periodId }" />
 
-
+<input type="hidden" name="returnReason" id="returnReason" />
 <input type="hidden" name="workProofId" id="workProofId"  />
 <input type="hidden" name="offInsYn" id="offInsYn"  />
 <input type="hidden" name="offRecYn" id="offRecYn"  />
@@ -511,7 +579,7 @@ function mail(){
 										<a href="javascript:mail();" class="orange">E-MAIL발송</a>
 									</div>
 									<div class="float-right">
-										<input type="text" name="returnReason"  id="returnReason" placeholder="반려시 반려사유 필수 입력"  onfocus="if(this.value=='');this.value=''"  />
+										<input type="text" id="returnReasonTop" placeholder="반려시 반려사유 필수 입력"  onfocus="if(this.value=='');this.value=''"  />
 										<a href="#" onclick="javascript:fn_updateDetail('02');" class="orange">반려</a>
 										<a href="#" onclick="javascript:fn_updateDetail('01');" class="orange">승인</a>
 									</div>
@@ -575,13 +643,19 @@ function mail(){
 													<td>
 														<c:if test="${!empty workCertDetailList.atchFileIdRec}" >
 															<c:choose>
-																<c:when test="${workCertDetailList.state eq '02'}">
-																	미제출
+																<c:when test="${workCertDetailList.stateRec eq '02'}">
+																	<a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReasonsRec}" rel="modal:open"><font color="red">반려</font></a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdRec}','1')" class="btn-line-blue">보기</a>
 																</c:when>
 																<c:otherwise>
 																	<c:set var="rec" value="${rec + 1}" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdRec}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdRecDate }" />)</a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdRec}','1')" class="btn-line-blue">보기</a>
 																</c:otherwise>
 															</c:choose>
+															<div class="btn-area mt-010">
+																<input type="text" name="returnReasonRec" class="returnReason Rec" placeholder="반려시 반려사유 필수 입력" />
+																<a href="#" onclick="javascript:fn_updateCol(this, '${workCertDetailList.memId}', 'Rec', '02');" class="orange">반려</a>
+															</div>
 														</c:if>
 														<c:if test="${empty workCertDetailList.atchFileIdRec}" >
 															<c:if test="${workCertDetailList.offRecYn eq 'Y' }">
@@ -590,16 +664,24 @@ function mail(){
 															<c:if test="${workCertDetailList.offRecYn ne 'Y' }">
 															미제출<a href="#!" onclick="javascript:fn_updateoffwork('${workCertDetailList.workProofId}','2');" class="btn-line-blue">접수</a>
 															</c:if>
-															
 														</c:if>													
 													</td>
 													<td>
 														<c:if test="${!empty workCertDetailList.atchFileIdInc}" >
-														
 															<c:choose>
-																<c:when test="${workCertDetailList.state eq '02'}">미제출</c:when>
-																<c:otherwise><c:set var="ins" value="${ins + 1 }" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdInc}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdIncDate }" />)</a></c:otherwise>
+																<c:when test="${workCertDetailList.stateInc eq '02'}">
+																	<a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReasonsInc}" rel="modal:open"><font color="red">반려</font></a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdInc}','1')" class="btn-line-blue">보기</a>
+																</c:when>
+																<c:otherwise>
+																	<c:set var="ins" value="${ins + 1 }" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdInc}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdIncDate }" />)</a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdInc}','1')" class="btn-line-blue">보기</a>
+																</c:otherwise>
 															</c:choose>
+															<div class="btn-area mt-010">
+																<input type="text" name="returnReasonInc" class="returnReason Inc" placeholder="반려시 반려사유 필수 입력" />
+																<a href="#" onclick="javascript:fn_updateCol(this, '${workCertDetailList.memId}', 'Inc', '02');" class="orange">반려</a>
+															</div>
 														</c:if>
 														<c:if test="${empty workCertDetailList.atchFileIdInc}" >
 															<c:if test="${workCertDetailList.offInsYn eq 'Y' }">
@@ -613,11 +695,20 @@ function mail(){
 																										
 													<td>
 														<c:if test="${!empty workCertDetailList.atchFileIdWok}" >
-														
 															<c:choose>
-																<c:when test="${workCertDetailList.state eq '02'}">미제출</c:when>
-																<c:otherwise><c:set var="wok" value="${wok + 1 }" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdWok}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdWokDate }" />)</a></c:otherwise>
+																<c:when test="${workCertDetailList.stateWok eq '02'}">
+																	<a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReasonsWok}" rel="modal:open"><font color="red">반려</font></a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdWok}','1')" class="btn-line-blue">보기</a>
+																</c:when>
+																<c:otherwise>
+																	<c:set var="wok" value="${wok + 1 }" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdWok}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdWokDate }" />)</a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdWok}','1')" class="btn-line-blue">보기</a>
+																</c:otherwise>
 															</c:choose>
+															<div class="btn-area mt-010">
+																<input type="text" name="returnReasonWok" class="returnReason Wok" placeholder="반려시 반려사유 필수 입력" />
+																<a href="#" onclick="javascript:fn_updateCol(this, '${workCertDetailList.memId}', 'Wok', '02');" class="orange">반려</a>
+															</div>
 														</c:if>
 														<c:if test="${empty workCertDetailList.atchFileIdWok}" >
 															<c:if test="${workCertDetailList.offWokYn eq 'Y' }">
@@ -633,9 +724,19 @@ function mail(){
 													<td>
 														<c:if test="${!empty workCertDetailList.atchFileIdDoc}" >
 															<c:choose>
-																<c:when test="${workCertDetailList.state eq '02'}">미제출</c:when>
-																<c:otherwise><c:set var="doc" value="${doc + 1}" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdDoc}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdDocDate }" />)</a></c:otherwise>
+																<c:when test="${workCertDetailList.stateDoc eq '02'}">
+																	<a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReasonsDoc}" rel="modal:open"><font color="red">반려</font></a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdWok}','1')" class="btn-line-blue">보기</a>
+																</c:when>
+																<c:otherwise>
+																	<c:set var="doc" value="${doc + 1}" /><a href="javascript:com.downFile('${workCertDetailList.atchFileIdDoc}','1');"><font color="blue">제출</font>(<c:out value="${workCertDetailList.atchFileIdDocDate }" />)</a>
+																	<a href="#;" onclick="fn_previewFile('${workCertDetailList.atchFileIdWok}','1')" class="btn-line-blue">보기</a>
+																</c:otherwise>
 															</c:choose>
+															<div class="btn-area mt-010">
+																<input type="text" name="returnReasonDoc" class="returnReason Doc" placeholder="반려시 반려사유 필수 입력" />
+																<a href="#" onclick="javascript:fn_updateCol(this, '${workCertDetailList.memId}', 'Doc', '02');" class="orange">반려</a>
+															</div>
 														</c:if>
 														<c:if test="${empty workCertDetailList.atchFileIdDoc}" >
 															<c:if test="${workCertDetailList.offDocYn eq 'Y' }">
@@ -647,16 +748,41 @@ function mail(){
 														</c:if>
 													</td>
 													<td>
-													<c:if test="${workCertDetailList.sendYn eq 'N'}" >미제출</c:if>
-													<c:if test="${workCertDetailList.sendYn eq 'Y'}" >
-														<c:if test="${workCertDetailList.state eq '00'}" >미승인</c:if>
-														<c:if test="${workCertDetailList.state eq '01'}" >
-														<c:set var="total" value="${total + 1}" />
-														승인
-														</c:if>
-														<%-- <c:if test="${workCertDetailList.state eq '02'}" ><a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReason}" rel="modal:open">반려</a></c:if> --%>
-														<c:if test="${workCertDetailList.state eq '02'}" ><a href="#companion-wrap" name="modalReturnWorkComment"  data-comment="${workCertDetailList.returnReasons}" rel="modal:open">반려</a><br/><b>${empty workCertDetailList.returnReasons ? workCertDetailList.returnReason : workCertDetailList.returnReasons}</b></c:if>
-													</c:if>
+													<c:choose>
+														<c:when test="${workCertDetailList.sendYn eq 'N'}" >미제출</c:when>
+														<c:when test="${workCertDetailList.sendYn eq 'Y'}" >
+															 <c:choose>
+													            <c:when test="${workCertDetailList.state eq '00'
+													                          || workCertDetailList.stateRec eq '00'
+													                          || workCertDetailList.stateInc eq '00'
+													                          || workCertDetailList.stateWok eq '00'
+													                          || workCertDetailList.stateDoc eq '00'}">
+													                미승인
+													            </c:when>
+													
+													            <c:when test="${workCertDetailList.state eq '02'
+													                          || workCertDetailList.stateRec eq '02'
+													                          || workCertDetailList.stateInc eq '02'
+													                          || workCertDetailList.stateWok eq '02'
+													                          || workCertDetailList.stateDoc eq '02'}">
+													
+													                <a href="#companion-wrap"
+													                   name="modalReturnWorkComment"
+													                   data-comment="${workCertDetailList.returnReasons}"
+													                   rel="modal:open">반려</a>
+													                <br/>
+													                <b>${workCertDetailList.returnReason}</b>
+													            </c:when>
+													
+													            <c:when test="${workCertDetailList.state eq '01'}">
+													                <c:set var="total" value="${total + 1}" />
+													                승인
+													            </c:when>
+													
+													        </c:choose>
+															
+														</c:when>
+													</c:choose>
 													</td>
 												</tr>										
 											</c:forEach>
@@ -689,7 +815,7 @@ function mail(){
 											<a href="javascript:mail();" class="orange">E-MAIL발송</a>
 										</div>
 										<div class="float-right">
-											<input type="text" name="returnReason"  id="returnReason" placeholder="반려시 반려사유 필수 입력"  onfocus="if(this.value=='');this.value=''"  />
+											<input type="text" id="returnReasonBottom" placeholder="반려시 반려사유 필수 입력"  onfocus="if(this.value=='');this.value=''"  />
 											<a href="#" onclick="javascript:fn_updateDetail('02');" class="orange">반려</a>
 											<a href="#" onclick="javascript:fn_updateDetail('01');" class="orange">승인</a>
 										</div>
