@@ -182,6 +182,19 @@ function fn_updateDetail(type){
 			alert("반려시 반려사유 필수 입력해주세요.");
 			return;
 		}
+		var sendSms = confirm(
+            "반려 처리 후 해당 반려사유를 선택한 대상자 모두에게 문자로 발송하시겠습니까?"
+        );
+
+        // 기존 값 제거
+        $("input[name='sendSms']").remove();
+
+        // hidden으로 전달
+        $("<input>", {
+            type: "hidden",
+            name: "sendSms",
+            value: sendSms ? "Y" : "N"
+        }).appendTo("#frmWorkCertListDetail");
 	}
 	
 	var reqUrl = "/lu/workcert/updateWorkCertMember.do";
@@ -290,8 +303,12 @@ function fn_previewFile(atchFileId, fileSn){
 
 function fn_updateCol(btn, memId, type, state){
 	
+	let sendSms = confirm("반려 처리 후 문자 발송하시겠습니까?");
+
+	$("input[name='sendSms']").remove();
+	
 	var $row = $(btn).closest("tr");
-	var reasonVal = $row.find("input.returnReason." + type).val();
+	var reasonVal = $row.find("input[name='returnReason" + type + "']").val();
 
     if(state === '02' && (!reasonVal || reasonVal.trim() === '')){
         alert("반려 사유를 입력하세요.");
@@ -326,6 +343,13 @@ function fn_updateCol(btn, memId, type, state){
         name: "returnType",
         value: type
    	 }).appendTo("#frmWorkCertListDetail");
+	 
+	$("<input>", {
+        type: "hidden",
+        name: "sendSms",
+        value: sendSms ? "Y" : "N"
+    }).appendTo("#frmWorkCertListDetail");
+
 	
 	var reqUrl = "/lu/workcert/updateWorkCertMember.do";
 	$("#frmWorkCertListDetail").attr("action", reqUrl);

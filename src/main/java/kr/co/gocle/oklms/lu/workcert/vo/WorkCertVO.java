@@ -121,6 +121,7 @@ public class WorkCertVO extends BaseVO implements Serializable{
 	private String stateDoc;
 	private String returnReasonDoc;
 	private String returnReasonsDoc;
+	private String sendSms;
 	
 	public String getNowTermYn() {
 		return nowTermYn;
@@ -689,6 +690,12 @@ public class WorkCertVO extends BaseVO implements Serializable{
 	}
 	public void setReturnReasonsDoc(String returnReasonsDoc) {
 		this.returnReasonsDoc = returnReasonsDoc;
+	}
+	public String getSendSms() {
+		return sendSms;
+	}
+	public void setSendSms(String sendSms) {
+		this.sendSms = sendSms;
 	}
 
 

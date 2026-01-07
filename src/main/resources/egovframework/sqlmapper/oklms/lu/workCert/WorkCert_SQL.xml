@@ -611,16 +611,23 @@
 			SET
 			        STATE         		= #{state},
 			        SEND_YN		  		= 'Y',
-			        RETURN_REASON 		= #{returnReason},
-			        STATE_REC 			= #{stateRec} ,
-					RETURN_REASON_REC	= #{returnReasonRec} ,
-					STATE_INC 			= #{stateInc},
-					RETURN_REASON_INC	= #{returnReasonInc} ,
-					STATE_WOK			= #{stateWok} ,
-					RETURN_REASON_WOK	= #{returnReasonWok} ,
-					STATE_DOC			= #{stateDoc} ,
-					RETURN_REASON_DOC	= #{returnReasonDoc}
-			       
+			        RETURN_REASON 		= #{returnReason}
+			        <if test="stateRec != null">
+				        , STATE_REC 			= #{stateRec} 
+						, RETURN_REASON_REC	= #{returnReasonRec} 
+					</if>
+					<if test="stateInc != null">
+						, STATE_INC 			= #{stateInc}
+						, RETURN_REASON_INC	= #{returnReasonInc} 
+					</if>
+					<if test="stateWok != null">
+						, STATE_WOK			= #{stateWok} 
+						, RETURN_REASON_WOK	= #{returnReasonWok} 
+					</if>
+					<if test="stateDoc != null">
+						, STATE_DOC			= #{stateDoc} ,
+						, RETURN_REASON_DOC	= #{returnReasonDoc}
+					</if>
 			WHERE    MEM_ID = #{memId}
 			  AND    PERIOD_ID = #{periodId}
 

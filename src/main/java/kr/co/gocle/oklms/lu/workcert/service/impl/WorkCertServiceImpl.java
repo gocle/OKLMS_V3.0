@@ -3,6 +3,8 @@ package kr.co.gocle.oklms.lu.workcert.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.service.EgovProperties;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -10,6 +12,8 @@ import javax.annotation.Resource;
 
 import kr.co.gocle.oklms.comm.vo.LoginInfo;
 import kr.co.gocle.oklms.commbiz.atchFile.service.AtchFileService;
+import kr.co.gocle.oklms.commbiz.mail.service.MailService;
+import kr.co.gocle.oklms.commbiz.mail.vo.MailVO;
 import kr.co.gocle.oklms.lu.workcert.service.WorkCertService;
 import kr.co.gocle.oklms.lu.workcert.vo.WorkCertVO;
 
@@ -43,6 +47,9 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
     
 	@Resource(name = "atchFileService")
 	private AtchFileService atchFileService;
+	
+	@Resource(name = "mailService")
+	private MailService mailService;
 
 	/**
 	 * 제직징빙서류 제출 기간 등록 및 수정
@@ -266,6 +273,10 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
 			}
 			sqlResultInt = workCertMapper.updateWorkCertMember(workCertVO);
 			workCertMapper.insertWorkCertReturnReason(workCertVO);
+			
+			if ("Y".equals(workCertVO.getSendSms())) {
+	            sendReturnSms(workCertVO);
+	        }
 		}
 
 		return sqlResultInt;
@@ -342,5 +353,38 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
 			throws Exception {
 		// TODO Auto-generated method stub
 		return workCertMapper.listMyDept(sessionMemSeq);
+	}
+	
+	
+	private void sendReturnSms(WorkCertVO workCertVO) throws Exception {
+
+	    MailVO mailVO = new MailVO();
+
+	    mailVO.setSessionMemId(workCertVO.getSessionMemId());
+	    mailVO.setSessionMemSeq(workCertVO.getSessionMemSeq());
+	    mailVO.setSessionMemName(workCertVO.getSessionMemName());
+	    
+	    try {
+	    String sender = EgovProperties.getProperty("Globals.sms.sender.default.phoneno");
+		String senderName = EgovProperties.getProperty("Globals.sms.sender.default.phonename");
+
+	    // 수신 대상
+	    mailVO.setMemIds(new String[]{ workCertVO.getMemId() });
+
+	    // 문자 내용
+	    mailVO.setSmsContent(
+	        "재직증빙서류가 반려 처리되었습니다.\n반려 사유: " + workCertVO.getReturnReason()
+	    );
+	    
+	    mailVO.setSendType("SMS");
+	    mailVO.setTrCallBack(sender);
+	    mailVO.setSendName(senderName);
+	    mailVO.setMailTempType("WORKCERT_RETURN");
+	    mailVO.setRealTypeYn("Y");
+
+	    mailService.insertSendMaster(mailVO);
+	    } catch (Exception e) {
+		    e.printStackTrace();
+		}
 	}
 }
