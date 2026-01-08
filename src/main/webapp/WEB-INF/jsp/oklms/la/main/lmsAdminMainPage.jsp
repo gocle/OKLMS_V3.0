@@ -655,7 +655,7 @@ function fn_sync(){
 		<thead>
 			<tr>
 				<th>합계</th>
-				<th>훈련 징행중인 기업 수</th>
+				<th>훈련 진행중인 기업 수</th>
 				<th>참여 대기중인 기업 수</th>
 				<th>참여포기 기업 수</th>
 			</tr>

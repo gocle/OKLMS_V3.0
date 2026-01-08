@@ -323,10 +323,15 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 		</tr>
 		<tr>
 			<th>고용보험관리번호</th>
-			<td colspan="3">
+			<td>
 				<input type="text" id="employInsManageNo" name="employInsManageNo" maxlength="12" value="" style="width:30%;" />
   				※"-"빼고 넣어 주세요.
 			</td>
+			<th>업종</th>
+			<td>
+				<input type="text" id="businessType" name="businessType"  value="${CompanyVO.businessType}" style="width:60%" />
+			<form:errors path="businessType" style="width:99%" />				
+			</td>    			
 		</tr>
 		<%-- <tr>
 			<th>업종</th>

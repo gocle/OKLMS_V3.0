@@ -396,39 +396,12 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<th colspan="2">선정일<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
 				<td><input type="text" id="choiceDay" name="choiceDay"  readonly="readonly" value="" style="width:17%;" /></td>
 			</tr>
-			<!-- <tr>
+			<tr>
 				<th colspan="2">업종</th>
 				<td>
-					<select id="bigBusinessType" name="bigBusinessType" onchange="" style="width:20%;" >
-						<option value="00" selected>::선택::</option>
-						<option value="01">농업</option>
-					</select>
-					<select id="middleBusinessType" name="middleBusinessType" onchange="" style="width:20%;" >
-						<option value="000" selected>::선택::</option>
-						<option value="011">작물 재배업</option>
-						<option value="012">축산업</option>
-						<option value="013">작물재배 및 축산 복합농업</option>
-						<option value="014">작물재배 및 축산 관련 서비스업</option>
-						<option value="015">수렵 및 관련 서비스업</option>
-					</select>
-					<select id="smailBusinessType" name="smailBusinessType" onchange="" style="width:20%;" >
-						<option value="0000" selected>::선택::</option>
-						<option value="0111">곡물 및 기타 식량작물 재배업</option>
-						<option value="0112">채소, 화훼작물 및 종묘 재배업</option>
-						<option value="0113">과실, 음료용 및 향신용 작물 재배업</option>
-						<option value="0114">기타 작물 재배업</option>
-						<option value="0115">시설작물 재배업</option>
-						<option value="0121">소 사육업</option>
-						<option value="0122">양돈업</option>
-						<option value="0123">가금류 및 조류 사육업</option>
-						<option value="0129">기타 축산업</option>
-						<option value="0130">작물재배 및 축산 복합농업</option>
-						<option value="0141">작물재배 관련 서비스업</option>
-						<option value="0142">축산 관련 서비스업</option>
-						<option value="0150">수렵 및 관련 서비스업</option>
-					</select>
+					<input type="text" id="businessType" name="businessType"  value="${CompanyVO.businessType}" style="width:60%" />
 				</td>
-			</tr> -->
+			</tr>
 			<tr>
 				<th colspan="2">상시근로자수</th>
 				<td><input type="number" min="0" max="9999" id="regularEmploymentCnt" name="regularEmploymentCnt"  maxlength="20" value="" style="width:20%;" /> 명</td>

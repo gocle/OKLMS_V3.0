@@ -6,6 +6,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%> 
 <c:set var="targetUrl" value="/la/statistics/traningstatus/" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate value="${now}" pattern="yyyy" var="nowYear"/>
 <script type="text/javaScript" language="javascript">
 	/* ********************************************************
 	 * 페이징 처리 함수
@@ -70,6 +73,7 @@
 	}
 
 	function fn_LoginLogManage() { 
+		document.getElementById("searchYn").value = "Y";
 		fn_search(pageIndex);
 	}
 	
@@ -104,6 +108,7 @@
 <form name="frmSubject" id="frmSubject" method="post">
 	<input type="hidden" id="pageSize" name="pageSize" value="${pageSize }" />
 	<input type="hidden" id="pageIndex" name="pageIndex" value="${pageIndex }" />  
+	<input type="hidden" id="searchYn" name="searchYn" value="${param.searchYn}" />
 	<!-- E : search-list-1 (검색조건 영역) -->
 	<ul class="search-list-1">
 		<li><span>구분</span> 
@@ -120,6 +125,29 @@
 				<option value="${deptCodeList.codeId}" <c:if test="${subjectVO.searchDeptName eq deptCodeList.codeId }">selected</c:if>>${deptCodeList.codeName}</option>
 				</c:forEach>
 				 
+			</select> 
+		</li>
+		<li><span>훈련실시연도</span> 
+			<select name="searchyyyy" id="searchyyyy"  onchange="javascript:fn_LoginLogManage();">
+				<option value="" >전체</option>
+				<c:forEach var="i" begin="0" end="11">
+				    <c:set var="year" value="${nowYear - i}" />
+				    <c:if test="${year >= 2015}">
+				        <option value="${year}"
+				            <c:if test="${subjectVO.searchyyyy eq year}">
+				                selected="selected"
+				            </c:if>>
+				            ${year}
+				        </option>
+				    </c:if>
+				</c:forEach>
+			</select> 
+		</li>
+		<li><span>실시구분</span> 
+			<select name="searchDeptTransferYn" id="searchDeptTransferYn"  onchange="javascript:fn_LoginLogManage();">
+				<option value="" >전체</option>
+				<option value="N" <c:if test="${subjectVO.searchDeptTransferYn eq 'N' }">selected</c:if>>신입</option>
+				<option value="Y" <c:if test="${subjectVO.searchDeptTransferYn eq 'Y' }">selected</c:if>>편입</option>
 			</select> 
 		</li>
 	</ul>

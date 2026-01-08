@@ -332,6 +332,14 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				</td>
 			</tr>
 			<tr>
+			<th colspan="2">업종</th>
+			<td>
+				<input type="text" id="businessType" name="businessType"  value="${companyVO.businessType}" style="width:60%" />
+			<form:errors path="businessType" style="width:99%" />				
+			</td>    			
+		</tr>
+			
+			<tr>
 				<th colspan="2" rowspan="2">주소<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
 				<td>
 				<input type="text" id="zipCode" name="zipCode"  maxlength="" value="${companyVO.zipCode}" style="width:20%;" readonly="readonly" />

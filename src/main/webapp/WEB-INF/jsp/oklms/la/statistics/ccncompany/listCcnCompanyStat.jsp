@@ -131,7 +131,7 @@
 			<th rowspan="3">입사일자</th>
 			<th rowspan="3">재직여부</th>
 			
-			<th colspan="5">전담자연수 수료 여부</th>
+			<th colspan="5">전담인력양성교육 수료 여부 명칭 변경</th>
 			
 			<th rowspan="2" colspan="3">기업현장 교사 조건</th>
 			

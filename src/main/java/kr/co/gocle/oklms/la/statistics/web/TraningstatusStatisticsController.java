@@ -34,15 +34,23 @@ public class TraningstatusStatisticsController  extends BaseController{
 	 * @throws		Exception 
 	 */
 	@RequestMapping(value = "/la/statistics/traningstatus/listDepartmentStat.do")
-	public String listDepartmentStat( @ModelAttribute("frmSubject") SubjectVO subjectVO, ModelMap model) throws Exception {
+	public String listDepartmentStat( @ModelAttribute("frmSubject") SubjectVO subjectVO, ModelMap model, HttpServletRequest request) throws Exception {
 		
 		// 학과코드,학과명 코드 리스트
 		CommonCodeVO codeVO = new  CommonCodeVO();
 		codeVO.setCodeGroup("DEPT_CD");
 		List<CommonCodeVO> deptCodeList = commonCodeService.selectCmmCodeList(codeVO); // 학과
 		model.addAttribute("deptCodeList", deptCodeList);
-	 
-		List <SubjectVO> resultList = subjectService.listDepartmentStat(subjectVO);
+		
+		
+		List <SubjectVO> resultList = null;
+		
+		boolean isSearched = "Y".equals(request.getParameter("searchYn"));
+		
+		if (isSearched) {
+		resultList = subjectService.listDepartmentStat(subjectVO);
+		}
+		
 		model.addAttribute("resultList", resultList);
 		model.addAttribute("subjectVO", subjectVO);
 		 

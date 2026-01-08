@@ -91,7 +91,8 @@
 			       COM.OPERATING_INCOME,
 			       COM.NET_INCOME,
 			       COM.EVAL_DAY,
-			       COM.SEARCH_PLACE_NAME 
+			       COM.SEARCH_PLACE_NAME ,
+			       COM.BUSINESS_TYPE
 				 FROM LMS_COMPANY COM
 			 	WHERE COM.COMPANY_ID 	= #{companyId}
 	</select>
@@ -485,8 +486,8 @@
 				       OPERATING_INCOME,
 				       NET_INCOME,
 				       EVAL_DAY,
-				       SEARCH_PLACE_NAME
-						
+				       SEARCH_PLACE_NAME,
+				       BUSINESS_TYPE
 					)
 					VALUES
 					(
@@ -538,7 +539,8 @@
 				       #{operatingIncome},
 				       #{netIncome},
 				       #{evalDay},
-				       #{searchPlaceName} 
+				       #{searchPlaceName},
+				       #{businessType}
 					)
 
 	</insert>
@@ -605,7 +607,7 @@
 				<if test="netIncome != null and netIncome !='' ">,NET_INCOME=#{netIncome}</if>
 				<if test="evalDay != null and evalDay !='' ">,EVAL_DAY=#{evalDay}</if>
 				<if test="searchPlaceName != null and searchPlaceName !='' ">,SEARCH_PLACE_NAME=#{searchPlaceName}</if>
-				
+				<if test="businessType != null and businessType !='' ">,BUSINESS_TYPE=#{businessType}</if>
 
 		     WHERE COMPANY_ID 	= #{companyId}
 	</update>
@@ -791,6 +793,7 @@
 								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1932' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_C
 								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1917' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_D
 								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='1916' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_E
+								,(SELECT COUNT(1) FROM COM_MEMBER A WHERE A.DEPT_NO='2025' AND A.COMPANY_ID=COM.COMPANY_ID AND ROWNUM=1) DEPARTMENT_F
 								
 								,COM.COMPANY_NO 
 								,COM.COMP_MANAGE_NO EMPLOY_INS_MANAGE_NO

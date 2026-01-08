@@ -150,19 +150,19 @@
 			<th rowspan="3">업종</th>
 			
 			<th rowspan="3">상시<br/>근로자 수</th>
-			<th rowspan="3">설립일자</th>
+			<!-- <th rowspan="3">설립일자</th> -->
 			<th colspan="3" rowspan="2" >주소</th>
-			<th colspan="5" rowspan="2" >담당자</th>
+			<th colspan="4" rowspan="2" >담당자</th>
 			
 			<th rowspan="3">신용<br/>등급</th>		
-			<th rowspan="3">자산총계</th>
+			<!-- <th rowspan="3">자산총계</th>
 			<th rowspan="3">부채총계</th>
 			<th rowspan="3">자본총계</th>
 			<th rowspan="3">매출액</th>
 			<th rowspan="3">영업이익</th>
 			<th rowspan="3">당기순이익</th>
 			<th rowspan="3">평가일자</th>
-			<th rowspan="3">조회기관</th>
+			<th rowspan="3">조회기관</th> -->
 			
 		</tr>
 		<tr>
@@ -193,7 +193,7 @@
 			<th>이메일</th>
 			<th>사무실전화</th>
 			<th>핸드폰</th>
-			<th>팩스</th>
+			<!-- <th>팩스</th> -->
 		</tr>
 	</thead>
 	<tbody>
@@ -246,7 +246,7 @@
 				<td><c:out value="${resultList.ceo}" /></td>
 				<td><c:out value="${resultList.smailBusinessType}" /></td>
 				<td><c:out value="${resultList.regularEmploymentCnt}" /></td>
-				<td><c:out value="${resultList.makeDay}" /></td>
+				<%-- <td><c:out value="${resultList.makeDay}" /></td> --%>
 				
 				<td>경기도</td>
 				<td><c:out value="${resultList.address}" /></td>
@@ -258,9 +258,9 @@
 				<td class="space-nowrap"><c:out value="${resultList.email}" /></td>
 				<td class="space-nowrap"><c:if test="${not empty resultList.telNo1 }"><c:out value="${resultList.telNo1}" />-<c:out value="${resultList.telNo2}" />-<c:out value="${resultList.telNo3}" /></c:if></td>
 				<td class="space-nowrap"><c:if test="${not empty resultList.hpNo1 }"><c:out value="${resultList.hpNo1}" />-<c:out value="${resultList.hpNo2}" />-<c:out value="${resultList.hpNo3}" /></c:if></td>
-				<td class="space-nowrap"><c:if test="${not empty resultList.faxNo1 }"><c:out value="${resultList.faxNo1}" />-<c:out value="${resultList.faxNo2}" />-<c:out value="${resultList.faxNo3}" /></c:if></td>
+				<%-- <td class="space-nowrap"><c:if test="${not empty resultList.faxNo1 }"><c:out value="${resultList.faxNo1}" />-<c:out value="${resultList.faxNo2}" />-<c:out value="${resultList.faxNo3}" /></c:if></td> --%>
 				<td><c:out value="${resultList.creditLevel}" /></td>
-				<td><c:out value="${resultList.assets}" /></td>
+<%-- 				<td><c:out value="${resultList.assets}" /></td>
 				<td><c:out value="${resultList.liabilities}" /></td>
 				<td><c:out value="${resultList.equities}" /></td>
 				<td><c:out value="${resultList.revenue}" /></td>
@@ -270,7 +270,7 @@
 				
 				<td><c:out value="${resultList.netIncome}" /></td>
 				<td><c:out value="${resultList.evalDay}" /></td>
-				<td><c:out value="${resultList.searchPlaceName}" /></td>
+				<td><c:out value="${resultList.searchPlaceName}" /></td> --%>
 		 
 			</tr>
 		</c:forEach>

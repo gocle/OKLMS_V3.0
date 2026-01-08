@@ -120,6 +120,7 @@ public class SubjectVO extends BaseVO implements Serializable{
 	private String deptTransferNm ;  // 입학구분
 	private String searchDeptName ;  // 검색어
 	private String searchyyyy                         ;	// 검색어 년도
+	private String searchDeptTransferYn ;  // 검색 입학구분
 	private String subjectNcsName ; // 교과목별 NCS명
 	private String ncsUnit;
 
@@ -911,6 +912,13 @@ public class SubjectVO extends BaseVO implements Serializable{
 		this.reinfcTraningDates = reinfcTraningDates;
 	}
 
+	public String getSearchDeptTransferYn() {
+		return searchDeptTransferYn;
+	}
+
+	public void setSearchDeptTransferYn(String searchDeptTransferYn) {
+		this.searchDeptTransferYn = searchDeptTransferYn;
+	}
 
 	public String toString() {
         final String NL  = "\n";

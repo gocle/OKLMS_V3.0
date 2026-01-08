@@ -76,7 +76,7 @@
 		<tbody>
 			<tr>
 				<th colspan="2">기업명</th>
-				<td>${companyVO.companyName}></td>
+				<td>${companyVO.companyName}</td>
 			</tr>
 			<tr>
 				<th colspan="2">고용보험관리번호<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
@@ -88,6 +88,12 @@
 				<th colspan="2">사업자등록번호</th>
 				<td>
 					${companyVO.companyNo}
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">업종</th>
+				<td>
+					${companyVO.businessType}
 				</td>
 			</tr>
 			<tr>

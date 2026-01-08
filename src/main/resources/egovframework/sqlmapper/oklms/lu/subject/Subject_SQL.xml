@@ -3100,6 +3100,8 @@ FROM   ( SELECT ROWNUM AS INFO_NUM,
 				WHERE 1=1
 				<if test="searchKeyword != null and searchKeyword != ''">	AND A.MST_YN = #{searchKeyword} 	 </if>
 				<if test="searchDeptName != null and searchDeptName != ''">	AND A.DEPT_CD = #{searchDeptName}   	 </if>
+				<if test="searchyyyy != null and searchyyyy != ''">	AND A.YYYY = #{searchyyyy}   	 </if>
+				<if test="searchDeptTransferYn != null and searchDeptTransferYn != ''">	AND A.DEPT_TRANSFER_YN = #{searchDeptTransferYn}  </if>
 				  
 				ORDER BY A.MST_YN,A.DEPT_CD,A.YYYY,A.DEPT_TRANSFER_NM
 				) AA

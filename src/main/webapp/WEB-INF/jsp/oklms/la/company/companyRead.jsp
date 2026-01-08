@@ -85,9 +85,13 @@
 		</tr>
 		<tr>
 			<th>고용보험관리번호</th>
-			<td colspan="3">
+			<td>
 				${companyVO.employInsManageNo}
 			</td>
+			<th>업종</th>
+			<td>
+				${companyVO.businessType}
+			</td>    
 		</tr>		
 		<%-- <tr>
 			<th>업종</th>
