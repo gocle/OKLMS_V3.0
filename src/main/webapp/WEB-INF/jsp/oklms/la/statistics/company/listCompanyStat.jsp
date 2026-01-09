@@ -231,6 +231,7 @@
 				<td><c:if test="${resultList.departmentD eq '1'}">O</c:if></td>
 				<td><c:if test="${resultList.departmentE eq '1'}">O</c:if></td>
 				<td><c:if test="${resultList.departmentF eq '1'}">O</c:if></td>
+				<td><c:if test="${resultList.departmentG eq '1'}">O</c:if></td>
 				
 				<td><c:out value="${resultList.compLevelName1}" /></td>
 				<td><c:out value="${resultList.stuLevelName1}" /></td>
