@@ -171,7 +171,8 @@ function fn_insert(){
 													<p class="file-find">
 														<a href="#@" class="checkfile">찾아보기</a>
 														<input type="file" class="file_input_hidden" name="file_atchFileIdRec" onchange="javascript: document.getElementById('atchFileIdRec').value = this.value" />
-													</p>											
+													</p>
+													<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>											
 												</c:if>
 	
 												</td>
@@ -183,6 +184,7 @@ function fn_insert(){
 														<a href="#@" class="checkfile">찾아보기</a>
 														<input type="file" class="file_input_hidden" name="file_atchFileIdRec" onchange="javascript: document.getElementById('atchFileIdRec').value = this.value" />
 													</p>
+													<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>
 												</td>
 												</c:if>
 											</tr>
@@ -203,7 +205,8 @@ function fn_insert(){
 														<p class="file-find">
 															<a href="#@" class="checkfile">찾아보기</a>
 															<input type="file" class="file_input_hidden" name="file_atchFileIdInc" onchange="javascript: document.getElementById('atchFileIdInc').value = this.value" />
-														</p>												
+														</p>
+														<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>												
 													</c:if>													
 												</td>
 												</c:if>
@@ -214,6 +217,7 @@ function fn_insert(){
 														<a href="#@" class="checkfile">찾아보기</a>
 														<input type="file" class="file_input_hidden" name="file_atchFileIdInc" onchange="javascript: document.getElementById('atchFileIdInc').value = this.value" />
 													</p>
+													<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>
 												</td>
 												</c:if>
 											</tr>
@@ -235,7 +239,8 @@ function fn_insert(){
 														<p class="file-find">
 															<a href="#@" class="checkfile">찾아보기</a>
 															<input type="file" class="file_input_hidden" name="file_atchFileIdWok" onchange="javascript: document.getElementById('atchFileIdWok').value = this.value" />
-														</p>												
+														</p>
+														<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>												
 													</c:if>													
 												</td>
 												</c:if>
@@ -246,6 +251,7 @@ function fn_insert(){
 														<a href="#@" class="checkfile">찾아보기</a>
 														<input type="file" class="file_input_hidden" name="file_atchFileIdWok" onchange="javascript: document.getElementById('atchFileIdWok').value = this.value" />
 													</p>
+													<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>
 												</td>
 												</c:if>
 											</tr>
@@ -270,6 +276,7 @@ function fn_insert(){
 														<a href="#@" class="checkfile">찾아보기</a>
 														<input type="file" class="file_input_hidden" name="file_atchFileIdDoc" onchange="javascript: document.getElementById('atchFileIdDoc').value = this.value" />
 													</p>
+													<span style="display:inline-block; vertical-align:middle; color:orange;">※ 첨부파일은 pdf파일로 제출 바랍니다.</span>
 												</td>
 												</c:if>
 											</tr>
