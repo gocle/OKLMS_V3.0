@@ -323,16 +323,20 @@ td {mso-number-format:"@";}
  	<c:set var="dept4_tot" value="0"/>
  	<c:set var="dept5_tot" value="0"/>
  	<c:set var="dept6_tot" value="0"/>
+ 	<c:set var="dept7_tot" value="0"/>
+ 	<c:set var="dept8_tot" value="0"/>
 	
  	<table width="100%" border="1" cellspacing="1" cellpadding="1" class="tableBorder">
 		<colgroup>		
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
+			<col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -343,6 +347,8 @@ td {mso-number-format:"@";}
 				<th>기계설비제어공학과</th>
 				<th>IT융합소프트웨어공학과</th>
 				<th>스마트팩토리융합학과</th>
+				<th>반도체디스플레이공학과 학사</th>
+				<th>반도체디스플레이공학과 석사</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -360,6 +366,8 @@ td {mso-number-format:"@";}
 				<td><c:out value="${result.dept4}" /></td>
 				<td><c:out value="${result.dept5}" /></td>
 				<td><c:out value="${result.dept6}" /></td>
+				<td><c:out value="${result.dept7}" /></td>
+				<td><c:out value="${result.dept8}" /></td>
 				
 			 	<c:set var="dept1_tot" value="${dept1_tot + result.dept1}"/>
 			 	<c:set var="dept2_tot" value="${dept2_tot + result.dept2}"/>
@@ -367,6 +375,8 @@ td {mso-number-format:"@";}
 			 	<c:set var="dept4_tot" value="${dept4_tot + result.dept4}"/>
 			 	<c:set var="dept5_tot" value="${dept5_tot + result.dept5}"/>
 			 	<c:set var="dept6_tot" value="${dept6_tot + result.dept6}"/>
+			 	<c:set var="dept7_tot" value="${dept7_tot + result.dept7}"/>
+			 	<c:set var="dept8_tot" value="${dept8_tot + result.dept8}"/>
 				
 			</tr>
 		</c:forEach>
@@ -378,6 +388,8 @@ td {mso-number-format:"@";}
 				<td><c:out value="${dept4_tot}" /></td>
 				<td><c:out value="${dept5_tot}" /></td>
 				<td><c:out value="${dept6_tot}" /></td>
+				<td><c:out value="${dept7_tot}" /></td>
+				<td><c:out value="${dept8_tot}" /></td>
 			</tr>
 		</tbody>
 	</table>

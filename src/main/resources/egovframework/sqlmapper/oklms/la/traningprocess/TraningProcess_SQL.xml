@@ -1401,6 +1401,8 @@
 		              SUM(DECODE(LTPS.DEPT_NO,'1917',1,0)) DEPT_4, 
 		              SUM(DECODE(LTPS.DEPT_NO,'1916',1,0)) DEPT_5, 
 		              SUM(DECODE(LTPS.DEPT_NO,'2025',1,0)) DEPT_6,
+		              SUM(DECODE(LTPS.DEPT_NO,'2293',1,0)) DEPT_7,
+		              SUM(DECODE(LTPS.DEPT_NO,'2294',1,0)) DEPT_8,
 		              1 AS ORDERS 
 		         FROM LMS_TRANING_PROCESS_SEARCH LTPS 
 		          INNER JOIN LMS_TRANING_PROCESS LTP 
@@ -1417,6 +1419,8 @@
 		              SUM(DECODE(LTPS.DEPT_NO,'1917',1,0)) DEPT_4, 
 		              SUM(DECODE(LTPS.DEPT_NO,'1916',1,0)) DEPT_5, 
 		              SUM(DECODE(LTPS.DEPT_NO,'2025',1,0)) DEPT_6,
+		              SUM(DECODE(LTPS.DEPT_NO,'2293',1,0)) DEPT_7, 
+		              SUM(DECODE(LTPS.DEPT_NO,'2294',1,0)) DEPT_8,
 		              2 AS ORDERS 
 		         FROM LMS_TRANING_PROCESS_SEARCH LTPS 
 		          INNER JOIN LMS_TRANING_PROCESS LTP 

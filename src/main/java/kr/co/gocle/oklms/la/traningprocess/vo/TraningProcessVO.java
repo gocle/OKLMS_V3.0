@@ -93,6 +93,8 @@ public class TraningProcessVO extends BaseVO implements Serializable{
 	private String dept4;
 	private String dept5;
 	private String dept6;
+	private String dept7;
+	private String dept8;
 	
 	public String getDeptTotalCnt() {
 		return deptTotalCnt;
@@ -531,6 +533,18 @@ public class TraningProcessVO extends BaseVO implements Serializable{
     public String toString() {
 	return ToStringBuilder.reflectionToString(this);
     }
+	public String getDept7() {
+		return dept7;
+	}
+	public void setDept7(String dept7) {
+		this.dept7 = dept7;
+	}
+	public String getDept8() {
+		return dept8;
+	}
+	public void setDept8(String dept8) {
+		this.dept8 = dept8;
+	}
 	
 
 }

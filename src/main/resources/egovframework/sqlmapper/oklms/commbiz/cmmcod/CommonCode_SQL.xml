@@ -131,6 +131,14 @@
 			   AND 	   DEPT_NM IS NOT NULL
 			   GROUP BY DEPT_NO,
 			            DEPT_NM
+			UNION ALL
+			SELECT '2293_반도체디스플레이공학과 학사' AS CODE_ID,
+			       '반도체디스플레이공학과 학사'     AS CODE_NAME
+			FROM   DUAL
+			UNION ALL
+			SELECT '2294_반도체디스플레이공학과 석사' AS CODE_ID,
+			       '반도체디스플레이공학과 석사'     AS CODE_NAME
+			FROM   DUAL
 	</select>
 
 	<select id="selectSurveyTmplatCodeList" parameterType="kr.co.gocle.oklms.commbiz.cmmcode.vo.CommonCodeVO" resultType="kr.co.gocle.oklms.commbiz.cmmcode.vo.CommonCodeVO">

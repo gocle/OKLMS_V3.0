@@ -105,6 +105,8 @@ public class CompanyVO extends BaseVO implements Serializable{
     private String departmentE;
     private String departmentF;
     private String departmentG;
+    private String departmentH;
+    private String departmentI;
     private String memId;
 	private String status1;
     private String status2;
@@ -642,6 +644,18 @@ public class CompanyVO extends BaseVO implements Serializable{
     public String toString() {
 	return ToStringBuilder.reflectionToString(this);
     }
+	public String getDepartmentH() {
+		return departmentH;
+	}
+	public void setDepartmentH(String departmentH) {
+		this.departmentH = departmentH;
+	}
+	public String getDepartmentI() {
+		return departmentI;
+	}
+	public void setDepartmentI(String departmentI) {
+		this.departmentI = departmentI;
+	}
 	
 	
 	/* @Override

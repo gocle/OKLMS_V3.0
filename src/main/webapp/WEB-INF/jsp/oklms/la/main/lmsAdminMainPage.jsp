@@ -681,16 +681,20 @@ function fn_sync(){
  	<c:set var="dept4_tot" value="0"/>
  	<c:set var="dept5_tot" value="0"/>
  	<c:set var="dept6_tot" value="0"/>
+ 	<c:set var="dept7_tot" value="0"/>
+ 	<c:set var="dept8_tot" value="0"/>
 	
  	<table border="0" cellpadding="0" cellspacing="0" class="list-1">
 		<colgroup>		
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
-			<col width="14.285%" />
+			<col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
+		    <col width="11.111%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -701,6 +705,8 @@ function fn_sync(){
 				<th>기계설비제어공학과</th>
 				<th>IT융합소프트웨어공학과</th>
 				<th>스마트팩토리융합학과</th>
+				<th>반도체디스플레이공학과 학사</th>
+				<th>반도체디스플레이공학과 석사</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -718,6 +724,8 @@ function fn_sync(){
 				<td><a href="/la/statistics/traningprocess/listTraningProcessStat.do"><c:out value="${result.dept4}" /></a></td>
 				<td><a href="/la/statistics/traningprocess/listTraningProcessStat.do"><c:out value="${result.dept5}" /></a></td>
 				<td><a href="/la/statistics/traningprocess/listTraningProcessStat.do"><c:out value="${result.dept6}" /></a></td>
+				<td><a href="/la/statistics/traningprocess/listTraningProcessStat.do"><c:out value="${result.dept7}" /></a></td>
+				<td><a href="/la/statistics/traningprocess/listTraningProcessStat.do"><c:out value="${result.dept8}" /></a></td>
 				
 			 	<c:set var="dept1_tot" value="${dept1_tot + result.dept1}"/>
 			 	<c:set var="dept2_tot" value="${dept2_tot + result.dept2}"/>
@@ -725,6 +733,8 @@ function fn_sync(){
 			 	<c:set var="dept4_tot" value="${dept4_tot + result.dept4}"/>
 			 	<c:set var="dept5_tot" value="${dept5_tot + result.dept5}"/>
 			 	<c:set var="dept6_tot" value="${dept6_tot + result.dept6}"/>
+			 	<c:set var="dept7_tot" value="${dept7_tot + result.dept7}"/>
+			 	<c:set var="dept8_tot" value="${dept8_tot + result.dept8}"/>
 				
 			</tr>
 		</c:forEach>
@@ -736,6 +746,8 @@ function fn_sync(){
 				<td><c:out value="${dept4_tot}" /></td>
 				<td><c:out value="${dept5_tot}" /></td>
 				<td><c:out value="${dept6_tot}" /></td>
+				<td><c:out value="${dept7_tot}" /></td>
+				<td><c:out value="${dept8_tot}" /></td>
 			</tr>
 		</tbody>
 	</table>

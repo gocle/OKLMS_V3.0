@@ -41,7 +41,7 @@
 			  FROM
 			       (SELECT STUDNO AS STUDNO
 					  FROM KUT_MOB2.VH_OKLMS_TH_SKNRGS_M MST
-					 WHERE DEPT_NO IN ('1887','1891','1916','1917','1931','1932','1953','1965','2025','2283')
+					 WHERE DEPT_NO IN ('1887','1891','1916','1917','1931','1932','1953','1965','2025','2283','2293','2294')
 					    UNION
 					SELECT INS_M.EMPL_NO AS STUDNO
 					  FROM KUT_HAK.VH_OKLMS_TH_STUDY_LCTRE_M LCT ,
@@ -55,7 +55,7 @@
 					       AND LCT.ESTBL_SEMSTR_CD = INS_M.ESTBL_SEMSTR_CD
 					       AND LCT.COURSE_NO = INS_M.COURSE_NO
 					       AND LCT.PARTITN_CLAS_SE_CD = INS_M.PARTITN_CLAS_SE_CD
-					       AND LCT.ESTBL_DEPT_NO IN ('1891','1916','1917','1931','1932','1953','2025','2283')
+					       AND LCT.ESTBL_DEPT_NO IN ('1891','1916','1917','1931','1932','1953','2025','2283','2293','2294')
 					       AND TIM.EMPL_NO IS NOT NULL
 					 GROUP BY INS_M.EMPL_NO
 					    UNION
@@ -82,6 +82,8 @@
 			IT융합소프트웨어공학과	1916
 			일학습사업팀					1887
 			일학습병행대학 교학팀		1965
+			반도체디스플레이공학과 학사		2293
+			반도체디스플레이공학과 석사		2294
 		 	 -->
 	</select>
 
@@ -150,7 +152,7 @@
 				          AND LEC.PARTITN_CLAS_SE_CD = TIM.PARTITN_CLAS_SE_CD
 				    WHERE MST.COURSE_NO = LEC.COURSE_NO
 				          AND LEC.ESTBL_YY IN ( '2015','2016','2017')
-				          AND LEC.ESTBL_DEPT_NO IN('1891','1931','1932','1917','1916','2025','2283') 
+				          AND LEC.ESTBL_DEPT_NO IN('1891','1931','1932','1917','1916','2025','2283','2293','2294') 
 				 ORDER BY LEC.ESTBL_YY DESC
 	</select>
 
@@ -931,7 +933,7 @@
 			                    AND LEC.COURSE_NO = TIM.COURSE_NO 
 			                    AND LEC.PARTITN_CLAS_SE_CD = TIM.PARTITN_CLAS_SE_CD 
 			              WHERE MST.COURSE_NO = LEC.COURSE_NO 
-			                    AND LEC.ESTBL_DEPT_NO IN('1891','1931','1932','1917','1916','2025','2283') 
+			                    AND LEC.ESTBL_DEPT_NO IN('1891','1931','1932','1917','1916','2025','2283','2293','2294') 
 			           ORDER BY LEC.ESTBL_YY DESC 
 			             ) 
 			       WHERE YYYY = #{yyyy} 
