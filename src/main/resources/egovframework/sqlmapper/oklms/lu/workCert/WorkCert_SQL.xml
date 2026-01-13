@@ -613,11 +613,11 @@
 			        SEND_YN		  		= 'Y',
 			        RETURN_REASON 		= #{returnReason}
 			        <if test="stateRec != null">
-				        , STATE_REC 			= #{stateRec} 
+				        , STATE_REC 		= #{stateRec} 
 						, RETURN_REASON_REC	= #{returnReasonRec} 
 					</if>
 					<if test="stateInc != null">
-						, STATE_INC 			= #{stateInc}
+						, STATE_INC 		= #{stateInc}
 						, RETURN_REASON_INC	= #{returnReasonInc} 
 					</if>
 					<if test="stateWok != null">
@@ -625,7 +625,7 @@
 						, RETURN_REASON_WOK	= #{returnReasonWok} 
 					</if>
 					<if test="stateDoc != null">
-						, STATE_DOC			= #{stateDoc} ,
+						, STATE_DOC			= #{stateDoc}
 						, RETURN_REASON_DOC	= #{returnReasonDoc}
 					</if>
 			WHERE    MEM_ID = #{memId}

@@ -271,6 +271,13 @@ public class WorkCertServiceImpl extends EgovAbstractServiceImpl implements Work
 					default:
 				}
 			}
+			//승인일 경우 모두 승인처리
+			if(workCertVO.getState().equals("01")) {
+				workCertVO.setStateRec("01");
+				workCertVO.setStateInc("01");
+				workCertVO.setStateWok("01");
+				workCertVO.setStateDoc("01");
+			}
 			sqlResultInt = workCertMapper.updateWorkCertMember(workCertVO);
 			workCertMapper.insertWorkCertReturnReason(workCertVO);
 			
