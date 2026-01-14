@@ -67,7 +67,23 @@
 		$("#pageSize").val(pageSize); //페이지당 그리드에 조회 할 Row 갯수;
 		$("#pageIndex").val(pageIndex); //현재 페이지 정보
 		$("#totalRow").text(totalCount);
+		
+		
 	}
+	
+	$(function () {
+	    const $focusBtn = $('.focus-tr').first();
+
+	    if ($focusBtn.length) {
+	        // 포커스
+	        $focusBtn.attr('tabindex', '-1').focus();
+
+	        // 스크롤 (부드럽게 가운데)
+	        $('html, body').animate({
+	            scrollTop: $focusBtn.offset().top - ($(window).height() / 2)
+	        }, 400);
+	    }
+	});
 
 	/*====================================================================
 		사용자 정의 함수 
@@ -306,7 +322,7 @@
 			<col style="width:8%" />
 			<col style="width:8%" />
 			<col style="width:8%" />
-			<col style="width:8%" />
+			<%-- <col style="width:8%" /> --%>
 		</colgroup>
 		<thead>
 			<tr>
@@ -424,7 +440,7 @@
 							<!-- 온라인 교과가 아닐때 추가 -->
 							<c:if test="${subjectVO.onlineType ne 'NONE'}">
 							
-								<tr class="on tr-show" id="tr_${status.count}">
+								<tr class="on tr-show ${result.weekId == param.focusId ? 'focus-tr' : '' }" id="tr_${status.count}">
 									<td colspan="10">
 										<div style="width:98%; margin:0 auto">
 											<div class="sub_text blue_text mt-010 align-left">
@@ -465,12 +481,16 @@
 																	<div class="charts-chart"  data-percent="${sch.schProgressRate}%" style="width:${sch.schProgressRate}%;${sch.schProgressRate < 80 ? 'background-color: red !important' : ''}"></div>
 																</div>
 															</td>
-															<td><a href="javascript:goLesson('${result.lessonId}','${result.weekId}','${result.weekCnt}','${result.contentName}','${result.weekProgressRate}','${sch.subjSchId}','${sch.subjStep}','${sch.subjTitle}');" class="btn-full-oraange">${result.btnText}</a></td>
+															<td>
+																<a href="javascript:goLesson('${result.lessonId}','${result.weekId}','${result.weekCnt}','${result.contentName}','${result.weekProgressRate}','${sch.subjSchId}','${sch.subjStep}','${sch.subjTitle}');"
+																class="btn-full-oraange">
+																	${result.btnText}
+																</a>
+															</td>
 															<td>${sch.startDate}~${sch.endDate}</td>
 															<td>
-															<!-- 진도율 이상 확인필요 -->
-																	${sch.schStudyMinute}/${sch.studyTime}
-														
+																<!-- 진도율 이상 확인필요 -->
+																${sch.schStudyMinute}/${sch.studyTime}
 															</td>
 														</tr>    
 														</c:if>
@@ -609,5 +629,15 @@
 		</tbody>
 	</table><!-- E : 훈련정보 -->
 	</div>
+	
+	<style>
+		table.type-2 .focus-tr:focus {
+			background-color: #fff2de;
+		    outline: 1px solid #ff9b00;
+		    box-shadow: 0 0 0 2px #ffbe5b inset;
+		    border-radius: 10px;
+
+		}
+	</style>
 
 

@@ -943,7 +943,7 @@
 			<![CDATA[
 				ORDER BY b.TOP_NOTICE_YN DESC,  b.NTT_ID DESC
 			]]>
-		) AA WHERE ROWNUM <![CDATA[<=]]> 5
+		) AA WHERE ROWNUM <![CDATA[<=]]> 10
 	</select>
 
 	<select id="BBSManageDAO.selectTopNoticeYnBoardArticleList" parameterClass="BoardVO" resultMap="boardList" >

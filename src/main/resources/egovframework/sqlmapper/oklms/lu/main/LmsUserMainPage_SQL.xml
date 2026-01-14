@@ -1922,11 +1922,43 @@
 					LS.TRANING_HOUR,
 					LS.FIRST_STUDY_YN,
 					LS.GRADE_RATIO, 
-					LS.DEPARTMENT_NO
+					LS.DEPARTMENT_NO,
+					CUR.CURR_WEEK_INFO
 			FROM LMS_LESSON LL
 			INNER JOIN LMS_SUBJECT LS ON LS.YYYY = LL.YYYY AND LS.TERM = LL.TERM AND LS.CLASS =LL.CLASS AND LS.SUBJECT_CODE =LL.SUBJECT_CODE AND LS.DELETE_YN='N'
+			LEFT JOIN (
+				  SELECT
+				      YYYY,
+				      TERM,
+				      SUBJECT_CODE,
+				      CLASS,
+				      LISTAGG(CONTENT_NAME || '|' || WEEK_ID, ',') WITHIN GROUP (ORDER BY TO_NUMBER(WEEK_CNT)) AS CURR_WEEK_INFO
+				  FROM (
+				      SELECT DISTINCT
+				             SCH.YYYY,
+				             SCH.TERM,
+				             SCH.SUBJECT_CODE,
+				             SCH.CLASS,
+				             SCH.WEEK_CNT,
+				             SWC.CONTENT_NAME,
+				             SWC.WEEK_ID
+				      FROM LMS_SUBJ_WEEK_SCH SCH
+				      JOIN LMS_SUBJ_WEEK_CONTENT SWC
+				        ON SCH.WEEK_ID   = SWC.WEEK_ID
+				       AND SCH.WEEK_CNT  = SWC.WEEK_CNT
+				       AND SWC.DELETE_YN = 'N'
+				      WHERE SCH.DELETE_YN = 'N'
+				        AND TRUNC(SYSDATE) BETWEEN TO_DATE(SCH.START_DATE,'YYYY.MM.DD')
+				                            AND TO_DATE(SCH.END_DATE,'YYYY.MM.DD')
+				        AND SWC.CONTENT_NAME IS NOT NULL
+				  )
+				  GROUP BY YYYY, TERM, SUBJECT_CODE, CLASS
+				) CUR
+				  ON CUR.YYYY         = LS.YYYY
+				 AND CUR.TERM         = LS.TERM
+				 AND CUR.SUBJECT_CODE = LS.SUBJECT_CODE
+				 AND CUR.CLASS        = LS.CLASS
 			
-															
 			WHERE LL.DELETE_YN='N'
 			AND LL.MEM_SEQ = #{sessionMemSeq}
 						

@@ -167,7 +167,18 @@ public class LmsUserMainPageVO extends BaseVO implements Serializable{
 	private String absDay;
 	private String outYn;
 	
-	
+	private String currWeekInfo;
+
+
+
+	public String getCurrWeekInfo() {
+		return currWeekInfo;
+	}
+
+	public void setCurrWeekInfo(String currWeekInfo) {
+		this.currWeekInfo = currWeekInfo;
+	}
+
 	public String getOutYn() {
 		return outYn;
 	}

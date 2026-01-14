@@ -47,7 +47,7 @@
 #main-login .search-btn-box .btn-box2{padding:15px 0 0 0;}
 #main-login .search-btn-box .btn-box2 a{color:#fff; display:inline-block; padding:0 10px;}
 
-#main2 .box-cell-left{padding:30px; width:340px; height:230px;}
+#main2 .box-cell-left{padding:30px; width:340px; height:230px; overflow-y: auto;}
 #main2 .box-cell-left h2{position: relative; font-size:20px; margin-bottom:15px;}
 #main2 .box-cell-left h2 .btn-more{position:absolute; right:0; top:0}
 #main2 .box-cell-left h2 .btn-more a{color:#666; font-size:23px; line-height:1}
@@ -57,7 +57,50 @@
 .box-cell-left.bg-blue{background-color: #3b62e3;}
 .box-cell-left.bg-mint{background-color: #029195;}
 
-#main-news.box-cell-left{position: relative;  width:460px !important;}
+#main2 .box-cell-left,
+#main-news.box-cell-left {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.5) rgba(0,0,0,0.03);
+}
+
+#main2 .box-cell-left::-webkit-scrollbar,
+#main-news.box-cell-left::-webkit-scrollbar {
+  width: 7px;
+}
+
+#main2 .box-cell-left::-webkit-scrollbar-track,
+#main-news.box-cell-left::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.03);
+}
+
+#main2 .box-cell-left::-webkit-scrollbar-thumb,
+#main-news.box-cell-left::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.5);
+  border-radius: 10px;
+}
+
+#main2 .box-cell-left::-webkit-scrollbar-button,
+#main-news.box-cell-left::-webkit-scrollbar-button {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#main2 .box-cell-left::-webkit-scrollbar-button:hover,
+#main-news.box-cell-left::-webkit-scrollbar-button:hover,
+#main2 .box-cell-left::-webkit-scrollbar-button:active,
+#main-news.box-cell-left::-webkit-scrollbar-button:active {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+#main2 .box-cell-left:hover::-webkit-scrollbar-thumb,
+#main-news.box-cell-left:hover::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.8);
+}
+
+#main-news.box-cell-left{position: relative;  width:460px !important; overflow-y: auto;}
 #main-news .list-group{margin: 0; padding-left: 0; width: 100%;}
 #main-news .list-group-item {font-weight: 300; padding: 0; position: relative; display: block; padding-left:10px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden; }
 #main-news .list-group-item:before {position:absolute; display:block; content: ""; top:14px; left:0; width:2px; height:2px; background-color:#666;}
