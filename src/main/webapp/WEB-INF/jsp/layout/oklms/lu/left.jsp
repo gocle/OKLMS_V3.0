@@ -854,6 +854,12 @@ function fn_lec_menu_display(subjectTraningType, year, term, subjectCode, subCla
 	/* <a id="a_${menu1.menuId }" href="/lu/currproc/listCurrProc.do?year=${menuProc.year}&term=${menuProc.term}&subjectCode=${menuProc.subjectCode}&subClass=${menuProc.subClass}" >${menuProc.subjectName} ${menuProc.subClass}반</a> */
 }
 
+function fn_lec_menu_display_shc(subjectTraningType, year, term, subjectCode, subClass, subjectName, subjectType, onlineType, shc){
+	subjectName = encodeURIComponent(subjectName);
+	location.href = "/lu/currproc/listCurrProc.do?subjectTraningType="+subjectTraningType+"&year="+year+"&term="+term+"&subjectCode="+subjectCode+"&subjectName="+subjectName+"&subClass="+subClass+"&lecMenuMarkYn=Y&subjectType="+subjectType+"&onlineType="+onlineType+"&focusId="+shc;
+	/* <a id="a_${menu1.menuId }" href="/lu/currproc/listCurrProc.do?year=${menuProc.year}&term=${menuProc.term}&subjectCode=${menuProc.subjectCode}&subClass=${menuProc.subClass}" >${menuProc.subjectName} ${menuProc.subClass}반</a> */
+}
+
 $(function() {
 	<c:if test="${empty SESSION_PRE_SUBJECT_CODE and !empty SESSION_YYYY and !empty SESSION_TERM and !empty SESSION_SUBJECT_CODE }">
 		$('#course-dd').slideToggle();

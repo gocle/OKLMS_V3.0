@@ -70,6 +70,41 @@ function fn_setTraning(subjectTraningType){
 //-->
 </script>
 
+<style>
+table.type-2 td.onlineTypeName-td {
+	padding-left: 1.2rem;
+	text-align: left
+}
+
+table.type-2 td a.new-move-btn {
+	background: url(/images/oklms/std/inc/opsz24.png) left 30% no-repeat; 
+	color :#666;
+	border : 0;
+	background-size: 14px;
+	font-size : 12px;
+	margin-top: 4px;
+	padding-left: 17px;
+	overflow: inherit;
+}
+
+.new-move-btn span {
+    background: url(/images/oklms/std/inc/edu_lnb_6.png) #d2e6ff no-repeat;
+    border-radius: 20px;
+    padding: 0.3rem 1.2rem 0.2rem 0.8rem;
+    color: #666;
+    background-size: 5px;
+    background-position: 87% 50%;
+    margin-left: 2px;
+    border: 1px solid #a9c4e8;
+    font-size: 11px
+}
+.notice-list {
+	height: 241px;
+	overflow: auto;
+}
+</style>
+
+
 <form id="frmLesson" name="frmLesson" method="post">
 	<input type="hidden" id="id" name="id" value="" /> 
 	<input type="hidden" id="courseContentId" name="courseContentId"/>
@@ -176,10 +211,10 @@ function fn_setTraning(subjectTraningType){
 				<a href="#!" onclick="fn_board_list('BBSMSTR_000000000050');" ><i class="xi-plus"></i><span class="hidden">알림사항 더보기</span></a>
 			</h3>
 			<ul class="notice-list">
-			<c:if test="${fn:length(newsResultList) == 0}">
-				<li class="no-text">등록된 알림사항이 없습니다.</li>
-			</c:if>
-			<c:forEach var="noticeResult" items="${newsResultList}" varStatus="status">
+				<c:if test="${fn:length(newsResultList) == 0}">
+					<li class="no-text">등록된 알림사항이 없습니다.</li>
+				</c:if>	
+				<c:forEach var="noticeResult" items="${newsResultList}" varStatus="status">
 					<li>
 						<a href="#!" onclick="fn_board_detail('${noticeResult.nttId}','${noticeResult.bbsId}');">
 							<span class="day">${noticeResult.frstRegisterPnttm}</span>
@@ -265,11 +300,23 @@ function fn_setTraning(subjectTraningType){
 							
 							<c:forEach var="offListSchedule" items="${offListSchedule}" varStatus="status">
 								<tr>
-									<td>
+									<td class="onlineTypeName-td">
 									<a href="#!"  onclick="javascript:fn_lec_menu_display('${offListSchedule.subjectTraningType}','${offListSchedule.yyyy}','${offListSchedule.term}','${offListSchedule.subjectCode}','${offListSchedule.subClass}','${offListSchedule.subjectName}','${offListSchedule.subjectType}','${offListSchedule.onlineType}');"  class="text">${offListSchedule.subjectName}</a>
 									<c:if test="${offListSchedule.onlineTypeName ne '없음'}">
-									<a href="javascript:fn_lec_menu_display('${offListSchedule.subjectTraningType}','${offListSchedule.yyyy}','${offListSchedule.term}','${offListSchedule.subjectCode}','${offListSchedule.subClass}','${offListSchedule.subjectName}','${offListSchedule.subjectType}','${offListSchedule.onlineType}');" class="btn btn-primary  btn-sm">${ offListSchedule.onlineTypeName}</a>
-									</c:if>
+										<a href="javascript:fn_lec_menu_display('${offListSchedule.subjectTraningType}','${offListSchedule.yyyy}','${offListSchedule.term}','${offListSchedule.subjectCode}','${offListSchedule.subClass}','${offListSchedule.subjectName}','${offListSchedule.subjectType}','${offListSchedule.onlineType}');" class="btn btn-primary  btn-sm">${ offListSchedule.onlineTypeName}</a>
+										<br>
+										<c:set var="infos" value="${fn:split(offListSchedule.currWeekInfo, ',')}" />
+	
+										<c:forEach var="it" items="${infos}">
+											<c:set var="pair" value="${fn:split(it,'|')}" />
+											<c:set var="weekTitles" value="${pair[0]}" />
+											<c:set var="weekId" value="${pair[1]}" />
+											<a href="javascript:fn_lec_menu_display_shc('${offListSchedule.subjectTraningType}','${offListSchedule.yyyy}','${offListSchedule.term}','${offListSchedule.subjectCode}','${offListSchedule.subClass}','${offListSchedule.subjectName}','${offListSchedule.subjectType}','${offListSchedule.onlineType}','${weekId}');" class="btn new-move-btn">
+												${weekTitles} <span>바로가기</span>
+											</a>
+											<br>
+										</c:forEach>
+										</c:if>
 									</td>
 									<td>${offListSchedule.atnDay} / ${offListSchedule.maxWeekCnt}</td>
 									<td>${offListSchedule.activityCnt} / ${offListSchedule.maxWeekCnt}</td>
@@ -673,3 +720,4 @@ function fn_setTraning(subjectTraningType){
 	</div>
 	 --%>
 </form>
+
