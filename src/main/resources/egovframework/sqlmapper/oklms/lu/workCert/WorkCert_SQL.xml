@@ -328,6 +328,13 @@
 				      FROM LMS_WORK_RETURN_REASON RET
 				     WHERE RET.PERIOD_ID = LWP.PERIOD_ID
 				       AND RET.MEM_ID    = LWP.MEM_ID
+				) AS RETURN_REASONS_HIST
+				,(SELECT LISTAGG(RETURN_REASON, ',') WITHIN 
+						       GROUP( 
+						     ORDER BY INSERT_DATE DESC) 
+				          FROM LMS_WORK_RETURN_REASON RET
+				         WHERE RET.PERIOD_ID = LWP.PERIOD_ID
+				               AND RET.MEM_ID = LWP.MEM_ID
 				) AS RETURN_REASONS
 				,(
 				 SELECT LISTAGG(
@@ -431,13 +438,28 @@
 <if test="searchState != null and searchState != ''">
 	
 	<choose>
-		<when test="!searchState.equals('03')">
-			AND  LWP.STATE =  #{searchState}	
-			AND  LWP.SEND_YN = 'Y'
-		</when>
-		<otherwise>
-			AND  LWP.SEND_YN = 'N'
-		</otherwise>
+		<!-- 미제출 -->
+        <when test="searchState.equals('03')">
+            AND LWP.SEND_YN = 'N'
+        </when>
+
+        <!-- 반려 -->
+        <when test="searchState.equals('02')">
+            AND (
+                   LWP.STATE      = '02'
+                OR LWP.STATE_REC  = '02'
+                OR LWP.STATE_INC  = '02'
+                OR LWP.STATE_WOK  = '02'
+                OR LWP.STATE_DOC  = '02'
+            )
+            AND LWP.SEND_YN = 'Y'
+        </when>
+
+        <!-- 승인 / 미승인 -->
+        <otherwise>
+            AND LWP.STATE = #{searchState}
+            AND LWP.SEND_YN = 'Y'
+        </otherwise>
 	</choose>
 			
 </if>

@@ -776,15 +776,7 @@ function setReturnReason() {
 														<c:when test="${workCertDetailList.sendYn eq 'N'}" >미제출</c:when>
 														<c:when test="${workCertDetailList.sendYn eq 'Y'}" >
 															 <c:choose>
-													            <c:when test="${workCertDetailList.state eq '00'
-													                          || workCertDetailList.stateRec eq '00'
-													                          || workCertDetailList.stateInc eq '00'
-													                          || workCertDetailList.stateWok eq '00'
-													                          || workCertDetailList.stateDoc eq '00'}">
-													                미승인
-													            </c:when>
-													
-													            <c:when test="${workCertDetailList.state eq '02'
+															 	<c:when test="${workCertDetailList.state eq '02'
 													                          || workCertDetailList.stateRec eq '02'
 													                          || workCertDetailList.stateInc eq '02'
 													                          || workCertDetailList.stateWok eq '02'
@@ -792,19 +784,25 @@ function setReturnReason() {
 													
 													                <a href="#companion-wrap"
 													                   name="modalReturnWorkComment"
-													                   data-comment="${workCertDetailList.returnReasons}"
+													                   data-comment="${workCertDetailList.returnReasonsHist}"
 													                   rel="modal:open">반려</a>
 													                <br/>
-													                <b>${workCertDetailList.returnReason}</b>
+													                <b>
+													                    ${empty workCertDetailList.returnReasons ? workCertDetailList.returnReason : workCertDetailList.returnReasons}
+													                </b>
 													            </c:when>
-													
+															 	<c:when test="${workCertDetailList.state eq '00'
+													                          || workCertDetailList.stateRec eq '00'
+													                          || workCertDetailList.stateInc eq '00'
+													                          || workCertDetailList.stateWok eq '00'
+													                          || workCertDetailList.stateDoc eq '00'}">
+													                미승인
+													            </c:when>
 													            <c:when test="${workCertDetailList.state eq '01'}">
 													                <c:set var="total" value="${total + 1}" />
 													                승인
 													            </c:when>
-													
 													        </c:choose>
-															
 														</c:when>
 													</c:choose>
 													</td>

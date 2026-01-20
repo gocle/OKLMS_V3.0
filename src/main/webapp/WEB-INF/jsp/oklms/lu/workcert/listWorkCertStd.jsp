@@ -84,19 +84,19 @@ function fn_insert(){
 															</c:when>
 															<c:when test="${workCertList.sendYn eq 'Y'}" >
 																<c:choose>
-																	<c:when test="${ workCertList.state eq '00'
-																			  || workCertList.stateRec eq '00'
-																	          || workCertList.stateInc eq '00'
-																	          || workCertList.stateWok eq '00'
-																	          || workCertList.stateDoc eq '00'}" >
-																		<span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미승인</span>
-																	</c:when>
 																	<c:when test="${workCertList.state eq '02'
 																		      || workCertList.stateRec eq '02'
 																	          || workCertList.stateInc eq '02'
 																	          || workCertList.stateWok eq '02'
 																	          || workCertList.stateDoc eq '02'}" >
 																		<span class="btn-line-orange" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">반려</span>
+																	</c:when>
+																	<c:when test="${ workCertList.state eq '00'
+																			  || workCertList.stateRec eq '00'
+																	          || workCertList.stateInc eq '00'
+																	          || workCertList.stateWok eq '00'
+																	          || workCertList.stateDoc eq '00'}" >
+																		<span class="btn-line-gray" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">미승인</span>
 																	</c:when>
 																	<c:when test="${ workCertList.state eq '01'}" ><span class="btn-line-blue" onclick="javascript:fn_search('${workCertList.periodId}','${workCertList.workProofId}');">승인</span></c:when>
 																</c:choose>
@@ -291,23 +291,25 @@ function fn_insert(){
 													<td class="left">미제출</td>
 												</c:if>
 												<c:if test="${workCertVO.sendYn eq 'Y'}" >
-													<c:if test="${ workCertVO.state eq '00'
-															  || workCertVO.stateRec eq '00'
-													          || workCertVO.stateInc eq '00'
-													          || workCertVO.stateWok eq '00'
-													          || workCertVO.stateDoc eq '00'}" >
-														<td class="left">미승인</td>
-													</c:if>
-													<c:if test="${workCertVO.state eq '02'
-														      || workCertVO.stateRec eq '02'
-													          || workCertVO.stateInc eq '02'
-													          || workCertVO.stateWok eq '02'
-													          || workCertVO.stateDoc eq '02'}" >
-														<td class="left">반려</td>
-													</c:if>
-													<c:if test="${ workCertVO.state eq '01'}" >
-														<td class="left">승인</td>
-													</c:if>
+													<c:choose>
+														<c:when test="${workCertVO.state eq '02'
+															      || workCertVO.stateRec eq '02'
+														          || workCertVO.stateInc eq '02'
+														          || workCertVO.stateWok eq '02'
+														          || workCertVO.stateDoc eq '02'}" >
+															<td class="left">반려</td>
+														</c:when>
+														<c:when test="${ workCertVO.state eq '00'
+																  || workCertVO.stateRec eq '00'
+														          || workCertVO.stateInc eq '00'
+														          || workCertVO.stateWok eq '00'
+														          || workCertVO.stateDoc eq '00'}" >
+															<td class="left">미승인</td>
+														</c:when>
+														<c:when test="${ workCertVO.state eq '01'}" >
+															<td class="left">승인</td>
+														</c:when>
+													</c:choose>
 												</c:if>
 											</tr>
 											

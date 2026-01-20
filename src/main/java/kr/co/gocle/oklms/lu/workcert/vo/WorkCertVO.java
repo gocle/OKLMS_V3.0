@@ -108,6 +108,7 @@ public class WorkCertVO extends BaseVO implements Serializable{
 	private String nowTermYn;
 	
 	//서류별 승인상태 및 반려사유
+	private String returnReasonsHist;
 	private String returnType;
 	private String stateRec;
 	private String returnReasonRec;
@@ -696,6 +697,12 @@ public class WorkCertVO extends BaseVO implements Serializable{
 	}
 	public void setSendSms(String sendSms) {
 		this.sendSms = sendSms;
+	}
+	public String getReturnReasonsHist() {
+		return returnReasonsHist;
+	}
+	public void setReturnReasonsHist(String returnReasonsHist) {
+		this.returnReasonsHist = returnReasonsHist;
 	}
 
 
