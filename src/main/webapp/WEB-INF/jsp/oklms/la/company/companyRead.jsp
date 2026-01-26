@@ -83,7 +83,7 @@
 				${companyVO.companyNo}	
 	  		</td>  
 		</tr>
-		<tr>
+		<%-- <tr>
 			<th>고용보험관리번호</th>
 			<td>
 				${companyVO.employInsManageNo}
@@ -92,7 +92,7 @@
 			<td>
 				${companyVO.businessType}
 			</td>    
-		</tr>		
+		</tr>		 --%>
 		<%-- <tr>
 			<th>업종</th>
 			<td>
@@ -103,7 +103,7 @@
 				${companyVO.businessCondition}
 			</td>    
 		</tr> --%>
-		<tr>
+		<%-- tr>
 			<th>홈페이지</th>
 			<td>
 				${companyVO.homePage}
@@ -152,14 +152,14 @@
 			<tr>
 				<th class="border-left sub-name">E-mail</th>
 				<td colspan="2">${companyVO.email}</td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th>선정일</th>
 				<td>${companyVO.choiceDay}</td>
 				<th>상시근로자수</th>
 				<td>${companyVO.regularEmploymentCnt}명</td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th>기업구분</th>
 				<td>
 					<c:choose>
@@ -173,7 +173,7 @@
 				</td>
 				<th>홈페이지 URL</th>
 				<td>${companyVO.homepageUrl}</td>
-			</tr>
+			</tr> --%>
 			
 			<tr>
 				<th>훈련참여상태</th>
@@ -192,14 +192,16 @@
 						<c:when test="${companyVO.companyStatusCd == '3'}">합병</c:when>
 					</c:choose>
 				</td>
-			</tr>
+			</tr> 
 			
 			<tr>
 				<th>관할 지부지사</th>
-				<td colspan="3">${companyVO.controlPlaceName}</td>
+				<td>${companyVO.controlPlaceName}</td>
+				<th>신용등급</th>
+				<td>${companyVO.creditLevel}</td>
 			</tr>
 			
-			<tr>
+			<%-- <tr>
 				<th rowspan="3">재학생<br />단계</th>
 				<th class="sub-name">도제(참여기관명)</th>
 				<td colspan="2">${companyVO.stuLevelName1}</td>
@@ -234,16 +236,16 @@
 			<tr>
 				<th class="border-left sub-name">고숙련마이스터(참여기관명)</th>
 				<td colspan="2">${companyVO.compLevelName4}</td>
-			</tr>
+			</tr> --%>
 			
-			<tr>
+			<%-- <tr>
 				<th>설립일자</th>
 				<td>${companyVO.makeDay}</td>
 				<th>신용등급</th>
 				<td>${companyVO.creditLevel}</td>
-			</tr>
+			</tr> --%>
 			
-			<tr>
+			<%-- <tr>
 				<th>자산총계</th>
 				<td>${companyVO.assets}</td>
 				<th>부채총계</th>
@@ -269,7 +271,7 @@
 				<td>${companyVO.evalDay}</td>
 				<th>조회기관</th>
 				<td>${companyVO.searchPlaceName}</td>				
-			</tr>
+			</tr> --%>
 	</tbody>
 </table><!-- E : view-1 -->
 <div class="page-btn">

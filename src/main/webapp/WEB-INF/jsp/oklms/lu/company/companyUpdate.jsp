@@ -331,13 +331,13 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 	  				<p>※"-"빼고 넣어 주세요.</p>
 				</td>
 			</tr>
-			<tr>
-			<th colspan="2">업종</th>
-			<td>
-				<input type="text" id="businessType" name="businessType"  value="${companyVO.businessType}" style="width:60%" />
-			<form:errors path="businessType" style="width:99%" />				
-			</td>    			
-		</tr>
+<%-- 			<tr>
+				<th colspan="2">업종</th>
+				<td>
+					<input type="text" id="businessType" name="businessType"  value="${companyVO.businessType}" style="width:60%" />
+				<form:errors path="businessType" style="width:99%" />				
+				</td>    			
+			</tr> --%>
 			
 			<tr>
 				<th colspan="2" rowspan="2">주소<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
@@ -354,11 +354,24 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<td><input type="text" id="ceo" name="ceo"  maxlength="60" value="${companyVO.ceo}" style="width:99%;" /></td>
 			</tr>
 			<tr>
-				<th rowspan="6">담당자 연락처</th>
-				<th>직위</th>
-				<td><input type="text" id="position" name="position"  maxlength="50" value="${companyVO.position}" style="width:99%;" /></td>
+				<th rowspan="1">담당자 연락처</th>
+<%-- 				<th>직위</th>
+				<td><input type="text" id="position" name="position"  maxlength="50" value="${companyVO.position}" style="width:99%;" /></td> --%>
+				<th class="border-left">연락처<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
+				<td>
+					<select name="telNo1" id="telNo1" style="width:80px;">
+						<option selected value=''>::선택::</option>
+						<c:forEach var="localTelNoCd" items="${localTelNoCode}" varStatus="status">
+							<option value="${localTelNoCd.codeId}" ${localTelNoCd.codeId == companyVO.telNo1 ? 'selected="selected"' : '' }>${localTelNoCd.codeId}</option>
+						</c:forEach>
+					</select>
+					-
+					<input type="text" id="telNo2" name="telNo2"  value="${companyVO.telNo2}"  maxlength="4" style="width:20%" />
+					-
+					<input type="text" id="telNo3" name="telNo3"  value="${companyVO.telNo3}"  maxlength="4" style="width:20%" />
+				</td>				
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th class="border-left">성명</th>
 				<td><input type="text" id="name" name="name"  maxlength="20" value="${companyVO.name}" style="width:99%;" /></td>
 			</tr>
@@ -413,7 +426,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th class="border-left">E-mail</th>
 				<td><input type="text" id="email" name="email" maxlength="100" value="${companyVO.email}" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th colspan="2">선정일<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
 				<td><input type="text" id="choiceDay" name="choiceDay"  readonly="readonly" value="${companyVO.choiceDay}" style="width:50%;" /></td>
@@ -455,7 +468,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<th colspan="2">상시근로자수</th>
 				<td><input type="number" min="0" max="9999" id="regularEmploymentCnt" name="regularEmploymentCnt"  maxlength="20" value="${companyVO.regularEmploymentCnt}" style="width:20%;" /> 명</td>
 			</tr>
-			<tr>
+<%-- 			<tr>
 				<th colspan="2">기업구분</th>
 				<td>
 					<select id="companyDivCd" name="companyDivCd" style="width:50%">
@@ -473,7 +486,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th colspan="2">홈페이지 URL</th>
 				<td><input type="text" id="homepageUrl" name="homepageUrl"  maxlength="50" value="${companyVO.homepageUrl}" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 			
 			<tr>
 				<th colspan="2">훈련참여상태</th>
@@ -506,7 +519,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			
 			
 			
-			<tr>
+<%-- 			<tr>
 				<th rowspan="3">재학생 단계</th>
 				<th>도제(참여기관명)</th>
 				<td><input type="text" id="stuLevelName1" name="stuLevelName1"  maxlength="50" value="${companyVO.stuLevelName1}" style="width:99%;" /></td>
@@ -546,14 +559,14 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th colspan="2">설립일자</th>
 				<td><input type="text" id="makeDay" name="makeDay"  maxlength="10"  readonly="readonly" value="${companyVO.makeDay}" style="width:50%;"  /></td>
-			</tr>
+			</tr> --%>
 			
 			<tr>
 				<th colspan="2">신용등급</th>
 				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="${companyVO.creditLevel}" style="width:99%;" /></td>
 			</tr>
 			
-			<tr>
+<%-- 			<tr>
 				<th colspan="2">자산총계</th>
 				<td><input type="text" id="assets" name="assets"  maxlength="25" value="${companyVO.assets}" style="width:99%;" /></td>
 			</tr>
@@ -589,7 +602,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th colspan="2">조회기관</th>
 				<td><input type="text" id="searchPlaceName" name="searchPlaceName"  maxlength="25" value="${companyVO.searchPlaceName}" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 			
 		</tbody>
 	</table>

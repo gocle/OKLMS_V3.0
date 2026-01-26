@@ -321,7 +321,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<form:errors path="companyNo" style="width:99%" />		
 	  		</td>  
 		</tr>
-		<tr>
+		<%-- <tr>
 			<th>고용보험관리번호</th>
 			<td>
 				<input type="text" id="employInsManageNo" name="employInsManageNo" maxlength="12" value="" style="width:30%;" />
@@ -332,7 +332,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<input type="text" id="businessType" name="businessType"  value="${CompanyVO.businessType}" style="width:60%" />
 			<form:errors path="businessType" style="width:99%" />				
 			</td>    			
-		</tr>
+		</tr> --%>
 		<%-- <tr>
 			<th>업종</th>
 			<td>
@@ -345,7 +345,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<form:errors path="businessCondition" style="width:99%" />				
 			</td>    
 		</tr> --%>
-		<tr>
+		<%-- <tr>
 			<th>홈페이지</th>
 			<td>
 				<input type="text" id="homePage" name="homePage"  value="${CompanyVO.homePage}" style="width:60%" />
@@ -427,14 +427,14 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th class="border-left">E-mail</th>
 				<td colspan="2"><input type="text" id="email" name="email"  maxlength="100" value="" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th>선정일<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
 				<td><input type="text" id="choiceDay" name="choiceDay"  readonly="readonly" value="" style="width:17%;" /></td>
 				<th>상시근로자수</th>
 				<td><input type="number" min="0" max="9999" id="regularEmploymentCnt" name="regularEmploymentCnt"  maxlength="20" value="" style="width:20%;" /> 명</td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th>기업구분</th>
 				<td>
 					<select id="companyDivCd" name="companyDivCd" style="width:50%;" >
@@ -449,7 +449,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				</td>
 				<th>홈페이지 URL</th>
 				<td><input type="text" id="homepageUrl" name="homepageUrl"  maxlength="50" value="" style="width:99%;" /></td>				
-			</tr>
+			</tr> --%>
 			<tr>
 				<th>훈련참여상태</th>
 				<td>
@@ -472,10 +472,12 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			</tr>
 			<tr>
 				<th>관할 지부지사</th>
-				<td colspan="3"><input type="text" id="controlPlaceName" name="controlPlaceName"  maxlength="50" value="" style="width:99%;" /></td>
+				<td><input type="text" id="controlPlaceName" name="controlPlaceName"  maxlength="50" value="" style="width:99%;" /></td>
+				<th>신용등급</th>
+				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="" style="width:99%;" /></td>
 			</tr>
 			
-			<tr>
+			<!-- <tr>
 				<th rowspan="3">재학생 단계</th>
 				<th>도제(참여기관명)</th>
 				<td colspan="2"><input type="text" id="stuLevelName1" name="stuLevelName1"  maxlength="50" value="" style="width:99%;" /></td>
@@ -510,16 +512,16 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 			<tr>
 				<th class="border-left">고숙련마이스터(참여기관명)</th>
 				<td colspan="2"><input type="text" id="compLevelName4" name="compLevelName4"  maxlength="50" value="" style="width:99%;" /></td>
-			</tr>
+			</tr> -->
 			
-			<tr>
+			<!-- <tr>
 				<th>설립일자</th>
-				<td><input type="text" id="makeDay" name="makeDay"  maxlength="10"  readonly="readonly" value="" style="width:50%;"  /></td>
+				<td><input type="text" id="makeDay" name="makeDay"  maxlength="10"  readonly="readonly" value="" style="width:50%;"  /></td> 
 				<th>신용등급</th>
-				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="" style="width:99%;" /></td>
-			</tr>
+				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="" style="width:99%;" /></td> 
+			</tr> -->
 			
-			<tr>
+			<!-- <tr>
 				<th>자산총계</th>
 				<td><input type="text" id="assets" name="assets"  maxlength="25" value="" style="width:99%;" /></td>
 				<th>부채총계</th>
@@ -545,7 +547,7 @@ String retMsg = StringUtil.trimString((String)request.getAttribute("retMsg"),"")
 				<td><input type="text" id="evalDay" name="evalDay"  maxlength="25"  readonly="readonly" value="" style="width:50%;"  /></td>
 				<th>조회기관</th>
 				<td><input type="text" id="searchPlaceName" name="searchPlaceName"  maxlength="25" value="" style="width:99%;" /></td>
-			</tr>
+			</tr> -->
 	</tbody>
 </table><!-- E : view-1 -->
 </form>

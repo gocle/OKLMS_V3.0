@@ -146,7 +146,7 @@
 			
 			<th rowspan="2" colspan="2">상태</th>
 			
-			<th colspan="4">평가점수</th>
+			<!-- <th colspan="4">평가점수</th> -->
 			
 			<th rowspan="3">실시구분</th>
 			<th rowspan="3">기업명</th>
@@ -171,8 +171,8 @@
 			<th rowspan="3">센터담당자</th>
 		</tr>
 		<tr>
-			<th colspan="2">OJT지도교수</th>
-			<th colspan="2">센터전담자</th>
+			<!-- <th colspan="2">OJT지도교수</th>
+			<th colspan="2">센터전담자</th> -->
 			
 			<th colspan="4">교과목 기준</th>
 			<th colspan="2" rowspan="2">능력단위 기준</th>
@@ -187,10 +187,10 @@
 			<th>훈련기준</th>
 			<th>학사기준</th>
 			
-			<th>등급</th>
+			<!-- <th>등급</th>
 			<th>특이사항</th>
 			<th>등급</th>
-			<th>특이사항</th>
+			<th>특이사항</th> -->
 			
 			<th colspan="2">Off-JT</th>
 			<th colspan="2">OJT</th>
@@ -243,10 +243,10 @@
 			</c:choose> --%>
 			</td>
 			
-			<td><c:out value="${resultList.prtGrade }" /></td>
+			<%-- <td><c:out value="${resultList.prtGrade }" /></td>
 			<td><div class="min-wauto"><c:out value="${resultList.prtBigo }" /></div></td>
 			<td><c:out value="${resultList.ccnGrade }" /></td>
-			<td><div class="min-wauto"><c:out value="${resultList.ccnBigo }" /></div></td>
+			<td><div class="min-wauto"><c:out value="${resultList.ccnBigo }" /></div></td> --%>
 			
 			<td>
 			<c:choose>

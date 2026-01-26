@@ -365,8 +365,8 @@ function fn_sync(){
  </li>
  </ul> -->
  
- <div class="main-content">
-  <ul class="board-info" style="margin-top: -20px;">
+ <div class="main-content" style="height:1000px">
+<%--   <ul class="board-info" style="margin-top: -20px;">
 	<li class="btn-area"> 
 		<a href="#fn_exclDownload" onclick="javascript:fn_sync( ); return false" onkeypress="this.onclick;" class="btn">학적상태 동기화</a>
 		<a href="#fn_exclDownload" onclick="javascript:fn_exclDownload( ); return false" onkeypress="this.onclick;" class="btn">엑셀다운로드</a>
@@ -511,11 +511,11 @@ function fn_sync(){
 		</c:forEach>	
 			</tr>	
 			
-			<%-- <tr>
+			<tr>
 				<th colspan="2">합계</th>
 				<td>${n1_tot}</td>
 				<td>${n2_tot}</td>
-			</tr>	  --%>
+			</tr>	 
 			
 			<!-- <tr>
 				<th colspan="2">합계</th>
@@ -607,7 +607,7 @@ function fn_sync(){
 	
 	
 	<h2 class="title mt_50">학습기업 현황</h2>
-	<%-- <div class="table-responsive">
+	<div class="table-responsive">
  	<table border="0" cellpadding="0" cellspacing="0" class="list-1">
 		<colgroup>		
 			<col width="16.666%" />
@@ -643,7 +643,7 @@ function fn_sync(){
 			</tr>
 		</tbody>
 	</table>
-	</div> --%>
+	</div>
 	<div class="table-responsive">
  	<table border="0" cellpadding="0" cellspacing="0" class="list-1">
 		<colgroup>		
@@ -753,7 +753,7 @@ function fn_sync(){
 	</table>
 	</div>
 	
-	<%-- <div class="left-area">
+	<div class="left-area">
 		<h3 class="title">대학연계형</h2>
 		<div class="table-responsive">
 	 	<table border="0" cellpadding="0" cellspacing="0" class="list-1">
@@ -800,8 +800,8 @@ function fn_sync(){
 			</tbody>
 		</table>
 		</div>
-	</div> --%>
-	<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div> --%>
 	
  </div>
 <form name="frmMember" id="frmMember" method="post">

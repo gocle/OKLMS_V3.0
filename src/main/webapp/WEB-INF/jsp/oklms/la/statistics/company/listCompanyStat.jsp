@@ -142,7 +142,7 @@
 			<th rowspan="3">관할<br/>지부지사</th>
 			
 			<th colspan="${fn:length(deptCodeList)}" rowspan="2" >참여학과</th>
-			<th colspan="7">일학습병행 참여 현황</th>
+			<!-- <th colspan="7">일학습병행 참여 현황</th> -->
 						
 			<th rowspan="3">사업자등록번호</th>
 			<th rowspan="3">고용보험관리번호</th>
@@ -166,9 +166,9 @@
 			
 		</tr>
 		<tr>
-			<th rowspan="2">단독기업형</th>
+			<!-- <th rowspan="2">단독기업형</th>
 			<th colspan="3" >재학생단계</th>
-			<th colspan="3" >재직자단계</th>
+			<th colspan="3" >재직자단계</th> -->
 		</tr>
 		<tr>
 		
@@ -177,12 +177,12 @@
 			<th>${deptCodeList.codeName}</th>
 		</c:forEach>
 			
-			<th>도제</th>
+			<!-- <th>도제</th>
 			<th>Uni-Tech</th>
 			<th>IPP</th>
 			<th>대학연계형</th>
 			<th>P-Tech</th>
-			<th>고숙련마이스터</th>
+			<th>고숙련마이스터</th> -->
 			
 
 			<th>도</th>
@@ -235,13 +235,13 @@
 				<td><c:if test="${resultList.departmentH eq '1'}">O</c:if></td>
 				<td><c:if test="${resultList.departmentI eq '1'}">O</c:if></td>
 				
-				<td><c:out value="${resultList.compLevelName1}" /></td>
+				<%-- <td><c:out value="${resultList.compLevelName1}" /></td>
 				<td><c:out value="${resultList.stuLevelName1}" /></td>
 				<td><c:out value="${resultList.stuLevelName2}" /></td>
 				<td><c:out value="${resultList.stuLevelName3}" /></td>
 				<td><c:out value="${resultList.compLevelName2}" /></td>
 				<td><c:out value="${resultList.compLevelName3}" /></td>
-				<td><c:out value="${resultList.compLevelName4}" /></td>
+				<td><c:out value="${resultList.compLevelName4}" /></td> --%>
 				
 				
 				<td><c:out value="${resultList.companyNo}" /></td>

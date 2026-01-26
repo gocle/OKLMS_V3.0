@@ -90,12 +90,12 @@
 					${companyVO.companyNo}
 				</td>
 			</tr>
-			<tr>
+<%-- 			<tr>
 				<th colspan="2">업종</th>
 				<td>
 					${companyVO.businessType}
 				</td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th colspan="2" rowspan="2">주소</th>
 				<td>
@@ -110,11 +110,19 @@
 				<td>${companyVO.ceo}</td>
 			</tr>
 			<tr>
-				<th rowspan="6">담당자<br />연락처</th>
-				<th class="sub-name">직위</th>
-				<td>${companyVO.position}</td>
+				<th rowspan="1">담당자<br />연락처</th>
+<%-- 				<th class="sub-name">직위</th>
+				<td>${companyVO.position}</td> --%>
+				<th class="border-left sub-name">연락처</th>
+				<td>
+					${companyVO.telNo1}
+					-
+					${companyVO.telNo2}
+					-
+					${companyVO.telNo3}
+				</td>				
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th class="border-left sub-name">성명</th>
 				<td>${companyVO.name}</td>
 			</tr>
@@ -151,7 +159,7 @@
 			<tr>
 				<th class="border-left sub-name">E-mail</th>
 				<td>${companyVO.email}</td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th colspan="2">선정일</th>
 				<td>${companyVO.choiceDay}</td>
@@ -193,7 +201,7 @@
 				<th colspan="2">상시근로자수</th>
 				<td>${companyVO.regularEmploymentCnt}명</td>
 			</tr>
-			<tr>
+<%-- 			<tr>
 				<th colspan="2">기업구분</th>
 				<td>
 					<c:choose>
@@ -210,7 +218,7 @@
 			<tr>
 				<th colspan="2">홈페이지 URL</th>
 				<td>${companyVO.homepageUrl}</td>
-			</tr>
+			</tr> --%>
 			
 			<tr>
 				<th colspan="2">훈련참여상태</th>
@@ -241,7 +249,7 @@
 			
 			
 			
-			<tr>
+			<%-- <tr>
 				<th rowspan="3">재학생<br />단계</th>
 				<th class="sub-name">도제(참여기관명)</th>
 				<td>${companyVO.stuLevelName1}</td>
@@ -281,14 +289,14 @@
 			<tr>
 				<th colspan="2">설립일자</th>
 				<td>${companyVO.makeDay}</td>
-			</tr>
+			</tr> --%>
 			
 			<tr>
 				<th colspan="2">신용등급</th>
 				<td>${companyVO.creditLevel}</td>
 			</tr>
 			
-			<tr>
+			<%-- <tr>
 				<th colspan="2">자산총계</th>
 				<td>${companyVO.assets}</td>
 			</tr>
@@ -324,7 +332,7 @@
 			<tr>
 				<th colspan="2">조회기관</th>
 				<td>${companyVO.searchPlaceName}</td>
-			</tr>
+			</tr> --%>
 			
 		</tbody>
 	</table>

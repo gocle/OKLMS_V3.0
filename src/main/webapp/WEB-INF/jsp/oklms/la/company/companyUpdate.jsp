@@ -316,7 +316,7 @@ function checkNumber(check_form){
 				<form:errors path="companyNo" style="width:99%" />		
 	  		</td>  
 		</tr>
-		<tr>
+		<%-- <tr>
 			<th>고용보험관리번호</th>
 			<td>
 				<input type="text" id="employInsManageNo" name="employInsManageNo" maxlength="12" value="${companyVO.employInsManageNo}" style="width:30%;" />
@@ -327,7 +327,7 @@ function checkNumber(check_form){
 				<input type="text" id="businessType" name="businessType"  value="${companyVO.businessType}" style="width:60%" />
 				<form:errors path="businessType" style="width:99%" />				
 			</td>
-		</tr>		
+		</tr>		 --%>
 		<%-- <tr>
 			<th>업종</th>
 			<td>
@@ -340,7 +340,7 @@ function checkNumber(check_form){
 				<form:errors path="businessCondition" style="width:99%" />				
 			</td>    
 		</tr> --%>
-		<tr>
+		<%-- <tr>
 			<th>홈페이지</th>
 			<td>
 				<input type="text" id="homePage" name="homePage"  value="${companyVO.homePage}" style="width:60%" />
@@ -422,14 +422,14 @@ function checkNumber(check_form){
 			<tr>
 				<th class="border-left">E-mail</th>
 				<td colspan="2"><input type="text" id="email" name="email"  maxlength="100" value="${companyVO.email}" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<th>선정일<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif' />" width="15" height="15" alt="필수입력표시"></th>
 				<td><input type="text" id="choiceDay" name="choiceDay"  readonly="readonly" value="${companyVO.choiceDay}" style="width:17%;" /></td>
 				<th>상시근로자수</th>
 				<td><input type="number" min="0" max="9999" id="regularEmploymentCnt" name="regularEmploymentCnt"  maxlength="20" value="${companyVO.regularEmploymentCnt}" style="width:20%;" /> 명</td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<th>기업구분</th>
 				<td>
 					<select id="companyDivCd" name="companyDivCd" style="width:50%;" >
@@ -445,7 +445,7 @@ function checkNumber(check_form){
 				<th>홈페이지 URL</th>
 				<td><input type="text" id="homepageUrl" name="homepageUrl"  maxlength="50" value="${companyVO.homepageUrl}" style="width:99%;" /></td>				
 			</tr>
-			<tr>
+			<tr> --%>
 				<th>훈련참여상태</th>
 				<td>
 					<select id="traningStatusCd" name="traningStatusCd" style="width:50%;" >
@@ -467,10 +467,13 @@ function checkNumber(check_form){
 			</tr>
 			<tr>
 				<th>관할 지부지사</th>
-				<td colspan="3"><input type="text" id="controlPlaceName" name="controlPlaceName"  maxlength="50" value="${companyVO.controlPlaceName}" style="width:99%;" /></td>
+				<td><input type="text" id="controlPlaceName" name="controlPlaceName"  maxlength="50" value="${companyVO.controlPlaceName}" style="width:99%;" /></td>
+				<th>신용등급</th>
+				<td><input type="text" id="creditLevel" name="creditLevel"  maxlength="25" value="${companyVO.creditLevel}" style="width:99%;" /></td>
+				
 			</tr>
 			
-			<tr>
+			<%-- <tr>
 				<th rowspan="3">재학생 단계</th>
 				<th>도제(참여기관명)</th>
 				<td colspan="2"><input type="text" id="stuLevelName1" name="stuLevelName1"  maxlength="50" value="${companyVO.stuLevelName1}" style="width:99%;" /></td>
@@ -540,7 +543,7 @@ function checkNumber(check_form){
 				<td><input type="text" id="evalDay" name="evalDay"  maxlength="25"  readonly="readonly" value="${companyVO.evalDay}" style="width:50%;"  /></td>
 				<th>조회기관</th>
 				<td><input type="text" id="searchPlaceName" name="searchPlaceName"  maxlength="25" value="${companyVO.searchPlaceName}" style="width:99%;" /></td>
-			</tr>
+			</tr> --%>
 	</tbody>
 </table><!-- E : view-1 -->
 </form>

@@ -152,7 +152,7 @@
 			<th rowspan="3">훈련상태</th>
 			<!-- <th rowspan="3">HRD-Net<br />진행상태</th> -->
 			<!-- <th colspan="3">비용신청</th> -->
-			<th colspan="4">평가점수</th>
+			<!-- <th colspan="4">평가점수</th> -->
 			
 			<th rowspan="3">훈련<br />시작일</th>
 			<th rowspan="3">훈련<br />종료일</th>
@@ -180,8 +180,8 @@
 			<th rowspan="2">훈련과정</th> -->
 			<!-- <th colspan="2">훈련비</th>
 			<th rowspan="2">전담자</th> -->
-			<th colspan="2">OJT지도교수</th>
-			<th colspan="2">센터전담자</th>
+			<!-- <th colspan="2">OJT지도교수</th>
+			<th colspan="2">센터전담자</th> -->
 			<th rowspan="2">인원</th>
 			<th rowspan="2">철회율</th>
 			<th rowspan="2">인원</th>
@@ -196,10 +196,10 @@
 		<tr>
 			<!-- <th>Off-JT</th>
 			<th>OJT</th> -->
-			<th>등급</th>
+			<!-- <th>등급</th>
 			<th>특이사항</th>
 			<th>등급</th>
-			<th>특이사항</th>
+			<th>특이사항</th> -->
 			<th>자격명</th>
 			<th>수준</th>
 			<th>버전</th>
@@ -269,10 +269,10 @@
 			<td><c:out value="${resultList.ccnMonth}" /> </td>
 			 --%>
 			
-			<td><c:out value="${resultList.prtGrade }" /></td>
+			<%-- <td><c:out value="${resultList.prtGrade }" /></td>
 			<td><div class="min-wauto"><c:out value="${resultList.prtBigo }" /></div></td>
 			<td><c:out value="${resultList.ccnGrade }" /></td>
-			<td><div class="min-wauto"><c:out value="${resultList.ccnBigo }" /></div></td>
+			<td><div class="min-wauto"><c:out value="${resultList.ccnBigo }" /></div></td> --%>
 			
 			<td><c:out value="${resultList.startDate }" /></td>
 			<td><c:out value="${resultList.endDate }" /></td>

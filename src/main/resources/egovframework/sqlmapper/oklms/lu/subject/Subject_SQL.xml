@@ -3110,75 +3110,146 @@ FROM   ( SELECT ROWNUM AS INFO_NUM,
 	
 	<select id="listSubjectStat" parameterType="kr.co.gocle.oklms.lu.subject.vo.SubjectVO" resultType="kr.co.gocle.oklms.lu.subject.vo.SubjectVO">
 			<include refid="kr.co.gocle.include.paging-start"/>
-			SELECT 
-			SUBJECT_NAME,
-			SUBJECT_CODE,
-			YYYY,
-			TERM,
-			SUBJECT_TRANING_TYPE,
-			CASE
-			   WHEN SUBJ.SUBJECT_TRANING_TYPE = 'OJT'
-			   THEN 'OJT'
-			   ELSE 'OFF-JT'
-			END SUBJECT_TRANING_TYPE_NAME,
-			ONLINE_TYPE,
-			 CASE
-						              WHEN SUBJ.ONLINE_TYPE IN ('104','105') THEN '플립러닝'
-						              WHEN SUBJ.ONLINE_TYPE = '101' THEN '순수온라인'
-						              WHEN SUBJ.ONLINE_TYPE = '102' THEN '브렌디드'
-						              WHEN SUBJ.ONLINE_TYPE = '103' THEN '보조활용'
-						           ELSE  '없음'
-						            END ONLINE_TYPE_NAME,
-			                  
-			                   SUBJ.CLASS AS SUBJECT_CLASS,
-			                   
-			                   
-			                   			          	( SELECT
-						                 LISTAGG(FN_GETTRANING_PROCESS_NAME(AA.TRANING_PROCESS_ID), ',') WITHIN 
-							              GROUP( 
-							            ORDER BY FN_GETTRANING_PROCESS_NAME(AA.TRANING_PROCESS_ID)) 
-						                 FROM LMS_TRANING_PROCESS_MAPPING AA
-						                WHERE AA.YYYY = SUBJ.YYYY
-						                AND AA.TERM = SUBJ.TERM
-						                AND AA.SUBJECT_CODE = SUBJ.SUBJECT_CODE
-						                AND AA.CLASS = SUBJ.CLASS
-						                AND AA.DELETE_YN = 'N'
-						                AND ROWNUM = 1
-						            ) AS TRANING_PROCESS_NAME,
-						            
-						            
-						               	( SELECT
-						                FN_GETCOMPAYNAME(AA.COMPANY_ID)
-						                 FROM LMS_TRANING_PROCESS_MAPPING AA
-						                WHERE AA.YYYY = SUBJ.YYYY
-						                AND AA.TERM = SUBJ.TERM
-						                AND AA.SUBJECT_CODE = SUBJ.SUBJECT_CODE
-						                AND AA.CLASS = SUBJ.CLASS
-						                AND AA.DELETE_YN = 'N'
-						                AND ROWNUM = 1
-						            ) AS COMPANY_NAME,
-						            
-			             <!--     (SELECT LCM.COMPANY_NAME FROM LMS_COMPANY LCM WHERE LCM.COMPANY_ID = SUBJ.OJT_COMPANY_ID) COMPANY_NAME, -->
-			                 (SELECT LISTAGG(FN_GETUSERNAME(INS.MEM_SEQ), ',') WITHIN 
-									       GROUP( 
-									     ORDER BY FN_GETUSERNAME(INS.MEM_SEQ)) 
-						              FROM LMS_SUBJ_INS_MAPPING INS
-						             WHERE INS.YYYY = SUBJ.YYYY
-						                   AND INS.TERM = SUBJ.TERM
-						                   AND INS.SUBJECT_CODE = SUBJ.SUBJECT_CODE
-						                   AND INS.CLASS = SUBJ.CLASS
-						           ) AS INS_NAMES,
-			                 SUBJ.TRANING_HOUR,
-			                 SUBJ.DEPARTMENT_NAME,
-			                 SUBJ.GRADE,
-			                 SUBJ.SUBJECT_NCS_NAME,
-			                 SUBJ.POINT,
-			                 
-			                 (SELECT E.CAPA_NM FROM KUT_MOB2.VH_OKLMS_LCTRE_UNIT E WHERE E.YR =SUBJ.YYYY AND E.SEMSTR_CD = DECODE(SUBJ.TERM,'1','10','2','20','3','11','4','21','10')
-                                              AND E.CORS_CD	=SUBJ.SUBJECT_CODE AND  E.CLS_NO = SUBJ.CLASS AND ROWNUM=1) AS NCS_UNIT, 
-                                              
-			                 (SELECT COUNT(1) FROM LMS_LESSON LL WHERE LL.YYYY =SUBJ.YYYY AND LL.TERM =SUBJ.TERM AND LL.SUBJECT_CODE = SUBJ.SUBJECT_CODE AND  LL.CLASS= SUBJ.CLASS AND LL.DELETE_YN='N' ) as STUDY_CNT
-			FROM LMS_SUBJECT SUBJ
+			WITH tp AS
+                       ( LISTAGG
+                       SELECT
+                                a.yyyy,
+                                a.term,
+                                a.subject_code,
+                                a.class,
+                                LISTAGG(FN_GETTRANING_PROCESS_NAME(a.traning_process_id), ',') WITHIN GROUP (ORDER BY FN_GETTRANING_PROCESS_NAME(a.traning_process_id)) AS traning_process_name
+                       FROM     LMS_TRANING_PROCESS_MAPPING a
+                       WHERE    a.delete_yn = 'N'
+                       GROUP BY a.yyyy,
+                                a.term,
+                                a.subject_code,
+                                a.class
+                       )
+                       , co AS
+                       ( -- 회사명 1건 선택 (정렬 기준은 업무에 맞게 바꾸는 게 베스트)
+                       SELECT
+                               yyyy,
+                               term,
+                               subject_code,
+                               CLASS,
+                               FN_GETCOMPAYNAME(company_id) AS company_name
+                       FROM
+                               ( SELECT
+                                        a.*,
+                                        ROW_NUMBER() OVER ( PARTITION BY a.yyyy, a.term, a.subject_code, a.class ORDER BY a.company_id -- TODO: "대표 1건" 기준 컬럼으로 교체 권장
+                                        ) rn
+                               FROM     LMS_TRANING_PROCESS_MAPPING a
+                               WHERE    a.delete_yn = 'N'
+                               )
+                       WHERE   rn = 1
+                       )
+                       , ins AS
+                       ( SELECT
+                                i.yyyy,
+                                i.term,
+                                i.subject_code,
+                                i.class,
+                                LISTAGG(FN_GETUSERNAME(i.mem_seq), ',') WITHIN GROUP (ORDER BY FN_GETUSERNAME(i.mem_seq)) AS ins_names
+                       FROM     LMS_SUBJ_INS_MAPPING i
+                       GROUP BY i.yyyy,
+                                i.term,
+                                i.subject_code,
+                                i.class
+                       )
+                       , lesson AS
+                       ( SELECT
+                                yyyy,
+                                term,
+                                subject_code,
+                                CLASS,
+                                COUNT(*) AS study_cnt
+                       FROM     LMS_LESSON
+                       WHERE    delete_yn = 'N'
+                       GROUP BY yyyy,
+                                term,
+                                subject_code,
+                                CLASS
+                       )
+                       , ncs AS
+                       ( SELECT
+                                yr,
+                                semstr_cd,
+                                cors_cd,
+                                cls_no,
+                                capa_nm,
+                                ROW_NUMBER() OVER( PARTITION BY yr, semstr_cd, cors_cd, cls_no ORDER BY capa_nm ) rn
+                       FROM     KUT_MOB2.VH_OKLMS_LCTRE_UNIT
+                       )
+              SELECT
+                       subj.subject_name,
+                       subj.subject_code,
+                       subj.yyyy,
+                       subj.term,
+                       subj.subject_traning_type,
+                       CASE
+                                WHEN subj.subject_traning_type = 'OJT'
+                                THEN 'OJT'
+                                ELSE 'OFF-JT'
+                       END AS subject_traning_type_name,
+                       subj.online_type,
+                       CASE
+                                WHEN subj.online_type IN ('104',
+                                                          '105')
+                                THEN '플립러닝'
+                                WHEN subj.online_type = '101'
+                                THEN '순수온라인'
+                                WHEN subj.online_type = '102'
+                                THEN '브렌디드'
+                                WHEN subj.online_type = '103'
+                                THEN '보조활용'
+                                ELSE '없음'
+                       END        AS online_type_name,
+                       subj.class AS subject_class,
+                       tp.traning_process_name,
+                       co.company_name,
+                       ins.ins_names,
+                       subj.traning_hour,
+                       subj.department_name,
+                       subj.grade,
+                       subj.subject_ncs_name,
+                       subj.point,
+                       n.capa_nm                AS ncs_unit,
+                       NVL(lesson.study_cnt, 0) AS study_cnt
+              FROM     LMS_SUBJECT subj
+                       LEFT JOIN tp
+                       ON       tp.yyyy         = subj.yyyy
+                       AND      tp.term         = subj.term
+                       AND      tp.subject_code = subj.subject_code
+                       AND      tp.class        = subj.class
+                       LEFT JOIN co
+                       ON       co.yyyy         = subj.yyyy
+                       AND      co.term         = subj.term
+                       AND      co.subject_code = subj.subject_code
+                       AND      co.class        = subj.class
+                       LEFT JOIN ins
+                       ON       ins.yyyy         = subj.yyyy
+                       AND      ins.term         = subj.term
+                       AND      ins.subject_code = subj.subject_code
+                       AND      ins.class        = subj.class
+                       LEFT JOIN lesson
+                       ON       lesson.yyyy         = subj.yyyy
+                       AND      lesson.term         = subj.term
+                       AND      lesson.subject_code = subj.subject_code
+                       AND      lesson.class        = subj.class
+                       LEFT JOIN ncs n
+                       ON       n.yr        = subj.yyyy
+                       AND      n.semstr_cd = DECODE(subj.term,'1',
+                                                     '10',
+                                                     '2',
+                                                     '20',
+                                                     '3',
+                                                     '11',
+                                                     '4',
+                                                     '21',
+                                                     '10')
+                       AND      n.cors_cd = subj.subject_code
+                       AND      n.cls_no  = subj.class
+                       AND      n.rn      = 1
 			WHERE SUBJ.DELETE_YN='N'
 			<!-- AND SUBJ.SUBJECT_TRANING_TYPE = 'OJT' -->
 			<if test="searchKeyword != null and searchKeyword != ''">
