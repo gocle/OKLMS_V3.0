@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.gocle.oklms.la.api.service.impl.ApiMapper">
+
+	<resultMap id="authMap-result" type="kr.co.gocle.oklms.la.api.vo.ApiVO">
+		<result column="MEM_NAME" 			property="memName" />
+		<result column="MEM_SEQ" 			property="memSeq" />
+		</resultMap>
+	
+	<select id="ccnMemberList" resultType="kr.co.gocle.oklms.la.api.vo.ApiVO">
+		/* ====== kr.co.gocle.oklms.la.api.service.impl.ApiMapper.ccnMemberList ====== */
+			SELECT 
+							MEM_NAME,
+							MEM_SEQ
+						  FROM V_OKLMS_CCN_MEMBER
+	</select>
+	
+	<select id="companyNoChk" resultType="java.lang.Integer">
+		/* ====== kr.co.gocle.oklms.la.api.service.impl.ApiMapper.companyNoChk ====== */
+			SELECT 
+							count(COMPANY_NO)
+						  FROM LMS_COMPANY
+						  WHERE COMPANY_NO = #{companyNo}
+	</select>
+	
+	<insert id="insertCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+		/* ====== kr.co.gocle.oklms.la.api.service.impl.ApiMapper.insertCompany ====== */
+			INSERT INTO LMS_COMPANY (
+						COMPANY_ID
+						,COMPANY_NAME
+						,COMPANY_NO
+						,CEO
+						,NAME
+						,ZIP_CODE
+						,ADDRESS
+						,ADDRESS_DTL
+						,TEL_NO1
+						,TEL_NO2
+						,TEL_NO3
+						,COMP_MANAGE_NO 
+						,BIG_BUSINESS_TYPE
+						,MIDDLE_BUSINESS_TYPE
+						,SMAIL_BUSINESS_TYPE
+						,COMPANY_DIV_CD
+						,EMAIL
+						,REGULAR_EMPLOYMENT_CNT
+						,CHOICE_DAY
+						,POSITION
+						,INSERT_DATE
+						,INSERT_USER,
+						HOMEPAGE_URL,
+				       TRANING_STATUS_CD,
+				       COMPANY_STATUS_CD,
+				       CONTROL_PLACE_NAME,
+				       STU_LEVEL_NAME1,
+				       STU_LEVEL_NAME2,
+				       STU_LEVEL_NAME3,
+				       COMP_LEVEL_NAME1,
+				       COMP_LEVEL_NAME2,
+				       COMP_LEVEL_NAME3,
+				       COMP_LEVEL_NAME4,
+				       MAKE_DAY,
+				       HP_NO1,
+				       HP_NO2,
+				       HP_NO3,
+				       FAX_NO1,
+				       FAX_NO2,
+				       FAX_NO3,
+				       CREDIT_LEVEL,
+				       ASSETS,
+				       LIABILITIES,
+				       EQUITIES,
+				       REVENUE,
+				       OPERATING_INCOME,
+				       NET_INCOME,
+				       EVAL_DAY,
+				       SEARCH_PLACE_NAME,
+				       BUSINESS_TYPE
+					)
+					VALUES
+					(
+						 #{companyId}
+						,#{companyName}
+						,#{companyNo}
+						,#{ceo}
+						,#{name}
+						,#{zipCode}
+						,#{address}
+						,#{addressDtl}
+						,#{telNo1}
+						,#{telNo2}
+						,#{telNo3}
+						,#{employInsManageNo}
+						,#{bigBusinessType}
+						,#{middleBusinessType}
+						,#{smailBusinessType}
+						,#{companyDivCd}
+						,#{email}
+						,#{regularEmploymentCnt}
+						,#{choiceDay}
+						,#{position}
+						,SYSDATE
+						,#{sessionMemSeq},
+						#{homepageUrl},
+				       #{traningStatusCd},
+				       #{companyStatusCd},
+				       #{controlPlaceName},
+				       #{stuLevelName1},
+				       #{stuLevelName2},
+				       #{stuLevelName3},
+				       #{compLevelName1},
+				       #{compLevelName2},
+				       #{compLevelName3},
+				       #{compLevelName4},
+				       #{makeDay},
+				       #{hpNo1},
+				       #{hpNo2},
+				       #{hpNo3},
+				       #{faxNo1},
+				       #{faxNo2},
+				       #{faxNo3},
+				       #{creditLevel},
+				       #{assets},
+				       #{liabilities},
+				       #{equities},
+				       #{revenue},
+				       #{operatingIncome},
+				       #{netIncome},
+				       #{evalDay},
+				       #{searchPlaceName},
+				       #{businessType}
+					)
+
+	</insert>
+	
+	<update id="updateCompany" parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO">
+			/* ====== kr.co.gocle.oklms.api.service.impl.ApiMapper.updateCompany ====== */
+	        UPDATE LMS_COMPANY
+	        SET UPDATE_DATE 	= SYSDATE
+	            ,UPDATE_USER=#{sessionMemSeq}
+				<!-- <if test="companyId != null and companyId !='' ">,COMPANY_ID=#{companyId}</if> -->
+				<if test="companyName != null and companyName !='' ">,COMPANY_NAME=#{companyName}</if>
+				<if test="companyNo != null and companyNo !='' ">,COMPANY_NO=#{companyNo}</if>
+				<if test="ceo != null and ceo !='' ">,CEO=#{ceo}</if>
+				<if test="name != null and name !='' ">,NAME=#{name}</if>
+				<if test="zoneCode != null and zoneCode !='' ">,ZONE_CODE=#{zoneCode}</if>
+				<if test="zipCode != null and zipCode !='' ">,ZIP_CODE=#{zipCode}</if>
+				<if test="address != null and address !='' ">,ADDRESS=#{address}</if>
+				<if test="addressDtl != null and addressDtl !='' ">,ADDRESS_DTL=#{addressDtl}</if>
+				<if test="telNo1 != null and telNo1 !='' ">,TEL_NO1=#{telNo1}</if>
+				<if test="telNo2 != null and telNo2 !='' ">,TEL_NO2=#{telNo2}</if>
+				<if test="telNo3 != null and telNo3 !='' ">,TEL_NO3=#{telNo3}</if>
+				<if test="deleteYn != null and deleteYn !='' ">,DELETE_YN=#{deleteYn}</if>
+				<if test="employInsManageNo != null and employInsManageNo !='' ">,COMP_MANAGE_NO =#{employInsManageNo}</if>
+				<if test="bigBusinessType != null and bigBusinessType !='' ">,BIG_BUSINESS_TYPE=#{bigBusinessType}</if>
+				<if test="middleBusinessType != null and middleBusinessType !='' ">,MIDDLE_BUSINESS_TYPE=#{middleBusinessType}</if>
+				<if test="smailBusinessType != null and smailBusinessType !='' ">,SMAIL_BUSINESS_TYPE=#{smailBusinessType}</if>
+				<if test="email != null and email !='' ">,EMAIL=#{email}</if>
+				<if test="regularEmploymentCnt != null and regularEmploymentCnt !='' ">,REGULAR_EMPLOYMENT_CNT=#{regularEmploymentCnt}</if>
+				<if test="companyDivCd != null and companyDivCd !='' ">,COMPANY_DIV_CD=#{companyDivCd}</if>
+				<if test="choiceDay != null and choiceDay !='' ">,CHOICE_DAY=#{choiceDay}</if>
+				<if test="position != null and position !='' ">,POSITION=#{position}</if>
+				<if test="homepageUrl != null and homepageUrl !='' ">,HOMEPAGE_URL=#{homepageUrl}</if>
+				<if test="traningStatusCd != null and traningStatusCd !='' ">,TRANING_STATUS_CD=#{traningStatusCd}</if>
+				<if test="companyStatusCd != null and companyStatusCd !='' ">,COMPANY_STATUS_CD=#{companyStatusCd}</if>
+				<if test="controlPlaceName != null and controlPlaceName !='' ">,CONTROL_PLACE_NAME=#{controlPlaceName}</if>
+				<if test="stuLevelName1 != null and stuLevelName1 !='' ">,STU_LEVEL_NAME1=#{stuLevelName1}</if>
+				<if test="stuLevelName2 != null and stuLevelName2 !='' ">,STU_LEVEL_NAME2=#{stuLevelName2}</if>
+				<if test="stuLevelName3 != null and stuLevelName3 !='' ">,STU_LEVEL_NAME3=#{stuLevelName3}</if>
+				<if test="compLevelName1 != null and compLevelName1 !='' ">,COMP_LEVEL_NAME1=#{compLevelName1}</if>
+				<if test="compLevelName2 != null and compLevelName2 !='' ">,COMP_LEVEL_NAME2=#{compLevelName2}</if>
+				<if test="compLevelName3 != null and compLevelName3 !='' ">,COMP_LEVEL_NAME3=#{compLevelName3}</if>
+				<if test="compLevelName4 != null and compLevelName4 !='' ">,COMP_LEVEL_NAME4=#{compLevelName4}</if>
+				<if test="makeDay != null and makeDay !='' ">,MAKE_DAY=#{makeDay}</if>
+				<if test="hpNo1 != null and hpNo1 !='' ">,HP_NO1=#{hpNo1}</if>
+				<if test="hpNo2 != null and hpNo2 !='' ">,HP_NO2=#{hpNo2}</if>
+				<if test="hpNo3 != null and hpNo3 !='' ">,HP_NO3=#{hpNo3}</if>
+				<if test="faxNo1 != null and faxNo1 !='' ">,FAX_NO1=#{faxNo1}</if>
+				<if test="faxNo2 != null and faxNo2 !='' ">,FAX_NO2=#{faxNo2}</if>
+				<if test="faxNo3 != null and faxNo3 !='' ">,FAX_NO3=#{faxNo3}</if>
+				<if test="creditLevel != null and creditLevel !='' ">,CREDIT_LEVEL=#{creditLevel}</if>
+				<if test="assets != null and assets !='' ">,ASSETS=#{assets}</if>
+				<if test="liabilities != null and liabilities !='' ">,LIABILITIES=#{liabilities}</if>
+				<if test="equities != null and equities !='' ">,EQUITIES=#{equities}</if>
+				<if test="revenue != null and revenue !='' ">,REVENUE=#{revenue}</if>
+				<if test="operatingIncome != null and operatingIncome !='' ">,OPERATING_INCOME=#{operatingIncome}</if>
+				<if test="netIncome != null and netIncome !='' ">,NET_INCOME=#{netIncome}</if>
+				<if test="evalDay != null and evalDay !='' ">,EVAL_DAY=#{evalDay}</if>
+				<if test="searchPlaceName != null and searchPlaceName !='' ">,SEARCH_PLACE_NAME=#{searchPlaceName}</if>
+				<if test="businessType != null and businessType !='' ">,BUSINESS_TYPE=#{businessType}</if>
+
+		     WHERE COMPANY_ID 	= #{companyId}
+	</update>
+	
+	<insert id="insertCcnCompany"  parameterType="kr.co.gocle.oklms.la.company.vo.CompanyVO"  >
+	 	/* ====== kr.co.gocle.oklms.api.service.impl.ApiMapper.insertCcnMember ====== */
+		INSERT INTO LMS_COMP_CCN_MAPPING
+			       (
+			         COMPANY_ID,
+			         MEM_SEQ,
+			         INSERT_DATE,
+			         INSERT_USER
+			       ) 
+			       VALUES 
+			       (
+			         #{companyId},
+			         #{memSeq},
+			         SYSDATE,
+			         #{sessionMemSeq}
+			       )
+ 	</insert>
+	
+	<select id="getCcn" resultType="java.lang.Integer">
+		/* ====== kr.co.gocle.oklms.la.api.service.impl.ApiMapper.getCcn ====== */
+			SELECT 
+							count(COMPANY_ID)
+						  FROM LMS_COMP_CCN_MAPPING
+						  WHERE COMPANY_ID = #{companyId}
+						  AND MEM_SEQ = #{memSeq}
+	</select>
+
+</mapper>

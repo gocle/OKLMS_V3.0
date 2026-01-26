@@ -124,6 +124,11 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
 			requestUrlType = "mm";
 		}
 		*/
+		
+		if (uri.startsWith("/api/")) {
+		    return true;
+		}
+		
 		if( 1 == StringUtils.countMatches( returnURL , "/la/") ){
 			requestUrlType = "la";
 		}else if( 1 == StringUtils.countMatches( returnURL , "/lu/") ){
