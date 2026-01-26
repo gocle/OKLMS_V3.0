@@ -283,8 +283,15 @@
 	} 
 	
 	var moveSchRowUp = function(element) {
+		var currWeek = getWeekNum(element);
+    	var targetWeek = currWeek - 1;
+		var $prev = element.prev();
 		if( element.prev().html() != null  && element.prev().attr("class") != "week_1" ){
 			changeElement(element , 'prev')
+			if ($prev.attr("name") === "week") {
+				applyWeekDate(element, targetWeek);
+	        }
+			
 			element.insertBefore(element.prev());
 			changeElementAll();
 		} else {
@@ -293,9 +300,16 @@
 	};
 
 	var moveSchRowDown = function(element) {
-		
+		 var currWeek = getWeekNum(element);
+		 var targetWeek = currWeek + 1;
+		 var $next = element.next();
 		 if( element.next().html() != null ){
 			changeElement(element , 'next')
+			
+			if ($next.attr("name") === "week") {
+				 applyWeekDate(element, targetWeek);
+	        }
+			
 			element.insertAfter(element.next());
 			changeElementAll();
 		}  else {
@@ -458,11 +472,11 @@
 				
 				schStr += "</td>";
 				
-				schStr += "<td class='left'>";
-				schStr += "<input type='text' name='weekSchStDates' id='week_sch_st_date_"+(i+1)+"' value=\""+weekStartDate+"\" readonly style='width:65px' />~<br />";
-				schStr += "<input type='text' name='weekSchEdDates' id='week_sch_ed_date_"+(i+1)+"' value=\""+weekEndDate+"\"  readonly style='width:65px' />";
+				schStr += "<td>";
+				schStr += "<input type='text' name='weekSchStDates' id='week_sch_st_date_"+(i+1)+"' value=\""+weekStartDate+"\" readonly style='width:95px' />~<br />";
+				schStr += "<input type='text' name='weekSchEdDates' id='week_sch_ed_date_"+(i+1)+"' value=\""+weekEndDate+"\"  readonly style='width:95px' />";
 				schStr += "</td>";
-				schStr += "<td><input type='text' name='weekSchMins'  id='week_sch_min_"+(rowLen + i)+"'  class='week_min_"+weekNum+"' value='"+minute+"'  maxlength='3' style='width:25px; text-align:center;' /></td>";
+				schStr += "<td><input type='text' name='weekSchMins'  id='week_sch_min_"+(rowLen + i)+"'  class='week_min_"+weekNum+"' value='"+minute+"'  maxlength='3' style='width:100%; text-align:center;' /></td>";
 				//schStr += "<td><a href='alert(1)'  class='btn-search-gray '></a></td>";
 				schStr += "<td><a href='javascript:goPreview(\"Y\",\""+weekCnt+"\",\"\",\""+schNum+"\",\""+list.title+"\",\""+list.lesson_id+"\",\"\",\"\",\"\",\"\");'  class='btn-search-gray '></a></td>";
 				schStr += "<td><a href='#none' onclick='removeRow(this);' class='btn-line-gray'>삭제</a></td>";
@@ -478,7 +492,7 @@
 				
 				if( (i+1) % divisionNum == 0){
 					$(".week_"+weekNum).eq(-1).after(schStr);
-					$("input:text[name='contentNames']").eq((weekNum-1)).val(""+weekNum+" 주차 "+contentName);
+					$("input:text[name='contentNames']").eq((weekNum-1)).val(""+weekNum+"주차 ");
 					schStr = "";
 					weekNum++;
 					schNum=0;
@@ -930,6 +944,19 @@
 		$("#frmFile").submit();
 	} 
 	
+	function getWeekNum($tr){
+	    var cls = $tr.attr("class"); // add_sch_3
+	    var match = cls.match(/add_sch_(\d+)/);
+	    return match ? parseInt(match[1], 10) : null;
+	}
+	
+	function applyWeekDate($tr, weekNum){
+	    var st = $("#weekStDate" + weekNum).val();
+	    var ed = $("#weekEdDate" + weekNum).val();
+
+	    $tr.find("input[name='weekSchStDates']").val(st);
+	    $tr.find("input[name='weekSchEdDates']").val(ed);
+	}
 	
 </script>
 	<form id="frmLesson" name="frmLesson" method="post">

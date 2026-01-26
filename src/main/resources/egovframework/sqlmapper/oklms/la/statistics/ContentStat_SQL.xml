@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.gocle.oklms.la.statistics.service.impl.ContentStatisticsMapper">
+
+	<select id="listCourseContentStat" parameterType="kr.co.gocle.ifx.vo.CmsCourseBaseVO" resultType="kr.co.gocle.ifx.vo.CmsCourseContentVO">
+		/* ====== kr.co.gocle.ifx.service.impl.CmsIfxMapper.listCourseContentSummary ====== */
+		<include refid="kr.co.gocle.include.paging-start"/>
+		select cms_course_summary_seq, 
+			       title, 
+			       institution_id, 
+			       course_code as courseCode, 
+			       is_operating, 
+			       device_type_code, 
+			       id, 
+			       SUBSTR(course_code,2,4) as year, 
+			       study_time_in_hours, 
+			       is_available, 
+			       subtitle, 
+			       registered_date as registeredDate, 
+			       last_modified_date, 
+			       insert_date , 
+			       case 
+			           when SUBSTR(course_code,1,1) = 'A' 
+			           THEN '평생능력' 
+			           ELSE '코리아텍' 
+			       end  institutionName, 
+			       case 
+			           when device_type_code = '1' 
+			           THEN 'PC+M' 
+			           WHEN device_type_code = '2' 
+			           THEN 'PC+M' 
+			           WHEN device_type_code = '3' 
+			           THEN 'PC+M' 
+			           WHEN device_type_code = '4' 
+			           THEN 'PC' 
+			           WHEN device_type_code = '5' 
+			           THEN '모바일' 
+			           ELSE '기타' 
+			       END deviceName, 
+			       CASE 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '08' 
+			           THEN '디자인콘텐츠' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '14' 
+			           THEN '건축/설계' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '15' 
+			           THEN '기계' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '16' 
+			           THEN '재료' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '17' 
+			           THEN '화학' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '19' 
+			           THEN '전기전자' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '20' 
+			           THEN '정보통신' 
+			           WHEN SUBSTR(COURSE_CODE,13,2) = '30' 
+			           THEN '메카트로닉스' 
+			           WHEN device_type_code = '40' 
+			           THEN '직업기초' 
+			           WHEN device_type_code = '50' 
+			           THEN '공통과목' 
+			           ELSE '기타과목' 
+			       END cateName,
+			  	   NVL(stat.used_course_cnt, 0) AS usedCourseCnt,
+				   NVL(stat.student_cnt, 0)     AS studentCnt
+			  FROM CMS_COURSE_CONTENT_SUMMARY c
+			 LEFT JOIN (
+				    SELECT
+				        cms_course_content_id,
+				        COUNT(DISTINCT yyyy || '-' || term || '-' || subject_code || '-' || class) AS used_course_cnt,
+				        SUM(subject_student_cnt) AS student_cnt
+				    FROM (
+				        SELECT
+				            w.cms_course_content_id,
+				            w.yyyy,
+				            w.term,
+				            w.subject_code,
+				            w.class,
+				            COUNT(DISTINCT l.mem_seq) AS subject_student_cnt
+				        FROM
+				            LMS_SUBJ_WEEK_SCH w
+				        LEFT JOIN LMS_LESSON l
+				          ON l.yyyy = w.yyyy
+				         AND l.term = w.term
+				         AND l.subject_code = w.subject_code
+				         AND l.class = w.class
+				         AND l.DELETE_YN = 'N'
+				        GROUP BY
+				            w.cms_course_content_id,
+				            w.yyyy,
+				            w.term,
+				            w.subject_code,
+				            w.class
+				    ) GROUP BY cms_course_content_id
+				) stat ON c.id = stat.cms_course_content_id
+				 WHERE ((( LOWER(COURSE_CODE) like '%life%' OR  LOWER(COURSE_CODE) like '%free%' OR  LOWER(COURSE_CODE) like '%bank%' )
+				 		AND SUBTITLE LIKE '%학부%' )
+				 		
+				 		OR( course_code='b55a1fbf-84b0-4b67-9efc-62740a4ab47b' AND SUBTITLE LIKE '%학부%' ) )
+				 		 
+				 		
+				 	<if test="searchYear != null  and searchYear != ''">
+				 		AND SUBSTR(COURSE_CODE,2,4) = #{searchYear}  
+				 	</if>	
+				 	
+				 	<if test="searchInstitutionId != null  and searchInstitutionId != ''">
+				 		<choose>
+				            <when test='searchInstitutionId eq "A"'>
+				                	AND SUBSTR(COURSE_CODE,1,1) = #{searchInstitutionId} 
+				            </when>
+				            <otherwise>
+				            <![CDATA[
+				            		AND SUBSTR(COURSE_CODE,1,1) <> 'A' 
+				            ]]>		
+				            </otherwise>
+				        </choose>
+				 	</if>	
+				 	<if test="searchWrd != null  and searchWrd != ''">
+				 		AND SUBTITLE LIKE '%' ||   #{searchWrd} || '%'  
+				    </if>	   
+				    
+				    <if test="searchStDate != null  and searchStDate != ''">
+				    	AND SUBSTR(REGISTERED_DATE,1,10) >= #{searchStDate}
+				    </if>
+				    <if test="searchEdDate != null  and searchEdDate != ''">
+				      <![CDATA[
+				    	AND SUBSTR(REGISTERED_DATE,1,10) <= #{searchEdDate}
+				    	 ]]>	
+				    </if>
+				    
+				     
+				    
+				    ORDER BY cms_course_summary_seq 
+			<include refid="kr.co.gocle.include.paging-end"/>	       
+	</select>
+	
+	<select id="selectUsedCourseCnt">
+		SELECT COUNT(DISTINCT YYYY || '-' || TERM || '-' || SUBJECT_CODE || '-' || CLASS)
+			FROM LMS_SUBJ_WEEK_SCH
+			WHERE CMS_LESSON_ID = #{lessonId}
+			  AND DELETE_YN = 'N'
+	</select>
+	
+	<select id="selectStudentCnt">
+		SELECT
+		    COUNT(DISTINCT l.MEM_SEQ) AS STUDENT_CNT
+		FROM
+		    LMS_SUBJ_WEEK_SCH w
+		JOIN LMS_LESSON l
+		  ON l.YYYY = w.YYYY
+		 AND l.TERM = w.TERM
+		 AND l.SUBJECT_CODE = w.SUBJECT_CODE
+		 AND l.CLASS = w.CLASS
+		WHERE w.CMS_LESSON_ID = #{lessonId}
+		AND l.DELETE_YN = 'N'
+	</select>
+	
+	<select id="listUsedCourse" parameterType="String" resultType="kr.co.gocle.oklms.lu.subject.vo.SubjectVO">
+
+		SELECT DISTINCT
+		    s.SUBJECT_NAME        AS subjectName,
+		    s.SUBJECT_CODE		AS subjectCode,
+		    w.YYYY               AS yyyy,
+		    w.TERM               AS term,
+		    w.CLASS              AS subjectClass,
+		    COUNT(DISTINCT l.MEM_SEQ) AS studyCnt
+		FROM
+		    LMS_SUBJ_WEEK_SCH w
+		JOIN LMS_SUBJECT s
+		  ON s.YYYY = w.YYYY
+		 AND s.TERM = w.TERM
+		 AND s.SUBJECT_CODE = w.SUBJECT_CODE
+		 AND s.CLASS = w.CLASS
+		LEFT JOIN LMS_LESSON l
+		  ON l.YYYY = w.YYYY
+		 AND l.TERM = w.TERM
+		 AND l.SUBJECT_CODE = w.SUBJECT_CODE
+		 AND l.CLASS = w.CLASS
+		WHERE
+		    w.CMS_LESSON_ID = #{lessonId}
+		    AND l.DELETE_YN = 'N'
+		GROUP BY
+		    s.SUBJECT_NAME,
+		    s.SUBJECT_CODE,
+		    w.YYYY,
+		    w.TERM,
+		    w.CLASS
+		ORDER BY
+		    w.YYYY DESC,
+		    w.TERM DESC
+		
+		</select>
+	
+</mapper>

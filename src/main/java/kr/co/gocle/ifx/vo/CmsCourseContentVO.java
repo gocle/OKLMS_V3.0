@@ -38,6 +38,8 @@ public class CmsCourseContentVO extends CmsCourseBaseVO implements Serializable 
 	private String cateName = "";
 	private String registeredDate = "";
 	private String courseCode = "";
+	private String usedCourseCnt;
+	private String studentCnt;
 	
 	public String getRegisteredDate() {
 		return registeredDate;
@@ -309,6 +311,22 @@ public class CmsCourseContentVO extends CmsCourseBaseVO implements Serializable 
 				+ ", registered_date=" + registered_date
 				+ ", registered_by_user_name=" + registered_by_user_name
 				+ "]";
+	}
+
+	public String getUsedCourseCnt() {
+		return usedCourseCnt;
+	}
+
+	public void setUsedCourseCnt(String usedCourseCnt) {
+		this.usedCourseCnt = usedCourseCnt;
+	}
+
+	public String getStudentCnt() {
+		return studentCnt;
+	}
+
+	public void setStudentCnt(String studentCnt) {
+		this.studentCnt = studentCnt;
 	}
 	
 	
