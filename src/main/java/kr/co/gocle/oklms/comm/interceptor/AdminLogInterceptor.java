@@ -50,9 +50,17 @@ public class AdminLogInterceptor extends HandlerInterceptorAdapter {
 		    return true;
 		}
 		
+		//popup일떄 통과
+		if (StringUtils.isBlank(menuId)) {
+	        if (uri.contains("/popup/")) {
+	            return true;
+	        }
+	        return true; 
+	    }
+		
 	    CommbizMenuVO currentMenu = null;
 	    for (CommbizMenuVO menuVO : menuList) {
-	        if (menuId.equals(menuVO.getMenuId())) {
+	        if (StringUtils.equals(menuId, menuVO.getMenuId())) {
 	            currentMenu = menuVO;
 	            break;
 	        }
