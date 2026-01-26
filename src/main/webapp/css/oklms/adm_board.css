@@ -197,7 +197,7 @@ table.view-1 td:not(.view-area) input.choice							{width:13px; height:13px; ver
 table.view-1 td:not(.view-area) label										{line-height:13px; padding:0 20px 0 4px;}
 table.view-1 td:not(.view-area) input										{height:21px; font:12px nbgM; color:#888; line-height:20px; vertical-align:middle; border:1px solid #D5D8DC; background:#FFF; padding:0 5px;}
 table.view-1 td:not(.view-area) select									{height:23px; font:12px nbgM; color:#888; line-height:20px; vertical-align:middle; border:1px solid #D5D8DC; background:#FFF; padding-left:5px;}
-table.view-1 td:not(.view-area) span										{display:inline-block; position:relative; width:92px; height:23px; padding:0;}
+table.view-1 td:not(.view-area) span:not(#cke_nttCn span,#cke_textAreaContent span)	{display:inline-block; position:relative; width:92px; height:23px; padding:0;}
 table.view-1 td:not(.view-area) span .file_input_hidden			{position:absolute; width:90px; height:21px; left:0; top:0; opacity:0; cursor:pointer;}
 table.view-1 td:not(.view-area) b											{font-weight:normal; color:#2A91D4;}
 

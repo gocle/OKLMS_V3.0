@@ -33,6 +33,17 @@ table.htmlarea_30_table td {
  } 
 -->
 </style>
+
+<script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+
+<style>
+.cke_notification,
+.cke_notification_warning,
+.cke_notification_message {
+  display: none !important;
+}
+</style>
+
 <script type="text/javascript">
 //_editor_area = "nttCn";
 //_editor_url = "<c:url value='/html/egovframework/com/cmm/utl/htmlarea3.0/'/>";
@@ -79,7 +90,7 @@ table.htmlarea_30_table td {
 	}
 
 	/* 화면이 로드된후 에디터 기본옵션 설정 초기화 */ 
-	function initEditor() {
+/* 	function initEditor() {
 		//Smart Editor
 		nhn.husky.EZCreator.createInIFrame({
 			oAppRef: oEditors,
@@ -96,7 +107,19 @@ table.htmlarea_30_table td {
 			},
 			fCreator: "createSEditor2"
 		});
-	}
+	} */
+	
+	var nttEditor;
+
+	function initEditor() {
+		  if (CKEDITOR.instances.nttCn) CKEDITOR.instances.nttCn.destroy(true);
+
+		  nttEditor = CKEDITOR.replace('nttCn', {
+		    height: 500,
+		    filebrowserUploadUrl: '<c:url value="/ckeditor/ckeditorUpload.jsp"/>',
+		    filebrowserUploadMethod: 'form'
+		  });
+		}
 
 	/*====================================================================
 	사용자 정의 함수 
@@ -108,7 +131,9 @@ table.htmlarea_30_table td {
 		$("#nttSj").val('');
 		$("#ntceBgndeView").val('');
 		$("#ntceEnddeView").val('');
-		oEditors.getById["nttCn"].exec("SET_CONTENTS", [""]); 
+		/* oEditors.getById["nttCn"].exec("SET_CONTENTS", [""]);  */
+		var editor = nttEditor || CKEDITOR.instances.nttCn;
+  		if (editor) editor.setData("");
 		$("#nttSj").focus();
 	}
 	
@@ -118,12 +143,22 @@ table.htmlarea_30_table td {
 			return;
 		}
 		
-		var data =oEditors.getById["nttCn"].getIR();
+/* 		var data =oEditors.getById["nttCn"].getIR();
 		var text = data.replace(/[<][^>]*[>]/gi, "");
 		if(text=="" && data.indexOf("img") <= 0){
 			alert("필수항목을 입력해 주세요.");
 			oEditors.getById["nttCn"].exec("FOCUS"); 
 			return false;
+		} */
+		
+		var editor = nttEditor || CKEDITOR.instances.nttCn;
+		var data = editor.getData();
+		var text = data.replace(/[<][^>]*[>]/gi, "");
+
+		if (text.trim() === "" && data.indexOf("img") <= 0) {
+		  alert("필수항목을 입력해 주세요.");
+		  editor.focus();
+		  return false;
 		}
 	
 		if( !com.checkRequiredField( $("#ntceBgndeView") ) ){

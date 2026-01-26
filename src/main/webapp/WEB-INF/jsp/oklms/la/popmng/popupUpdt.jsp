@@ -8,11 +8,23 @@
 <c:set var="ImgUrl" value="${pageContext.request.contextPath}/images/egovframework/com/cmm/" />
 <c:set var="CssUrl" value="${pageContext.request.contextPath}/css/egovframework/com/" />
 <script type="text/javascript" src="${contextRootJS }/common/smartEditor/js/HuskyEZCreator.js"></script>
+
+<script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+
+<style>
+.cke_notification,
+.cke_notification_warning,
+.cke_notification_message {
+  display: none !important;
+}
+</style>
+
 <script type="text/javaScript" language="javascript">
 /*********************************************************
  * 초기화
  **********************************************************/
 var oEditors = [];
+var popupEditor = null;
 $(document).ready(function() {
 	com.datepicker('startDate', 'button');
 	com.datepicker('finishDate', 'button');
@@ -32,6 +44,8 @@ $(document).ready(function() {
 		$("table").find("input[name=popupHeight]").attr("validateType", "numberminmaxsize");
 	}
 	
+	initCkEditorIfHtml();
+	
 	//컨텐츠 종류 이벤트
 	$("table").find("input[name=contentType]").bind("click", function() {
 		var contentType = $(this).val();
@@ -40,6 +54,8 @@ $(document).ready(function() {
 			$("table").find("tr.trContent").hide(500);
 			$("table").find("input[name=popupWidth]").removeAttr("validateType");
 			$("table").find("input[name=popupHeight]").removeAttr("validateType");
+			
+			destroyCkEditor();
 		} else {
 			$("table").find("tr.trImageUpload").hide();
 			$("table").find("tr.trContent").show();
@@ -50,10 +66,36 @@ $(document).ready(function() {
 			if($("table").find("iframe").css("height") == 0){
 				$("table").find("iframe").css("height","300px");	
 			}
+			
+			initCkEditorIfHtml();
 		}
 	});
 	$('#file-input').on("change", previewImages);
 });
+
+function initCkEditorIfHtml() {
+	  // textarea가 화면에 있어야 replace가 안정적이라 show 이후 호출 권장
+	  if (popupEditor) return;
+	  if (CKEDITOR.instances.textAreaContent) {
+	    popupEditor = CKEDITOR.instances.textAreaContent;
+	    return;
+	  }
+	  popupEditor = CKEDITOR.replace('textAreaContent', {
+	    height: 500,
+	    // 필요시 업로드 연동
+	    filebrowserUploadUrl: '<c:url value="/ckeditor/ckeditorUpload.jsp"/>',
+	    filebrowserUploadMethod: 'form'
+	  });
+	}
+
+	function destroyCkEditor() {
+	  if (popupEditor) {
+	    popupEditor.destroy(true);
+	    popupEditor = null;
+	  } else if (CKEDITOR.instances.textAreaContent) {
+	    CKEDITOR.instances.textAreaContent.destroy(true);
+	  }
+	}
 
 function previewImages() {
   var $preview = $('#preview').empty();
@@ -132,14 +174,25 @@ function fn_formValidate() {
 	var contentType = $("table").find("input[name=contentType]:checked").val();
 	if(contentType=="H"){//HTML
 		
-		var data =oEditors.getById["textAreaContent"].getIR();
+/* 		var data =oEditors.getById["textAreaContent"].getIR();
 		var text = data.replace(/[<][^>]*[>]/gi, "");
 		if(text=="" && data.indexOf("img") <= 0){
 			alert("내용을 작성해 주세요.");
 			return false;
 		}
 		
-		$("#content").val(data);
+		$("#content").val(data); */
+		
+		  var editor = popupEditor || CKEDITOR.instances.textAreaContent;
+		  var data = editor ? editor.getData() : $("#textAreaContent").val();
+		  var text = data.replace(/[<][^>]*[>]/gi, "");
+
+		  if(text.trim()=="" && data.indexOf("img") <= 0){
+		    alert("내용을 작성해 주세요.");
+		    if (editor) editor.focus();
+		    return false;
+		  }
+		  $("#content").val(data);		
 	}else{//image
 		if($("#pageUrl").val()=="http://" || $("#pageUrl").val()==""){
 			alert("링크URL 을 넣어 주세요.");
@@ -335,7 +388,7 @@ function fn_formValidate() {
 </div>	
 <script type="text/javaScript" language="javascript">
 <!-- Smart Editor -->
-nhn.husky.EZCreator.createInIFrame({
+/* nhn.husky.EZCreator.createInIFrame({
 	oAppRef: oEditors,
 	elPlaceHolder: "textAreaContent",
 	sSkinURI: "/common/smartEditor/SmartEditor2Skin.html",	
@@ -349,5 +402,5 @@ nhn.husky.EZCreator.createInIFrame({
 		//oEditors.getById["textAreaContent"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
 	},
 	fCreator: "createSEditor2"
-});
+}); */
 </script>

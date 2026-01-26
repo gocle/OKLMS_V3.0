@@ -32,15 +32,27 @@ table.htmlarea_30_table td {
  } 
 -->
 </style>
+
+<script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+
+<style>
+.cke_notification,
+.cke_notification_warning,
+.cke_notification_message {
+  display: none !important;
+}
+</style>
+
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cop/bbs/EgovBBSMng.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
 <%-- <script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/htmlarea3.0/htmlarea.js'/>"></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<script type="text/javascript" src="${contextRootJS }/common/smartEditor/js/HuskyEZCreator.js"></script>
+<%-- <script type="text/javascript" src="${contextRootJS }/common/smartEditor/js/HuskyEZCreator.js"></script> --%>
 <validator:javascript formName="board" staticJavascript="false" xhtml="true" cdata="false"/>
 <c:if test="${anonymous == 'true'}"><c:set var="prefix" value="/anonymous"/></c:if>
+
 <script type="text/javascript">
 	var oEditors = [];
 	
@@ -73,7 +85,7 @@ jqGrid 및 화면 초기화
 	}
 	
 	/* 화면이 로드된후 에디터 기본옵션 설정 초기화 */ 
-	function initEditor() {
+/* 	function initEditor() {
 		//Smart Editor
 		nhn.husky.EZCreator.createInIFrame({
 			oAppRef: oEditors,
@@ -90,7 +102,19 @@ jqGrid 및 화면 초기화
 			},
 			fCreator: "createSEditor2"
 		});
-	}
+	} */
+	
+	var nttEditor;
+
+	function initEditor() {
+		  if (CKEDITOR.instances.nttCn) CKEDITOR.instances.nttCn.destroy(true);
+
+		  nttEditor = CKEDITOR.replace('nttCn', {
+		    height: 500,
+		    filebrowserUploadUrl: '<c:url value="/ckeditor/ckeditorUpload.jsp"/>',
+		    filebrowserUploadMethod: 'form'
+		  });
+		}
 
 /*====================================================================
 사용자 정의 함수 
@@ -102,7 +126,9 @@ jqGrid 및 화면 초기화
 		$("#nttSj").val('');
 		$("#ntceBgndeView").val('');
 		$("#ntceEnddeView").val('');
-		oEditors.getById["nttCn"].exec("SET_CONTENTS", [""]); 
+		//oEditors.getById["nttCn"].exec("SET_CONTENTS", [""]); 
+		var editor = nttEditor || CKEDITOR.instances.nttCn;
+  		if (editor) editor.setData("");
 		$("#nttSj").focus();
 	}
 
@@ -112,12 +138,22 @@ jqGrid 및 화면 초기화
 			return;
 		}
 		
-		var data =oEditors.getById["nttCn"].getIR();
+		/* var data =oEditors.getById["nttCn"].getIR();
 		var text = data.replace(/[<][^>]*[>]/gi, "");
 		if(text=="" && data.indexOf("img") <= 0){
 			alert("필수항목을 입력해 주세요.");
 			oEditors.getById["nttCn"].exec("FOCUS"); 
 			return false;
+		} */
+		
+		var editor = nttEditor || CKEDITOR.instances.nttCn;
+		var data = editor.getData();
+		var text = data.replace(/[<][^>]*[>]/gi, "");
+
+		if (text.trim() === "" && data.indexOf("img") <= 0) {
+		  alert("필수항목을 입력해 주세요.");
+		  editor.focus();
+		  return false;
 		}
 	
 		if( !com.checkRequiredField( $("#ntceBgndeView") ) ){
@@ -238,7 +274,7 @@ jqGrid 및 화면 초기화
 		<td>
 <!-- 			<textarea id="nttCn" name="nttCn" class="textarea" cols="75" rows="28" style="width:550px; height:300px;" title="내용입력"></textarea> -->
 			<textarea name="nttCn" id="nttCn" style="width: 100%;height: 500px;" rows="20" cols="80"></textarea>
-<form:errors path="nttCn" />
+			<form:errors path="nttCn" />
 			</td>
 		</tr>
 		</table>								
