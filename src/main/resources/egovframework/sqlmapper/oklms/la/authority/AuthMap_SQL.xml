@@ -103,17 +103,23 @@
 
 			SELECT ROWNUM AS NUM
 				   , LEVEL AS MENU_LEVEL
-			       , (SELECT MENU_ID 
-			            FROM COM_MENU 
-			           WHERE MENU_ORDER =(SELECT MAX(MENU_ORDER)
-										from COM_MENU
-										 where  MENU_AREA = #{searchMenuArea}
-										   AND DELETE_YN = 'N'  
-										   AND SHOW_YN   = 'Y'  
-										   AND UP_MENU_ID = 'TOP'
-										   AND MENU_ORDER <= A.MENU_ORDER
-					  )
-			       ) AS ROOT_MENU_ID
+			       , (
+						 SELECT MIN(MENU_ID)
+						 FROM COM_MENU
+						 WHERE MENU_ORDER = (
+						     SELECT MAX(MENU_ORDER)
+						     FROM COM_MENU
+						     WHERE MENU_AREA = 'PC'
+						       AND DELETE_YN = 'N'
+						       AND SHOW_YN = 'Y'
+						       AND UP_MENU_ID = 'TOP'
+						       AND MENU_ORDER <= A.MENU_ORDER
+						 )
+						   AND MENU_AREA = 'PC'
+						   AND DELETE_YN = 'N'
+						   AND SHOW_YN = 'Y'
+						   AND UP_MENU_ID = 'TOP'
+						) AS ROOT_MENU_ID
 			       , ( 
 			           CASE 
 			               WHEN 
