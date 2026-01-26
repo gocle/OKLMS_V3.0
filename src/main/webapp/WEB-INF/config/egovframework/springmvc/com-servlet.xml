@@ -55,6 +55,8 @@
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 		<property name="alwaysUseFullPath" value="true"></property>
 	</bean>
+	
+	<bean id="adminLogService" class="kr.co.gocle.oklms.la.log.service.impl.AdminLogServiceImpl"></bean>
 
 	<!-- 인터셉터 -->
 	<mvc:interceptors>
@@ -167,6 +169,24 @@
 			<mvc:exclude-mapping path="/prototype/**/*" />
 			<mvc:exclude-mapping path="/cmm/fms/*" /> 
 			<bean class="kr.co.gocle.oklms.comm.interceptor.AuthenticCheckInterceptor" />
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+		    <!-- 관리자 영역만 -->
+		    <mvc:mapping path="/la/**/*.do" />
+		
+		    <!-- 필요 없는 것들 제외 -->
+		    <mvc:exclude-mapping path="/la/login/*" />
+		    <mvc:exclude-mapping path="/la/main/lmsAdminMainPage.do" />
+		    <mvc:exclude-mapping path="/la/main/changeMenuArea.do" />
+		    <mvc:exclude-mapping path="/**/commbiz/menu/*" />
+		    <mvc:exclude-mapping path="/cmm/error/*" />
+		    <mvc:exclude-mapping path="/cmm/fms/*" />
+		    <mvc:exclude-mapping path="/**/*.json" />
+		
+		    <bean class="kr.co.gocle.oklms.comm.interceptor.AdminLogInterceptor">
+		        <property name="adminLogService" ref="adminLogService"/>
+		    </bean>
 		</mvc:interceptor>
 		
 	</mvc:interceptors>

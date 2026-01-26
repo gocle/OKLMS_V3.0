@@ -400,6 +400,8 @@ public class CommbizMenuController extends BaseController{
     			returnResultMap.put("downloadAuthYn"	, menuVO.getDownloadAuthYn());	// 다운로드 권한 여부
     			returnResultMap.put("otherAuthYn"		, menuVO.getOtherAuthYn());	// 기타 권한 여부
     			returnResultMap.put("listAuthYn"		, menuVO.getListAuthYn());		// 목록 조회 권한 여부
+    			returnResultMap.put("menuIdPathLeafNode", menuVO.getMenuIdPathLeafNode());
+    			redirectAttributes.addFlashAttribute("menuIdPathLeafNode", menuVO.getMenuIdPathLeafNode());
 				
 				
 //			    redirectAttributes.addFlashAttribute("rootMenuId", menuVO.getRootMenuId());
