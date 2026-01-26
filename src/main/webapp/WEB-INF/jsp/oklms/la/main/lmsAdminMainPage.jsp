@@ -366,13 +366,13 @@ function fn_sync(){
  </ul> -->
  
  <div class="main-content" style="height:1000px">
-<%--   <ul class="board-info" style="margin-top: -20px;">
+   <ul class="board-info" style="margin-top: -20px;">
 	<li class="btn-area"> 
 		<a href="#fn_exclDownload" onclick="javascript:fn_sync( ); return false" onkeypress="this.onclick;" class="btn">학적상태 동기화</a>
 		<a href="#fn_exclDownload" onclick="javascript:fn_exclDownload( ); return false" onkeypress="this.onclick;" class="btn">엑셀다운로드</a>
 	</li>
 </ul>
- 	<h2 class="title">학습근로자 교육훈련 현황</h2>
+<%-- 	<h2 class="title">학습근로자 교육훈련 현황</h2>
  	<h3 class="title">대학연계형</h3>
  	<c:set var="n1_tot" value="0"/>
  	<c:set var="n2_tot" value="0"/>
